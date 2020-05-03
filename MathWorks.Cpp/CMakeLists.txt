@@ -19,4 +19,24 @@ include_directories(
 set(mathworks_dll_dir ${CMAKE_CURRENT_SOURCE_DIR}/dll/x64/MathWorksCpp.dll)
 set(mathworks_lib_dir ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64/MathWorksCpp.lib)
 
+add_library(MathWorksCpp SHARED IMPORTED)
+set_target_properties(MathWorksCpp PROPERTIES IMPORTED_LOCATION ${mathworks_dll_dir})
+set_target_properties(MathWorksCpp PROPERTIES IMPORTED_IMPLIB ${mathworks_lib_dir})
 
+file(GLOB_RECURSE Library_HEADERS 
+    ./include/*.h
+    ./include/*.hpp
+)
+
+add_library(${project_name} STATIC
+    
+    # MathWorks.Cpp source
+    source/MathWorks.cpp
+
+    ${Library_HEADERS}
+)
+
+FIND_PACKAGE( OpenCV 3.4.6 REQUIRED )
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
+
+target_link_libraries(${PROJECT_NAME} MathWorksCpp)
