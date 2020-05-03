@@ -4,8 +4,48 @@
 #include "MathWorks/MathWorksCpp_initialize.h"
 #include "MathWorks/MathWorksCpp_terminate.h"
 
+#include "MathWorks/Demosaic8Bit.h"
+#include "MathWorks/Demosaic16Bit.h"
+
 namespace Tools 
 {
+	cv::Mat MathWorks::Demosaic(const cv::Mat &BayerPatternImage, const SensorAlignment sensorAlignment)
+	{
+		cv::Mat ColorImage;
+
+		if (BayerPatternImage.depth() <= 1)
+		{
+			emxArray_uint8_T *Image;
+			emxArray_uint8_T *bayerPatternImage = CvMat8BitToMatlabImage(BayerPatternImage);
+
+			emxInitArray_uint8_T(&Image, 3);
+
+			Demosaic8Bit(bayerPatternImage, static_cast<int>(sensorAlignment), Image);
+
+			ColorImage = MatlabImageToCvMat(Image);
+
+			emxDestroyArray_uint8_T(Image);
+			emxDestroyArray_uint8_T(bayerPatternImage);
+		}
+		else
+		{
+			emxArray_uint16_T *Image;
+			emxArray_uint16_T *bayerPatternImage = CvMat16BitToMatlabImage(BayerPatternImage);
+
+			emxInitArray_uint16_T(&Image, 3);
+
+			Demosaic16Bit(bayerPatternImage, static_cast<int>(sensorAlignment), Image);
+
+			ColorImage = MatlabImageToCvMat(Image);
+
+			emxDestroyArray_uint16_T(Image);
+			emxDestroyArray_uint16_T(bayerPatternImage);
+		}
+		
+		return ColorImage;
+	}
+
+
 	cv::Mat MathWorks::MatlabImageToCvMat(emxArray_uint16_T* Image) 
 	{
 		const int Height = Image->size[0];
@@ -115,7 +155,7 @@ namespace Tools
 
 		return result;
 	}
-	emxArray_uint8_T* MathWorks::CvMat8BitToMatlabImage(const cv::Mat &Image) 
+	emxArray_uint8_T* MathWorks::CvMat8BitToMatlabImage(const cv::Mat &Image)
 	{
 		emxArray_uint8_T *result;
 
@@ -135,6 +175,5 @@ namespace Tools
 		}
 
 		return result;
-	}
 	}
 }
