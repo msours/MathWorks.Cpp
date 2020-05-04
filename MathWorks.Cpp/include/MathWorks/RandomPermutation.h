@@ -16,8 +16,8 @@
 #include "MathWorksCpp_types.h"
 
 /* Function Declarations */
-ADAPTIVETHRESHOLD_DLL_EXPORT extern void RandomPermutation(unsigned int RangeN,
-  unsigned int SampleN, emxArray_real_T *P);
+ADAPTIVETHRESHOLD_DLL_EXPORT extern void RandomPermutation(unsigned long long
+  RangeN, unsigned long long SampleN, emxArray_real_T *P);
 
 #endif
 

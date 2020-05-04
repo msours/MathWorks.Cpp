@@ -17,7 +17,7 @@
 
 /* Function Declarations */
 ADAPTIVETHRESHOLD_DLL_EXPORT extern void imresize16bit(const emxArray_uint16_T
-  *Image, unsigned int NewHeight, unsigned int NewWidth, int Method,
+  *Image, unsigned long long NewHeight, unsigned long long NewWidth, int Method,
   emxArray_uint16_T *ResizedImage);
 
 #endif

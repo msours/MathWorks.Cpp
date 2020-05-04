@@ -17,7 +17,7 @@
 
 /* Function Declarations */
 extern void genrand_uint32_vector(unsigned int mt[625], unsigned int u[2]);
-extern void randn(unsigned int varargin_1, unsigned int varargin_2,
+extern void randn(unsigned long long varargin_1, unsigned long long varargin_2,
                   emxArray_real_T *r);
 
 #endif

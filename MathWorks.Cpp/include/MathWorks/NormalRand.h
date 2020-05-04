@@ -16,8 +16,8 @@
 #include "MathWorksCpp_types.h"
 
 /* Function Declarations */
-ADAPTIVETHRESHOLD_DLL_EXPORT extern void NormalRand(unsigned int Rows, unsigned
-  int Cols, emxArray_real_T *b_X);
+ADAPTIVETHRESHOLD_DLL_EXPORT extern void NormalRand(unsigned long long Rows,
+  unsigned long long Cols, emxArray_real_T *b_X);
 
 #endif
 

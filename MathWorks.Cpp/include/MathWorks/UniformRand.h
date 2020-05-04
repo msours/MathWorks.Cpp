@@ -16,8 +16,8 @@
 #include "MathWorksCpp_types.h"
 
 /* Function Declarations */
-ADAPTIVETHRESHOLD_DLL_EXPORT extern void UniformRand(unsigned int Rows, unsigned
-  int Columns, emxArray_real_T *b_X);
+ADAPTIVETHRESHOLD_DLL_EXPORT extern void UniformRand(unsigned long long Rows,
+  unsigned long long Columns, emxArray_real_T *b_X);
 
 #endif
 

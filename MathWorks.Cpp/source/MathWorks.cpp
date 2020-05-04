@@ -7,57 +7,124 @@
 #include "MathWorks/Demosaic8Bit.h"
 #include "MathWorks/Demosaic16Bit.h"
 
-namespace Tools 
+#include "MathWorks/imresize8bit.h"
+#include "MathWorks/imresize32bit.h"
+#include "MathWorks/imresize16bit.h"
+#include "MathWorks/imresize48bit.h"
+
+namespace MathWorks
 {
-	cv::Mat MathWorks::Demosaic(const cv::Mat &BayerPatternImage, const SensorAlignment sensorAlignment)
+	cv::Mat Functions::Demosaic(const cv::Mat &BayerPatternImage, const SensorAlignment sensorAlignment)
 	{
 		cv::Mat ColorImage;
 
 		if (BayerPatternImage.depth() <= 1)
 		{
-			emxArray_uint8_T *Image;
-			emxArray_uint8_T *bayerPatternImage = CvMat8BitToMatlabImage(BayerPatternImage);
+			MatlabImage8 Image;
+			MatlabImage8 bayerPatternImage;
+
+			CvMatToMatlabImage(BayerPatternImage, bayerPatternImage);
 
 			emxInitArray_uint8_T(&Image, 3);
 
 			Demosaic8Bit(bayerPatternImage, static_cast<int>(sensorAlignment), Image);
 
-			ColorImage = MatlabImageToCvMat(Image);
+			MatlabImageToCvMat(Image, ColorImage);
 
 			emxDestroyArray_uint8_T(Image);
 			emxDestroyArray_uint8_T(bayerPatternImage);
 		}
 		else
 		{
-			emxArray_uint16_T *Image;
-			emxArray_uint16_T *bayerPatternImage = CvMat16BitToMatlabImage(BayerPatternImage);
+			MatlabImage16 Image;
+			MatlabImage16 bayerPatternImage;
+
+			CvMatToMatlabImage(BayerPatternImage, bayerPatternImage);
 
 			emxInitArray_uint16_T(&Image, 3);
 
 			Demosaic16Bit(bayerPatternImage, static_cast<int>(sensorAlignment), Image);
 
-			ColorImage = MatlabImageToCvMat(Image);
+			MatlabImageToCvMat(Image, ColorImage);
 
 			emxDestroyArray_uint16_T(Image);
 			emxDestroyArray_uint16_T(bayerPatternImage);
 		}
-		
+
 		return ColorImage;
 	}
-
-
-	cv::Mat MathWorks::MatlabImageToCvMat(emxArray_uint16_T* Image) 
+	cv::Mat Functions::Imresize(const cv::Mat &Image, const size_t NewHeight, const size_t NewWidth, const ResizeMode resizeMode)
 	{
-		const int Height = Image->size[0];
-		const int Width = Image->size[1];
+		cv::Mat ResizedImage;
 
-		const int Channels = Image->numDimensions;
+		if (Image.depth() <= 1)
+		{
+			MatlabImage8 resizedImage;
+			MatlabImage8 image; 
+			
+			CvMatToMatlabImage(Image, image);
+
+			std::cout << image->size[0] << ", " << image->size[1] << ", " << image->numDimensions << "\n\n";
+
+			if (Image.channels() <= 1)
+			{
+				emxInitArray_uint8_T(&resizedImage, 2);
+
+				imresize8bit(image, NewHeight, NewWidth, static_cast<int>(resizeMode), resizedImage);
+			}
+			else
+			{
+				emxInitArray_uint8_T(&resizedImage, 3);
+
+				imresize32bit(image, NewHeight, NewWidth, static_cast<int>(resizeMode), resizedImage);
+			}
+
+			MatlabImageToCvMat(resizedImage, ResizedImage);
+
+			emxDestroyArray_uint8_T(image);
+			emxDestroyArray_uint8_T(resizedImage);
+		}
+		else
+		{
+			MatlabImage16 resizedImage;
+			MatlabImage16 image;
+
+			CvMatToMatlabImage(Image, image);
+
+			if (Image.channels() <= 1)
+			{
+				emxInitArray_uint16_T(&resizedImage, 2);
+
+				imresize16bit(image, NewHeight, NewWidth, static_cast<int>(resizeMode), resizedImage);
+			}
+			else
+			{
+				emxInitArray_uint16_T(&resizedImage, 3);
+
+				imresize48bit(image, NewHeight, NewWidth, static_cast<int>(resizeMode), resizedImage);
+			}
+
+			MatlabImageToCvMat(resizedImage, ResizedImage);
+
+			emxDestroyArray_uint16_T(image);
+			emxDestroyArray_uint16_T(resizedImage);
+		}
+
+		return ResizedImage;
+	}
+
+	void Functions::MatlabImageToCvMat(const MatlabImage16 &MatlabImageIn, cv::Mat & CvImageOut)
+	{
+		const int Height = MatlabImageIn->size[0];
+		const int Width = MatlabImageIn->size[1];
+
+		const int Channels = MatlabImageIn->numDimensions > 2 ? 3 : 1;
 
 		const int N = Width * Height;
 
 		const int Type = Channels == 1 ? CV_16UC1 : CV_16UC3;
 
-		cv::Mat cvImage = cv::Mat::zeros(Height, Width, Type);
+		CvImageOut = cv::Mat::zeros(Height, Width, Type);
 
 		byte lsb, msb;
 
@@ -69,52 +136,58 @@ namespace Tools
 			{
 				for (int c = 0; c < Channels; c++)
 				{
-					lsb = (byte)(Image->data[v + N * (2 - c)] & 0xFF);
-					msb = (byte)((Image->data[v + N * (2 - c)] >> 8) & 0xFF);
+					lsb = (byte)(MatlabImageIn->data[v + N * (2 - c)] & 0xFF);
+					msb = (byte)((MatlabImageIn->data[v + N * (2 - c)] >> 8) & 0xFF);
 
 					q = (k * Width + j) * 2 * Channels + (2 * c);
 
-					cvImage.data[q] = lsb;
-					cvImage.data[q + 1] = msb;
+					CvImageOut.data[q] = lsb;
+					CvImageOut.data[q + 1] = msb;
 				}
 				v++;
 			}
 		}
-
-		return cvImage;
 	}
-	cv::Mat MathWorks::MatlabImageToCvMat(emxArray_uint8_T* Image) 
-	{
-		const int Height = Image->size[0];
-		const int Width = Image->size[1];
 
-		const int Channels = Image->numDimensions;
+	void Functions::MatlabImageToCvMat(const MatlabImage8 &MatlabImageIn, cv::Mat &CvImageOut)
+	{
+		const int Height = MatlabImageIn->size[0];
+		const int Width = MatlabImageIn->size[1];
+
+		const int Channels = MatlabImageIn->numDimensions > 2 ? 3 : 1;
 
 		const int N = Width * Height;
 
 		const int Type = Channels == 1 ? CV_8UC1 : CV_8UC3;
 
-		cv::Mat cvImage = cv::Mat::zeros(Height, Width, Type);
+		CvImageOut = cv::Mat::zeros(Height, Width, Type);
 
-		int v = 0;
-		int q = -1;
-		for (int j = 0; j < Width; j++)
+		if (Channels > 1)
 		{
-			for (int k = 0; k < Height; k++)
+			for (int j = 0; j < Width; j++)
 			{
-				for (int c = 0; c < Channels; c++)
+				for (int k = 0; k < Height; k++)
 				{
-					q = (k * Width + j) * Channels + c;
-					cvImage.data[q] = Image->data[v + N * (2 - c)];
+					for (int c = 0; c < Channels; c++)
+					{
+						CvImageOut.data[(k * Width + j) * Channels + c] = MatlabImageIn->data[k + Height * j + N * (2 - c)];
+					}
 				}
-				v++;
 			}
 		}
-
-		return cvImage;
+		else
+		{
+			for (int j = 0; j < Width; j++)
+			{
+				for (int k = 0; k < Height; k++)
+				{
+					CvImageOut.data[j + Width * k] = MatlabImageIn->data[k + Height * j];
+				}
+			}
+		}
 	}
 
-	emxArray_real_T* MathWorks::VectorToMatlabArray(const std::vector<float> &V) 
+	emxArray_real_T* Functions::VectorToMatlabArray(const std::vector<float> &V)
 	{
 		emxArray_real_T *result;
 
@@ -126,18 +199,16 @@ namespace Tools
 		return result;
 	}
 
-	emxArray_uint16_T* MathWorks::CvMat16BitToMatlabImage(const cv::Mat &Image) 
+	void Functions::CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage16 &MatlabImageOut)
 	{
-		emxArray_uint16_T *result;
+		int Height = CvImageIn.rows;
+		int Width = CvImageIn.cols;
 
-		int Height = Image.rows;
-		int Width = Image.cols;
-
-		byte *Data = Image.data;
+		byte *Data = CvImageIn.data;
 
 		int Size[2] = { Height, Width };
 
-		result = emxCreateND_uint16_T(2, Size);
+		MatlabImageOut = emxCreateND_uint16_T(2, Size);
 
 		uint16_t Value;
 
@@ -147,33 +218,47 @@ namespace Tools
 			for (int j = 0; j < Width; j++)
 			{
 				Value = ((uint16_t)Data[t + 1] << 8) | ((uint16_t)Data[t]);
-				result->data[k + Height * j] = Value;
+				MatlabImageOut->data[k + Height * j] = Value;
 
 				t += 2;
 			}
 		}
-
-		return result;
 	}
-	emxArray_uint8_T* MathWorks::CvMat8BitToMatlabImage(const cv::Mat &Image)
+	void Functions::CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage8 &MatlabImageOut)
 	{
-		emxArray_uint8_T *result;
-
-		int Height = Image.rows;
-		int Width = Image.cols;
+		int Height = CvImageIn.rows;
+		int Width = CvImageIn.cols;
 
 		int Size[2] = { Height, Width };
 
-		result = emxCreateND_uint8_T(2, Size);
+		const int Channels = CvImageIn.channels();
+		const int NumDimensions = Channels > 1 ? 3 : 2;
+		const int N = Width * Height;
 
-		for (int k = 0; k < Height; k++)
+		MatlabImageOut = emxCreateND_uint8_T(NumDimensions, Size);
+
+		if (Channels > 1)
 		{
 			for (int j = 0; j < Width; j++)
 			{
-				result->data[k + Height * j] = Image.data[j + Width * k];
+				for (int k = 0; k < Height; k++)
+				{
+					for (int c = 0; c < Channels; c++)
+					{
+						(MatlabImageOut)->data[k + Height * j + N * (2 - c)] = CvImageIn.data[(k * Width + j) * Channels + c];
+					}
+				}
 			}
 		}
-
-		return result;
+		else
+		{
+			for (int j = 0; j < Width; j++)
+			{
+				for (int k = 0; k < Height; k++)
+				{
+					(MatlabImageOut)->data[k + Height * j] = CvImageIn.data[j + Width * k];
+				}
+			}
+		}
 	}
 }

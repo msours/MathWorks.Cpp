@@ -17,7 +17,7 @@
 
 /* Function Declarations */
 extern double b_rand();
-extern void c_rand(unsigned int varargin_1, unsigned int varargin_2,
+extern void c_rand(unsigned long long varargin_1, unsigned long long varargin_2,
                    emxArray_real_T *r);
 
 #endif
