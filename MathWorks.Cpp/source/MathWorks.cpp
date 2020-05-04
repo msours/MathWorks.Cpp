@@ -64,8 +64,6 @@ namespace MathWorks
 			
 			CvMatToMatlabImage(Image, image);
 
-			std::cout << image->size[0] << ", " << image->size[1] << ", " << image->numDimensions << "\n\n";
-
 			if (Image.channels() <= 1)
 			{
 				emxInitArray_uint8_T(&resizedImage, 2);
@@ -128,23 +126,39 @@ namespace MathWorks
 
 		byte lsb, msb;
 
-		int v = 0;
-		int q = -1;
-		for (int j = 0; j < Width; j++)
-		{
-			for (int k = 0; k < Height; k++)
+		if (Channels > 1) {
+			int v = 0;
+			int q = -1;
+			for (int j = 0; j < Width; j++)
 			{
-				for (int c = 0; c < Channels; c++)
+				for (int k = 0; k < Height; k++)
 				{
-					lsb = (byte)(MatlabImageIn->data[v + N * (2 - c)] & 0xFF);
-					msb = (byte)((MatlabImageIn->data[v + N * (2 - c)] >> 8) & 0xFF);
+					for (int c = 0; c < Channels; c++)
+					{
+						lsb = (byte)(MatlabImageIn->data[v + N * (2 - c)] & 0xFF);
+						msb = (byte)((MatlabImageIn->data[v + N * (2 - c)] >> 8) & 0xFF);
 
-					q = (k * Width + j) * 2 * Channels + (2 * c);
+						q = (k * Width + j) * 2 * Channels + (2 * c);
 
-					CvImageOut.data[q] = lsb;
-					CvImageOut.data[q + 1] = msb;
+						CvImageOut.data[q] = lsb;
+						CvImageOut.data[q + 1] = msb;
+					}
+					v++;
 				}
-				v++;
+			}
+		}
+		else
+		{
+			for (int j = 0; j < Width; j++)
+			{
+				for (int k = 0; k < Height; k++)
+				{
+					lsb = (byte)(MatlabImageIn->data[k + Height * j] & 0xFF);
+					msb = (byte)((MatlabImageIn->data[k + Height * j] >> 8) & 0xFF);
+
+					CvImageOut.data[(k * Width + j) * 2] = lsb;
+					CvImageOut.data[(k * Width + j) * 2 + 1] = msb;
+				}
 			}
 		}
 	}
