@@ -11,6 +11,9 @@ void TestDemosaic()
 
 int main()
 {
+	TestDemosaic();
+	return 0;
+
 	const cv::Mat Image16Bit = cv::imread("16bit.png", cv::IMREAD_ANYDEPTH | cv::IMREAD_ANYCOLOR);
 
 	const cv::Mat ResizedImage = MathWorks::Functions::Imresize(Image16Bit, 1000, 1000, MathWorks::ResizeMode::billinear);

@@ -126,24 +126,20 @@ namespace MathWorks
 
 		byte lsb, msb;
 
-		if (Channels > 1) {
-			int v = 0;
-			int q = -1;
+		if (Channels > 1) 
+		{
 			for (int j = 0; j < Width; j++)
 			{
 				for (int k = 0; k < Height; k++)
 				{
 					for (int c = 0; c < Channels; c++)
 					{
-						lsb = (byte)(MatlabImageIn->data[v + N * (2 - c)] & 0xFF);
-						msb = (byte)((MatlabImageIn->data[v + N * (2 - c)] >> 8) & 0xFF);
+						lsb = (byte)(MatlabImageIn->data[k + Height * j + N * (2 - c)] & 0xFF);
+						msb = (byte)((MatlabImageIn->data[k + Height * j + N * (2 - c)] >> 8) & 0xFF);
 
-						q = (k * Width + j) * 2 * Channels + (2 * c);
-
-						CvImageOut.data[q] = lsb;
-						CvImageOut.data[q + 1] = msb;
+						CvImageOut.data[(k * Width + j) * 2 * Channels + (2 * c)] = lsb;
+						CvImageOut.data[(k * Width + j) * 2 * Channels + (2 * c) + 1] = msb;
 					}
-					v++;
 				}
 			}
 		}
@@ -199,18 +195,6 @@ namespace MathWorks
 				}
 			}
 		}
-	}
-
-	emxArray_real_T* Functions::VectorToMatlabArray(const std::vector<float> &V)
-	{
-		emxArray_real_T *result;
-
-		int Size[1] = { V.size() };
-		result = emxCreateND_real_T(1, Size);
-
-		for (int k = 0; k < V.size(); k++) result->data[k] = static_cast<double>(V[k]);
-
-		return result;
 	}
 
 	void Functions::CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage16 &MatlabImageOut)
@@ -274,5 +258,16 @@ namespace MathWorks
 				}
 			}
 		}
+	}
+	emxArray_real_T* Functions::VectorToMatlabArray(const std::vector<float> &V)
+	{
+		emxArray_real_T *result;
+
+		int Size[1] = { V.size() };
+		result = emxCreateND_real_T(1, Size);
+
+		for (int k = 0; k < V.size(); k++) result->data[k] = static_cast<double>(V[k]);
+
+		return result;
 	}
 }
