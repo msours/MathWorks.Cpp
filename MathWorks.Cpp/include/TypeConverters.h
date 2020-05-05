@@ -12,9 +12,9 @@ typedef emxArray_uint16_T* MatlabImage16;
 typedef emxArray_uint8_T* MatlabImage8; 
 typedef emxArray_real_T* MatlabMatrix;
 
-namespace MathWorks 
+namespace MathWorks
 {
-	class TypeConverters 
+	class TypeConverters
 	{
 	public:
 		static void MatlabImageToCvMat(const MatlabImage16 &MatlabImageIn, cv::Mat &CvImageOut);
@@ -23,6 +23,6 @@ namespace MathWorks
 		static void CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage16 &MatlabImageOut);
 		static void CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage8 &MatlabImageOut);
 
-		static MatlabMatrix VectorToMatlabMatrix(const std::vector<float> &V);
+		static void VectorToMatlabMatrix(const std::vector<double> &VectorIn, MatlabMatrix &MatlabMatrixOut);
 	};
 }

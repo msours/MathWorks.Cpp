@@ -11,11 +11,17 @@ namespace MathWorks
 	class C_Coder
 	{
 	public:
+
+		static bool DetectCheckerboardPoints(const cv::Mat &Image, const double CornerThreshold, std::vector<cv::Point2d> &CornerDetections, cv::Size2i &BoardSize);
+
 		static cv::Mat Demosaic(const cv::Mat &BayerPatternImage, const SensorAlignment sensorAlignment);
 
 		static cv::Mat Imresize(const cv::Mat &Image, const size_t NewHeight, const size_t NewWidth, const ResizeMode resizeMode);
 
-		static bool DetectCheckerboardPoints(const cv::Mat &Image, const double CornerThreshold, std::vector<cv::Point2d> &CornerDetections, cv::Size2i &BoardSize);
+		static std::vector<double> CubicSpline(const std::vector<double> &X, const std::vector<double> &Y, const std::vector<double> &SplineX);
+
+		static double CubicSpline(const std::vector<double> &X, const std::vector<double> &Y, const double SplineX);
+
 	};
 
 	// based on:

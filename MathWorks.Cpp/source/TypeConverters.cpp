@@ -172,16 +172,14 @@ namespace MathWorks
 			}
 		}
 	}
-	MatlabMatrix TypeConverters::VectorToMatlabMatrix(const std::vector<float> &V)
+	void TypeConverters::VectorToMatlabMatrix(const std::vector<double> &VectorIn, MatlabMatrix &MatlabMatrixOut)
 	{
 		MatlabMatrix result;
 
-		int Size[1] = { V.size() };
-		result = emxCreateND_real_T(1, Size);
+		int Size[1] = { VectorIn.size() };
+		MatlabMatrixOut = emxCreateND_real_T(1, Size);
 
-		for (int k = 0; k < V.size(); k++) result->data[k] = static_cast<double>(V[k]);
-
-		return result;
+		for (int k = 0; k < VectorIn.size(); k++) result->data[k] = VectorIn[k];
 	}
 }
 
