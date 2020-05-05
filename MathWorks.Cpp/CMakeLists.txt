@@ -31,7 +31,8 @@ file(GLOB_RECURSE Library_HEADERS
 add_library(${project_name} STATIC
     
     # MathWorks.Cpp source
-    source/MathWorks.cpp
+    source/C_Coder.cpp
+    source/TypeConverters.cpp
 
     ${Library_HEADERS}
 )

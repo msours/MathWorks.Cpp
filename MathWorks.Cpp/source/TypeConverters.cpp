@@ -1,114 +1,13 @@
 
-#include "MathWorks.h"
+#include "TypeConverters.h"
+
 #include "MathWorks/MathWorksCpp_emxAPI.h"
 #include "MathWorks/MathWorksCpp_initialize.h"
 #include "MathWorks/MathWorksCpp_terminate.h"
 
-#include "MathWorks/Demosaic8Bit.h"
-#include "MathWorks/Demosaic16Bit.h"
-
-#include "MathWorks/imresize8bit.h"
-#include "MathWorks/imresize16bit.h"
-
-namespace MathWorks
+namespace MathWorks 
 {
-	cv::Mat Functions::Demosaic(const cv::Mat &BayerPatternImage, const SensorAlignment sensorAlignment)
-	{
-		cv::Mat ColorImage;
-
-		if (BayerPatternImage.depth() <= 1)
-		{
-			MatlabImage8 Image;
-			MatlabImage8 bayerPatternImage;
-
-			CvMatToMatlabImage(BayerPatternImage, bayerPatternImage);
-
-			emxInitArray_uint8_T(&Image, 3);
-
-			Demosaic8Bit(bayerPatternImage, static_cast<int>(sensorAlignment), Image);
-
-			MatlabImageToCvMat(Image, ColorImage);
-
-			emxDestroyArray_uint8_T(Image);
-			emxDestroyArray_uint8_T(bayerPatternImage);
-		}
-		else
-		{
-			MatlabImage16 Image;
-			MatlabImage16 bayerPatternImage;
-
-			CvMatToMatlabImage(BayerPatternImage, bayerPatternImage);
-
-			emxInitArray_uint16_T(&Image, 3);
-
-			Demosaic16Bit(bayerPatternImage, static_cast<int>(sensorAlignment), Image);
-
-			MatlabImageToCvMat(Image, ColorImage);
-
-			emxDestroyArray_uint16_T(Image);
-			emxDestroyArray_uint16_T(bayerPatternImage);
-		}
-
-		return ColorImage;
-	}
-	cv::Mat Functions::Imresize(const cv::Mat &Image, const size_t NewHeight, const size_t NewWidth, const ResizeMode resizeMode)
-	{
-		cv::Mat ResizedImage;
-
-		if (Image.depth() <= 1)
-		{
-			if (Image.channels() <= 1)
-			{
-				MatlabImage8 resizedImage;
-				MatlabImage8 image;
-
-				CvMatToMatlabImage(Image, image);
-
-				emxInitArray_uint8_T(&resizedImage, 2);
-
-				imresize8bit(image, NewHeight, NewWidth, static_cast<int>(resizeMode), resizedImage);
-
-				MatlabImageToCvMat(resizedImage, ResizedImage);
-
-				emxDestroyArray_uint8_T(image);
-				emxDestroyArray_uint8_T(resizedImage);
-
-				return ResizedImage;
-			}
-		}
-		else
-		{
-			if (Image.channels() <= 1)
-			{
-				MatlabImage16 resizedImage;
-				MatlabImage16 image;
-
-				CvMatToMatlabImage(Image, image);
-
-				emxInitArray_uint16_T(&resizedImage, 2);
-
-				imresize16bit(image, NewHeight, NewWidth, static_cast<int>(resizeMode), resizedImage);
-
-				MatlabImageToCvMat(resizedImage, ResizedImage);
-
-				emxDestroyArray_uint16_T(image);
-				emxDestroyArray_uint16_T(resizedImage);
-
-				return ResizedImage;
-			}
-		}
-
-		std::vector<cv::Mat> SingleChannelImages;
-		cv::split(Image, SingleChannelImages);
-
-		for (int k = 0; k < SingleChannelImages.size(); k++) SingleChannelImages[k] = Imresize(SingleChannelImages[k], NewHeight, NewWidth, resizeMode);
-
-		cv::merge(SingleChannelImages, ResizedImage);
-
-		return ResizedImage;
-	}
-
-	void Functions::MatlabImageToCvMat(const MatlabImage16 &MatlabImageIn, cv::Mat & CvImageOut)
+	void TypeConverters::MatlabImageToCvMat(const MatlabImage16 &MatlabImageIn, cv::Mat & CvImageOut)
 	{
 		const int Height = MatlabImageIn->size[0];
 		const int Width = MatlabImageIn->size[1];
@@ -156,7 +55,7 @@ namespace MathWorks
 		}
 	}
 
-	void Functions::MatlabImageToCvMat(const MatlabImage8 &MatlabImageIn, cv::Mat &CvImageOut)
+	void TypeConverters::MatlabImageToCvMat(const MatlabImage8 &MatlabImageIn, cv::Mat &CvImageOut)
 	{
 		const int Height = MatlabImageIn->size[0];
 		const int Width = MatlabImageIn->size[1];
@@ -194,7 +93,7 @@ namespace MathWorks
 		}
 	}
 
-	void Functions::CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage16 &MatlabImageOut)
+	void TypeConverters::CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage16 &MatlabImageOut)
 	{
 		int Height = CvImageIn.rows;
 		int Width = CvImageIn.cols;
@@ -235,7 +134,7 @@ namespace MathWorks
 			}
 		}
 	}
-	void Functions::CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage8 &MatlabImageOut)
+	void TypeConverters::CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage8 &MatlabImageOut)
 	{
 		int Height = CvImageIn.rows;
 		int Width = CvImageIn.cols;
@@ -273,7 +172,7 @@ namespace MathWorks
 			}
 		}
 	}
-	emxArray_real_T* Functions::VectorToMatlabArray(const std::vector<float> &V)
+	emxArray_real_T* TypeConverters::VectorToMatlabArray(const std::vector<float> &V)
 	{
 		emxArray_real_T *result;
 
@@ -285,3 +184,4 @@ namespace MathWorks
 		return result;
 	}
 }
+
