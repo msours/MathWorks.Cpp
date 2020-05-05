@@ -7,8 +7,10 @@
 #include "MathWorks/MathWorksCpp_types.h"
 
 typedef unsigned char byte;
+
 typedef emxArray_uint16_T* MatlabImage16;
-typedef emxArray_uint8_T* MatlabImage8;
+typedef emxArray_uint8_T* MatlabImage8; 
+typedef emxArray_real_T* MatlabMatrix;
 
 namespace MathWorks 
 {
@@ -21,6 +23,6 @@ namespace MathWorks
 		static void CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage16 &MatlabImageOut);
 		static void CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage8 &MatlabImageOut);
 
-		static emxArray_real_T* VectorToMatlabArray(const std::vector<float> &V);
+		static MatlabMatrix VectorToMatlabMatrix(const std::vector<float> &V);
 	};
 }

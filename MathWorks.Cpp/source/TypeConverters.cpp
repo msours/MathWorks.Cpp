@@ -172,9 +172,9 @@ namespace MathWorks
 			}
 		}
 	}
-	emxArray_real_T* TypeConverters::VectorToMatlabArray(const std::vector<float> &V)
+	MatlabMatrix TypeConverters::VectorToMatlabMatrix(const std::vector<float> &V)
 	{
-		emxArray_real_T *result;
+		MatlabMatrix result;
 
 		int Size[1] = { V.size() };
 		result = emxCreateND_real_T(1, Size);
