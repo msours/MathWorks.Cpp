@@ -5,7 +5,7 @@
 #include "MathWorks/MathWorksCpp_initialize.h"
 #include "MathWorks/MathWorksCpp_terminate.h"
 
-namespace MathWorks 
+namespace MathWorks
 {
 	void TypeConverters::MatlabImageToCvMat(const MatlabImage16 &MatlabImageIn, cv::Mat & CvImageOut)
 	{
@@ -92,7 +92,23 @@ namespace MathWorks
 			}
 		}
 	}
+	void TypeConverters::MatlabImageToCvMat(const MatlabImageBinary &MatlabImageIn, cv::Mat &CvImageOut)
+	{
+		const int Height = MatlabImageIn->size[0];
+		const int Width = MatlabImageIn->size[1];
 
+		const int Type = CV_8UC1;
+
+		CvImageOut = cv::Mat::zeros(Height, Width, Type);
+
+		for (int j = 0; j < Width; j++)
+		{
+			for (int k = 0; k < Height; k++)
+			{
+				CvImageOut.data[j + Width * k] = 255 * (uint8_t)MatlabImageIn->data[k + Height * j];
+			}
+		}
+	}
 	void TypeConverters::CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage16 &MatlabImageOut)
 	{
 		int Height = CvImageIn.rows;
@@ -173,7 +189,7 @@ namespace MathWorks
 		}
 	}
 
-	void TypeConverters::MatlabMatrixToCvMat(const MatlabMatrix &MatlabMatrixIn, cv::Mat &CvMatOut) 
+	void TypeConverters::MatlabMatrixToCvMat(const MatlabMatrix &MatlabMatrixIn, cv::Mat &CvMatOut)
 	{
 		const int Height = MatlabMatrixIn->size[0];
 		const int Width = MatlabMatrixIn->size[1];
@@ -189,6 +205,26 @@ namespace MathWorks
 		}
 	}
 
+	void TypeConverters::CvMatToMatlabMatrix(const cv::Mat &CvMatIn, MatlabMatrix &MatlabMatrixOut)
+	{
+		const cv::Mat &Matrix64d = Assert64dCvMat(CvMatIn);
+
+		const int Height = Matrix64d.rows;
+		const int Width = Matrix64d.cols;
+
+		int Size[2] = { Height, Width };
+
+		MatlabMatrixOut = emxCreateND_real_T(2, Size);
+
+		for (int j = 0; j < Width; j++)
+		{
+			for (int k = 0; k < Height; k++)
+			{
+				MatlabMatrixOut->data[k + Height * j] = Matrix64d.at<double>(k, j);
+			}
+		}
+	}
+
 	void TypeConverters::VectorToMatlabMatrix(const std::vector<double> &VectorIn, MatlabMatrix &MatlabMatrixOut)
 	{
 		MatlabMatrix result;
@@ -197,6 +233,16 @@ namespace MathWorks
 		MatlabMatrixOut = emxCreateND_real_T(1, Size);
 
 		for (int k = 0; k < VectorIn.size(); k++) result->data[k] = VectorIn[k];
+	}
+
+	cv::Mat TypeConverters::Assert64dCvMat(const cv::Mat &Matrix)
+	{
+		if (Matrix.type() == cv::DataType<double>::type) return Matrix;
+
+		cv::Mat CvMat64d;
+		Matrix.convertTo(CvMat64d, cv::DataType<double>::type);
+
+		return CvMat64d;
 	}
 }
 

@@ -1,7 +1,7 @@
 /*
- * AdaptiveThreshold.h
+ * Adaptivethreshold.h
  *
- * Code generation for function 'AdaptiveThreshold'
+ * Code generation for function 'Adaptivethreshold'
  *
  */
 
@@ -16,9 +16,9 @@
 #include "MathWorksCpp_types.h"
 
 /* Function Declarations */
-ADAPTIVETHRESHOLD_DLL_EXPORT extern void AdaptiveThreshold(const emxArray_real_T
+ADAPTIVETHRESHOLD_DLL_EXPORT extern void Adaptivethreshold(const emxArray_real_T
   *IM, double ws, double C, int tm, emxArray_boolean_T *BinaryImage);
 
 #endif
 
-/* End of code generation (AdaptiveThreshold.h) */
+/* End of code generation (Adaptivethreshold.h) */

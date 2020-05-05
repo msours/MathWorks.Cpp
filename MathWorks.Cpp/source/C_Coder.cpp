@@ -22,6 +22,8 @@
 #include "MathWorks/NormalRand.h"
 #include "MathWorks/RandomPermutation.h"
 
+#include "MathWorks/AdaptiveThreshold.h"
+
 #include <Windows.h>
 #include <profileapi.h>
 
@@ -314,6 +316,25 @@ namespace MathWorks
 		return SplineY;
 	}
 
+	cv::Mat C_Coder::AdaptiveThreshold(const cv::Mat &Image, const double WindowSize, const double C, ThresholdMode thresholdMode = ThresholdMode::mean) 
+	{
+		MatlabMatrix Image64d;
+		MatlabImageBinary binaryImage;
+
+		TypeConverters::CvMatToMatlabMatrix(Image, Image64d);
+		emxInitArray_boolean_T(&binaryImage, 2);
+
+		Adaptivethreshold(Image64d, WindowSize, C, static_cast<int>(thresholdMode), binaryImage);
+
+		cv::Mat BinaryImage;
+		TypeConverters::MatlabImageToCvMat(binaryImage, BinaryImage);
+
+		emxDestroyArray_boolean_T(binaryImage);
+		emxDestroyArray_real_T(Image64d);
+
+		return BinaryImage;
+	}
+
 	cv::Mat C_Coder::UniformRandom(const size_t Rows, const size_t Columns, const uint32_t Seed, const RandomGenerator randomGenerator)
 	{
 		MatlabMatrix randomData;
@@ -334,7 +355,7 @@ namespace MathWorks
 		LARGE_INTEGER StartingTime;
 		QueryPerformanceCounter(&StartingTime);
 
-		// uint32 will most likely overflow, but that's okay since we just want to seed the random function with a different positive values if called consecutively
+		// uint32 will most likely overflow, but that's okay since we just want to seed the random function with a different positive value if called consecutively
 		const uint32_t Seed = StartingTime.QuadPart;
 
 		return UniformRandom(Rows, Columns, Seed, randomGenerator);
@@ -360,7 +381,7 @@ namespace MathWorks
 		LARGE_INTEGER StartingTime;
 		QueryPerformanceCounter(&StartingTime);
 
-		// uint32 will most likely overflow, but that's okay since we just want to seed the random function with a different positive values if called consecutively
+		// uint32 will most likely overflow, but that's okay since we just want to seed the random function with a different positive value if called consecutively
 		const uint32_t Seed = StartingTime.QuadPart;
 
 		return NormalRandom(Rows, Columns, Seed, randomGenerator);
@@ -386,7 +407,7 @@ namespace MathWorks
 		LARGE_INTEGER StartingTime;
 		QueryPerformanceCounter(&StartingTime);
 		
-		// uint32 will most likely overflow, but that's okay since we just want to seed the random function with a different positive values if called consecutively
+		// uint32 will most likely overflow, but that's okay since we just want to seed the random function with a different positive value if called consecutively
 		const uint32_t Seed = StartingTime.QuadPart;
 
 		return RandomPermute(RangeN, SampleN, Seed, randomGenerator);

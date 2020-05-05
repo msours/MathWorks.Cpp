@@ -1,7 +1,7 @@
 /*
  * rtGetInf.h
  *
- * Code generation for function 'AdaptiveThreshold'
+ * Code generation for function 'Adaptivethreshold'
  *
  */
 
