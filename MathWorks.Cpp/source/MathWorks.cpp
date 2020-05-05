@@ -8,9 +8,7 @@
 #include "MathWorks/Demosaic16Bit.h"
 
 #include "MathWorks/imresize8bit.h"
-#include "MathWorks/imresize32bit.h"
 #include "MathWorks/imresize16bit.h"
-#include "MathWorks/imresize48bit.h"
 
 namespace MathWorks
 {
@@ -59,54 +57,53 @@ namespace MathWorks
 
 		if (Image.depth() <= 1)
 		{
-			MatlabImage8 resizedImage;
-			MatlabImage8 image; 
-			
-			CvMatToMatlabImage(Image, image);
-
 			if (Image.channels() <= 1)
 			{
+				MatlabImage8 resizedImage;
+				MatlabImage8 image;
+
+				CvMatToMatlabImage(Image, image);
+
 				emxInitArray_uint8_T(&resizedImage, 2);
 
 				imresize8bit(image, NewHeight, NewWidth, static_cast<int>(resizeMode), resizedImage);
+
+				MatlabImageToCvMat(resizedImage, ResizedImage);
+
+				emxDestroyArray_uint8_T(image);
+				emxDestroyArray_uint8_T(resizedImage);
+
+				return ResizedImage;
 			}
-			else
-			{
-				emxInitArray_uint8_T(&resizedImage, 3);
-
-				imresize32bit(image, NewHeight, NewWidth, static_cast<int>(resizeMode), resizedImage);
-			}
-
-			MatlabImageToCvMat(resizedImage, ResizedImage);
-
-			emxDestroyArray_uint8_T(image);
-			emxDestroyArray_uint8_T(resizedImage);
 		}
 		else
 		{
-			MatlabImage16 resizedImage;
-			MatlabImage16 image;
-
-			CvMatToMatlabImage(Image, image);
-
 			if (Image.channels() <= 1)
 			{
+				MatlabImage16 resizedImage;
+				MatlabImage16 image;
+
+				CvMatToMatlabImage(Image, image);
+
 				emxInitArray_uint16_T(&resizedImage, 2);
 
 				imresize16bit(image, NewHeight, NewWidth, static_cast<int>(resizeMode), resizedImage);
+
+				MatlabImageToCvMat(resizedImage, ResizedImage);
+
+				emxDestroyArray_uint16_T(image);
+				emxDestroyArray_uint16_T(resizedImage);
+
+				return ResizedImage;
 			}
-			else
-			{
-				emxInitArray_uint16_T(&resizedImage, 3);
-
-				imresize48bit(image, NewHeight, NewWidth, static_cast<int>(resizeMode), resizedImage);
-			}
-
-			MatlabImageToCvMat(resizedImage, ResizedImage);
-
-			emxDestroyArray_uint16_T(image);
-			emxDestroyArray_uint16_T(resizedImage);
 		}
+
+		std::vector<cv::Mat> SingleChannelImages;
+		cv::split(Image, SingleChannelImages);
+
+		for (int k = 0; k < SingleChannelImages.size(); k++) SingleChannelImages[k] = Imresize(SingleChannelImages[k], NewHeight, NewWidth, resizeMode);
+
+		cv::merge(SingleChannelImages, ResizedImage);
 
 		return ResizedImage;
 	}
@@ -126,7 +123,7 @@ namespace MathWorks
 
 		byte lsb, msb;
 
-		if (Channels > 1) 
+		if (Channels > 1)
 		{
 			for (int j = 0; j < Width; j++)
 			{
@@ -202,23 +199,39 @@ namespace MathWorks
 		int Height = CvImageIn.rows;
 		int Width = CvImageIn.cols;
 
-		byte *Data = CvImageIn.data;
-
 		int Size[2] = { Height, Width };
 
-		MatlabImageOut = emxCreateND_uint16_T(2, Size);
+		const int Channels = CvImageIn.channels();
+		const int NumDimensions = Channels > 1 ? 3 : 2;
+		const int N = Width * Height;
+
+		// Known issue with emxCreateND_uint16_T with at least one Matlab versions C Coder output, doesn't correctly allocate memory for 3 channel 16 bit images.
+		MatlabImageOut = emxCreateND_uint16_T(NumDimensions, Size);
 
 		uint16_t Value;
-
-		int t = 0;
-		for (int k = 0; k < Height; k++)
+		if (Channels > 1)
 		{
 			for (int j = 0; j < Width; j++)
 			{
-				Value = ((uint16_t)Data[t + 1] << 8) | ((uint16_t)Data[t]);
-				MatlabImageOut->data[k + Height * j] = Value;
-
-				t += 2;
+				for (int k = 0; k < Height; k++)
+				{
+					for (int c = 0; c < Channels; c++)
+					{
+						Value = ((uint16_t)CvImageIn.data[(j + Width * k) * 2 * Channels + (2 * c) + 1] << 8) | ((uint16_t)CvImageIn.data[(j + Width * k) * 2 * Channels + (2 * c)]);
+						MatlabImageOut->data[k + Height * j + N * (2 - c)] = Value;
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int j = 0; j < Width; j++)
+			{
+				for (int k = 0; k < Height; k++)
+				{
+					Value = ((uint16_t)CvImageIn.data[(j + Width * k) * 2 + 1] << 8) | ((uint16_t)CvImageIn.data[(j + Width * k) * 2]);
+					MatlabImageOut->data[k + Height * j] = Value;
+				}
 			}
 		}
 	}
@@ -233,6 +246,7 @@ namespace MathWorks
 		const int NumDimensions = Channels > 1 ? 3 : 2;
 		const int N = Width * Height;
 
+		// Known issue with emxCreateND_uint8_T with at least one Matlab versions C Coder output, doesn't correctly allocate memory for 3 channel 8 bit images.
 		MatlabImageOut = emxCreateND_uint8_T(NumDimensions, Size);
 
 		if (Channels > 1)
@@ -243,7 +257,7 @@ namespace MathWorks
 				{
 					for (int c = 0; c < Channels; c++)
 					{
-						(MatlabImageOut)->data[k + Height * j + N * (2 - c)] = CvImageIn.data[(k * Width + j) * Channels + c];
+						MatlabImageOut->data[k + Height * j + N * (2 - c)] = CvImageIn.data[(k * Width + j) * Channels + c];
 					}
 				}
 			}
@@ -254,7 +268,7 @@ namespace MathWorks
 			{
 				for (int k = 0; k < Height; k++)
 				{
-					(MatlabImageOut)->data[k + Height * j] = CvImageIn.data[j + Width * k];
+					MatlabImageOut->data[k + Height * j] = CvImageIn.data[j + Width * k];
 				}
 			}
 		}

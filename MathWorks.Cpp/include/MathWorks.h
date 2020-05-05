@@ -30,8 +30,8 @@ namespace MathWorks
 
 		static void CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage16 &MatlabImageOut);
 		static void CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage8 &MatlabImageOut);
-		static emxArray_real_T* VectorToMatlabArray(const std::vector<float> &V);
 
+		static emxArray_real_T* VectorToMatlabArray(const std::vector<float> &V);
 
 	};
 
