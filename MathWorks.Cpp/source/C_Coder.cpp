@@ -16,6 +16,7 @@
 
 #include "MathWorks/SplineSingle.h"
 #include "MathWorks/SplineArray.h"
+#include "MathWorks/SplineApp.h"
 
 #include "MathWorks/UniformRand.h"
 #include "MathWorks/NormalRand.h"
@@ -279,6 +280,36 @@ namespace MathWorks
 
 		emxDestroyArray_real_T(InputArrayY);
 		emxDestroyArray_real_T(InputArrayX);
+
+		return SplineY;
+	}
+
+	std::vector<double> C_Coder::Splineapp(const std::vector<double> &X, const std::vector<double> &Y, const std::vector<double> &Weight, const std::vector<double> &SplineX)
+	{
+		MatlabMatrix OutputSplineY;
+		MatlabMatrix InputArrayX;
+		MatlabMatrix InputArrayY;
+		MatlabMatrix InputWeight;
+		MatlabMatrix InputSplineX;
+
+		TypeConverters::VectorToMatlabMatrix(X, InputArrayX);
+		TypeConverters::VectorToMatlabMatrix(Y, InputArrayY);
+		TypeConverters::VectorToMatlabMatrix(Weight, InputWeight);
+		TypeConverters::VectorToMatlabMatrix(SplineX, InputSplineX);
+
+		emxInitArray_real_T(&OutputSplineY, 2);
+
+		SplineApp(InputArrayX, InputArrayY, InputWeight, InputSplineX, OutputSplineY);
+
+		std::vector<double> SplineY;
+
+		for (int k = 0; k < SplineX.size(); k++) SplineY.push_back(OutputSplineY->data[k]);
+
+		emxDestroyArray_real_T(InputArrayX);
+		emxDestroyArray_real_T(InputArrayY);
+		emxDestroyArray_real_T(InputWeight);
+		emxDestroyArray_real_T(InputSplineX);
+		emxDestroyArray_real_T(OutputSplineY);
 
 		return SplineY;
 	}

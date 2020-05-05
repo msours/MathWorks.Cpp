@@ -14,7 +14,7 @@ namespace MathWorks
 		v5normal = 1,
 		v4 = 2
 	};
-
+	
 	class C_Coder
 	{
 	public:
@@ -28,6 +28,8 @@ namespace MathWorks
 		static std::vector<double> CubicSpline(const std::vector<double> &X, const std::vector<double> &Y, const std::vector<double> &SplineX);
 
 		static double CubicSpline(const std::vector<double> &X, const std::vector<double> &Y, const double SplineX);
+		
+		static std::vector<double> Splineapp(const std::vector<double> &X, const std::vector<double> &Y, const std::vector<double> &Weight, const std::vector<double> &SplineX);
 
 		static cv::Mat UniformRandom(const size_t Rows, const size_t Columns, const uint32_t Seed, const RandomGenerator randomGenerator = RandomGenerator::twister);
 		static cv::Mat UniformRandom(const size_t Rows, const size_t Columns, const RandomGenerator randomGenerator = RandomGenerator::twister);
