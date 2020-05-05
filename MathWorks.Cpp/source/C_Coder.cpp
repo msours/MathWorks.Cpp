@@ -17,6 +17,13 @@
 #include "MathWorks/SplineSingle.h"
 #include "MathWorks/SplineArray.h"
 
+#include "MathWorks/UniformRand.h"
+#include "MathWorks/NormalRand.h"
+#include "MathWorks/RandomPermutation.h"
+
+#include <Windows.h>
+#include <profileapi.h>
+
 namespace MathWorks
 {
 	bool C_Coder::DetectCheckerboardPoints(const cv::Mat &Image, const double CornerThreshold, std::vector<cv::Point2d> &CornerDetections, cv::Size2i &BoardSize)
@@ -247,7 +254,7 @@ namespace MathWorks
 		TypeConverters::VectorToMatlabMatrix(Y, InputArrayY);
 		TypeConverters::VectorToMatlabMatrix(SplineX, SplineArrayX);
 
-		emxInitArray_real_T(&SplineArrayY, 2);
+		emxInitArray_real_T(&SplineArrayY, 1);
 
 		std::vector<double> SplineY;
 		for (int k = 0; k < SplineX.size(); k++) SplineY.push_back(SplineArrayY->data[k]);
@@ -268,11 +275,89 @@ namespace MathWorks
 		TypeConverters::VectorToMatlabMatrix(X, InputArrayX);
 		TypeConverters::VectorToMatlabMatrix(Y, InputArrayY);
 
-		double SplineY = SplineSingle(InputArrayX, InputArrayY, SplineX);
+		const double SplineY = SplineSingle(InputArrayX, InputArrayY, SplineX);
 
 		emxDestroyArray_real_T(InputArrayY);
 		emxDestroyArray_real_T(InputArrayX);
 
 		return SplineY;
+	}
+
+	cv::Mat C_Coder::UniformRandom(const size_t Rows, const size_t Columns, const uint32_t Seed, const RandomGenerator randomGenerator)
+	{
+		MatlabMatrix randomData;
+		emxInitArray_real_T(&randomData, 2);
+
+		UniformRand(Rows, Columns, Seed, static_cast<int>(randomGenerator), randomData);
+
+		cv::Mat RandomData;
+		TypeConverters::MatlabMatrixToCvMat(randomData, RandomData);
+
+		emxDestroyArray_real_T(randomData);
+
+		return RandomData;
+	}
+
+	cv::Mat C_Coder::UniformRandom(const size_t Rows, const size_t Columns, const RandomGenerator randomGenerator)
+	{
+		LARGE_INTEGER StartingTime;
+		QueryPerformanceCounter(&StartingTime);
+
+		// uint32 will most likely overflow, but that's okay since we just want to seed the random function with a different positive values if called consecutively
+		const uint32_t Seed = StartingTime.QuadPart;
+
+		return UniformRandom(Rows, Columns, Seed, randomGenerator);
+	}
+
+	cv::Mat C_Coder::NormalRandom(const size_t Rows, const size_t Columns, const uint32_t Seed, const RandomGenerator randomGenerator)
+	{
+		MatlabMatrix randomData;
+		emxInitArray_real_T(&randomData, 2);
+
+		NormalRand(Rows, Columns, Seed, static_cast<int>(randomGenerator), randomData);
+
+		cv::Mat RandomData;
+		TypeConverters::MatlabMatrixToCvMat(randomData, RandomData);
+
+		emxDestroyArray_real_T(randomData);
+
+		return RandomData;
+	}
+
+	cv::Mat C_Coder::NormalRandom(const size_t Rows, const size_t Columns, const RandomGenerator randomGenerator)
+	{
+		LARGE_INTEGER StartingTime;
+		QueryPerformanceCounter(&StartingTime);
+
+		// uint32 will most likely overflow, but that's okay since we just want to seed the random function with a different positive values if called consecutively
+		const uint32_t Seed = StartingTime.QuadPart;
+
+		return NormalRandom(Rows, Columns, Seed, randomGenerator);
+	}
+
+	std::vector<int> C_Coder::RandomPermute(const size_t RangeN, const size_t SampleN, const uint32_t Seed, const RandomGenerator randomGenerator)
+	{
+		MatlabMatrix randomData;
+		emxInitArray_real_T(&randomData, 2);
+
+		RandomPermutation(RangeN, (size_t)min(SampleN, RangeN), Seed, static_cast<int>(randomGenerator), randomData);
+
+		std::vector<int> RandomData;
+		for (int k = 0; k < randomData->size[1]; k++) RandomData.push_back((int)randomData->data[k]);
+
+		emxDestroyArray_real_T(randomData);
+
+		return RandomData;
+	}
+
+	std::vector<int> C_Coder::RandomPermute(const size_t RangeN, const size_t SampleN, const RandomGenerator randomGenerator)
+	{
+		LARGE_INTEGER StartingTime;
+		QueryPerformanceCounter(&StartingTime);
+		
+		// uint32 will most likely overflow, but that's okay since we just want to seed the random function with a different positive values if called consecutively
+		const uint32_t Seed = StartingTime.QuadPart;
+
+		return RandomPermute(RangeN, SampleN, Seed, randomGenerator);
 	}
 }

@@ -172,6 +172,23 @@ namespace MathWorks
 			}
 		}
 	}
+
+	void TypeConverters::MatlabMatrixToCvMat(const MatlabMatrix &MatlabMatrixIn, cv::Mat &CvMatOut) 
+	{
+		const int Height = MatlabMatrixIn->size[0];
+		const int Width = MatlabMatrixIn->size[1];
+
+		CvMatOut = cv::Mat(Height, Width, cv::DataType<double>::type);
+
+		for (int j = 0; j < Width; j++)
+		{
+			for (int k = 0; k < Height; k++)
+			{
+				CvMatOut.at<double>(k, j) = MatlabMatrixIn->data[k + Height * j];
+			}
+		}
+	}
+
 	void TypeConverters::VectorToMatlabMatrix(const std::vector<double> &VectorIn, MatlabMatrix &MatlabMatrixOut)
 	{
 		MatlabMatrix result;

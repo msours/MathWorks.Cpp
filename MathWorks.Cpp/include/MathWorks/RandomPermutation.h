@@ -17,7 +17,8 @@
 
 /* Function Declarations */
 ADAPTIVETHRESHOLD_DLL_EXPORT extern void RandomPermutation(unsigned long long
-  RangeN, unsigned long long SampleN, emxArray_real_T *P);
+  RangeN, unsigned long long SampleN, unsigned int Seed, int Generator,
+  emxArray_real_T *P);
 
 #endif
 

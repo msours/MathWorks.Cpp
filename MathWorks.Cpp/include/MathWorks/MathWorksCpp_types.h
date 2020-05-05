@@ -45,25 +45,31 @@ struct sUc2lNjkI6AOTVh0qwIq4SB_tag
 };
 
 typedef sUc2lNjkI6AOTVh0qwIq4SB_tag c_struct_T;
-struct emxArray_real32_T
+struct emxArray_boolean_T
 {
-  float *data;
+  boolean_T *data;
   int *size;
   int allocatedSize;
   int numDimensions;
   boolean_T canFreeData;
 };
 
-struct c_vision_internal_calibration_c
+struct emxArray_int32_T
 {
-  boolean_T isValid;
-  float Energy;
-  emxArray_real_T *BoardCoords;
-  emxArray_real_T *BoardIdx;
-  emxArray_real32_T *Points;
-  boolean_T IsDirectionBad[4];
-  double LastExpandDirection;
-  float PreviousEnergy;
+  int *data;
+  int *size;
+  int allocatedSize;
+  int numDimensions;
+  boolean_T canFreeData;
+};
+
+struct emxArray_int8_T
+{
+  signed char *data;
+  int *size;
+  int allocatedSize;
+  int numDimensions;
+  boolean_T canFreeData;
 };
 
 struct emxArray_uint32_T
@@ -75,18 +81,26 @@ struct emxArray_uint32_T
   boolean_T canFreeData;
 };
 
-struct emxArray_boolean_T
+struct emxArray_uint16_T
 {
-  boolean_T *data;
+  unsigned short *data;
   int *size;
   int allocatedSize;
   int numDimensions;
   boolean_T canFreeData;
 };
 
-struct emxArray_uint16_T
+struct struct0_T
 {
-  unsigned short *data;
+  double WeightedCentroid[2];
+  double BoundingBox[4];
+  double Area;
+  double EquivDiameter;
+};
+
+struct emxArray_struct0_T
+{
+  struct0_T *data;
   int *size;
   int allocatedSize;
   int numDimensions;
@@ -122,9 +136,9 @@ struct b_struct_T
   double SubarrayIdxLengths[2];
 };
 
-struct emxArray_int8_T
+struct emxArray_struct_T
 {
-  signed char *data;
+  b_struct_T *data;
   int *size;
   int allocatedSize;
   int numDimensions;
@@ -140,45 +154,31 @@ struct emxArray_uint8_T
   boolean_T canFreeData;
 };
 
-struct emxArray_int32_T
+struct emxArray_real32_T
 {
-  int *data;
+  float *data;
   int *size;
   int allocatedSize;
   int numDimensions;
   boolean_T canFreeData;
 };
 
-struct struct0_T
+struct c_vision_internal_calibration_c
 {
-  double WeightedCentroid[2];
-  double BoundingBox[4];
-  double Area;
-  double EquivDiameter;
-};
-
-struct emxArray_struct0_T
-{
-  struct0_T *data;
-  int *size;
-  int allocatedSize;
-  int numDimensions;
-  boolean_T canFreeData;
+  boolean_T isValid;
+  float Energy;
+  emxArray_real_T *BoardCoords;
+  emxArray_real_T *BoardIdx;
+  emxArray_real32_T *Points;
+  boolean_T IsDirectionBad[4];
+  double LastExpandDirection;
+  float PreviousEnergy;
 };
 
 struct d_struct_T
 {
   emxArray_real_T *breaks;
   emxArray_real_T *coefs;
-};
-
-struct emxArray_struct_T
-{
-  b_struct_T *data;
-  int *size;
-  int allocatedSize;
-  int numDimensions;
-  boolean_T canFreeData;
 };
 
 #endif

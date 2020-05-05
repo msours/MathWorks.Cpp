@@ -1,5 +1,7 @@
 
 #include "C_Coder.h"
+#include <Windows.h>
+#include <profileapi.h>
 
 void TestDemosaic()
 {
@@ -31,9 +33,38 @@ void TestDetectCheckerboardPoints()
 
 }
 
+void TestRandomNumberGenerator()
+{
+	std::cout << MathWorks::C_Coder::NormalRandom(10, 10) << "\n\n";
+	std::cout << MathWorks::C_Coder::NormalRandom(10, 10) << "\n\n";
+	std::cout << MathWorks::C_Coder::NormalRandom(10, 10) << "\n\n";
+	std::cout << MathWorks::C_Coder::NormalRandom(10, 10) << "\n\n";
+
+	std::cout << MathWorks::C_Coder::UniformRandom(10, 10) << "\n\n";
+	std::cout << MathWorks::C_Coder::UniformRandom(10, 10) << "\n\n";
+	std::cout << MathWorks::C_Coder::UniformRandom(10, 10) << "\n\n"; 
+	std::cout << MathWorks::C_Coder::UniformRandom(10, 10) << "\n\n";
+
+	std::vector<std::vector<int>> RandomData;
+
+	for (int k = 0; k < 100; k++) 
+	{
+		RandomData.push_back(MathWorks::C_Coder::RandomPermute(20, 7));
+	}
+
+	for (int k = 0; k < 100; k++)
+	{
+		for (int j = 0; j < RandomData[k].size(); j++) std::cout << RandomData[k][j] << ", ";
+		std::cout << "\n";
+	}
+
+	std::cout << "\n\n";
+}
+
 int main()
 {
-	TestDetectCheckerboardPoints();
+
+	TestRandomNumberGenerator();
 
 	return 0;
 }

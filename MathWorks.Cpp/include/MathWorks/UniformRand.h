@@ -17,7 +17,8 @@
 
 /* Function Declarations */
 ADAPTIVETHRESHOLD_DLL_EXPORT extern void UniformRand(unsigned long long Rows,
-  unsigned long long Columns, emxArray_real_T *b_X);
+  unsigned long long Columns, unsigned int Seed, int Generator, emxArray_real_T *
+  b_X);
 
 #endif
 
