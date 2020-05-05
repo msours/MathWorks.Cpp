@@ -316,7 +316,7 @@ namespace MathWorks
 		return SplineY;
 	}
 
-	cv::Mat C_Coder::AdaptiveThreshold(const cv::Mat &Image, const double WindowSize, const double C, ThresholdMode thresholdMode = ThresholdMode::mean) 
+	cv::Mat C_Coder::AdaptiveThreshold(const cv::Mat &Image, const double WindowSize, const double C, ThresholdMode thresholdMode) 
 	{
 		MatlabMatrix Image64d;
 		MatlabImageBinary binaryImage;
