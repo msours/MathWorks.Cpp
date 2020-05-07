@@ -50,6 +50,8 @@ namespace MathWorks
 
 		static cv::Mat AdaptiveThreshold(const cv::Mat &Image, const double WindowSize, const double C, ThresholdMode thresholdMode = ThresholdMode::mean);
 
+		static std::vector<ComponentRegion> ConnectedComponents(const cv::Mat &BinaryImage, const cv::Mat &Image, const int StrelSize);
+
 		static cv::Mat UniformRandom(const size_t Rows, const size_t Columns, const uint32_t Seed, const RandomGenerator randomGenerator = RandomGenerator::twister);
 		static cv::Mat UniformRandom(const size_t Rows, const size_t Columns, const RandomGenerator randomGenerator = RandomGenerator::twister);
 

@@ -16,9 +16,9 @@
 #include "MathWorksCpp_types.h"
 
 /* Function Declarations */
-extern void b_ppval(const d_struct_T pp, const emxArray_real_T *x,
+extern void b_ppval(const e_struct_T pp, const emxArray_real_T *x,
                     emxArray_real_T *v);
-extern void ppval(const c_struct_T pp, const emxArray_real_T *x, emxArray_real_T
+extern void ppval(const d_struct_T pp, const emxArray_real_T *x, emxArray_real_T
                   *v);
 
 #endif

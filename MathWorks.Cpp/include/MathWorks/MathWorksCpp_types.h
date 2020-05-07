@@ -44,7 +44,7 @@ struct sUc2lNjkI6AOTVh0qwIq4SB_tag
   emxArray_real_T *coefs;
 };
 
-typedef sUc2lNjkI6AOTVh0qwIq4SB_tag c_struct_T;
+typedef sUc2lNjkI6AOTVh0qwIq4SB_tag d_struct_T;
 struct emxArray_boolean_T
 {
   boolean_T *data;
@@ -57,15 +57,6 @@ struct emxArray_boolean_T
 struct emxArray_int32_T
 {
   int *data;
-  int *size;
-  int allocatedSize;
-  int numDimensions;
-  boolean_T canFreeData;
-};
-
-struct emxArray_int8_T
-{
-  signed char *data;
   int *size;
   int allocatedSize;
   int numDimensions;
@@ -96,6 +87,15 @@ struct struct0_T
   double BoundingBox[4];
   double Area;
   double EquivDiameter;
+};
+
+struct emxArray_int8_T
+{
+  signed char *data;
+  int *size;
+  int allocatedSize;
+  int numDimensions;
+  boolean_T canFreeData;
 };
 
 struct emxArray_struct0_T
@@ -154,6 +154,44 @@ struct emxArray_uint8_T
   boolean_T canFreeData;
 };
 
+struct c_struct_T
+{
+  double Area;
+  double Centroid[2];
+  double BoundingBox[4];
+  double MajorAxisLength;
+  double MinorAxisLength;
+  double Eccentricity;
+  double Orientation;
+  emxArray_boolean_T *Image;
+  emxArray_boolean_T *FilledImage;
+  double FilledArea;
+  double EulerNumber;
+  double Extrema[16];
+  double EquivDiameter;
+  double Extent;
+  emxArray_real_T *PixelIdxList;
+  emxArray_real_T *PixelList;
+  double Perimeter;
+  double Circularity;
+  emxArray_uint8_T *PixelValues;
+  double WeightedCentroid[2];
+  double MeanIntensity;
+  unsigned char MinIntensity;
+  unsigned char MaxIntensity;
+  emxArray_real_T *SubarrayIdx;
+  double SubarrayIdxLengths[2];
+};
+
+struct b_emxArray_struct_T
+{
+  c_struct_T *data;
+  int *size;
+  int allocatedSize;
+  int numDimensions;
+  boolean_T canFreeData;
+};
+
 struct emxArray_real32_T
 {
   float *data;
@@ -175,7 +213,7 @@ struct c_vision_internal_calibration_c
   float PreviousEnergy;
 };
 
-struct d_struct_T
+struct e_struct_T
 {
   emxArray_real_T *breaks;
   emxArray_real_T *coefs;

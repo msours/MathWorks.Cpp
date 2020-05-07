@@ -15,6 +15,21 @@ typedef emxArray_real_T* MatlabMatrix;
 
 namespace MathWorks
 {
+
+	struct ComponentRegion
+	{
+		ComponentRegion() {}
+		ComponentRegion(const cv::Point2d &WeightedCentroid, const cv::Rect2f &BoundingRectangle)
+		{
+			this->Area = BoundingRectangle.area();
+			this->WeightedCentroid = WeightedCentroid;
+			this->BoundingRectangle = BoundingRectangle;
+		}
+		cv::Point2d WeightedCentroid;
+		cv::Rect2d BoundingRectangle;
+		double Area;
+	};
+
 	class TypeConverters
 	{
 	public:
@@ -26,6 +41,7 @@ namespace MathWorks
 
 		static void CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage16 &MatlabImageOut);
 		static void CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage8 &MatlabImageOut);
+		static void CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImageBinary &MatlabImageOut);
 
 		static void CvMatToMatlabMatrix(const cv::Mat &CvMatIn, MatlabMatrix &MatlabMatrixOut);
 

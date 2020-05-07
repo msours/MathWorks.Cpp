@@ -105,7 +105,7 @@ namespace MathWorks
 		{
 			for (int k = 0; k < Height; k++)
 			{
-				CvImageOut.data[j + Width * k] = 255 * (uint8_t)MatlabImageIn->data[k + Height * j];
+				CvImageOut.data[j + Width * k] = MatlabImageIn->data[k + Height * j];
 			}
 		}
 	}
@@ -185,6 +185,24 @@ namespace MathWorks
 				{
 					MatlabImageOut->data[k + Height * j] = CvImageIn.data[j + Width * k];
 				}
+			}
+		}
+	}
+
+	void TypeConverters::CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImageBinary &MatlabImageOut)
+	{
+		int Height = CvImageIn.rows;
+		int Width = CvImageIn.cols;
+
+		int Size[2] = { Height, Width };
+
+		MatlabImageOut = emxCreateND_boolean_T(2, Size);
+
+		for (int j = 0; j < Width; j++)
+		{
+			for (int k = 0; k < Height; k++)
+			{
+				MatlabImageOut->data[k + Height * j] = CvImageIn.data[j + Width * k];
 			}
 		}
 	}

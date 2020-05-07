@@ -34,6 +34,8 @@ extern void o_imclose(const emxArray_boolean_T *A, emxArray_boolean_T *B);
 extern void p_imclose(const emxArray_boolean_T *A, emxArray_boolean_T *B);
 extern void q_imclose(const emxArray_boolean_T *A, emxArray_boolean_T *B);
 extern void r_imclose(const emxArray_boolean_T *A, emxArray_boolean_T *B);
+extern void s_imclose(const emxArray_boolean_T *A, emxArray_boolean_T *B);
+extern void t_imclose(const emxArray_boolean_T *A, emxArray_boolean_T *B);
 
 #endif
 
