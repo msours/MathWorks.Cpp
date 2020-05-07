@@ -48,9 +48,11 @@ namespace MathWorks
 
 		static std::vector<double> Splineapp(const std::vector<double> &X, const std::vector<double> &Y, const std::vector<double> &Weight, const std::vector<double> &SplineX);
 
-		static cv::Mat AdaptiveThreshold(const cv::Mat &Image, const double WindowSize, const double C, ThresholdMode thresholdMode = ThresholdMode::mean);
+		static cv::Mat AdaptiveThreshold(const cv::Mat &Image, const double WindowSize, const double C, const ThresholdMode thresholdMode = ThresholdMode::mean);
 
-		static std::vector<ComponentRegion> ConnectedComponents(const cv::Mat &BinaryImage, const cv::Mat &Image, const int StrelSize);
+		static std::vector<ComponentRegion> ConnectedComponents(const cv::Mat &BinaryImage, const cv::Mat &Image, const int StrelSize, const double AreaThreshold = 25.0);
+
+		static std::vector<ComponentRegion> AdaptiveThresholdConnectedComponents(const cv::Mat &Image, const double WindowSize, const double C, const double AreaThreshold = 25.0, const ThresholdMode thresholdMode = ThresholdMode::mean);
 
 		static cv::Mat UniformRandom(const size_t Rows, const size_t Columns, const uint32_t Seed, const RandomGenerator randomGenerator = RandomGenerator::twister);
 		static cv::Mat UniformRandom(const size_t Rows, const size_t Columns, const RandomGenerator randomGenerator = RandomGenerator::twister);

@@ -338,7 +338,7 @@ namespace MathWorks
 		return BinaryImage;
 	}
 
-	std::vector<ComponentRegion> C_Coder::ConnectedComponents(const cv::Mat &BinaryImage, const cv::Mat &Image, const int StrelSize) 
+	std::vector<ComponentRegion> C_Coder::ConnectedComponents(const cv::Mat &BinaryImage, const cv::Mat &Image, const int StrelSize, const double AreaThreshold)
 	{
 		std::vector<ComponentRegion> ComponentRegions;
 
@@ -369,13 +369,54 @@ namespace MathWorks
 
 		emxDestroyArray_boolean_T(binaryImage);
 
-		for (int k = 0; k < *componentRegions->size; k++)  ComponentRegions.push_back(ComponentRegion(cv::Point2d(componentRegions->data[k].WeightedCentroid[0], componentRegions->data[k].WeightedCentroid[1]), cv::Rect2f(componentRegions->data[k].BoundingBox[0], componentRegions->data[k].BoundingBox[1], componentRegions->data[k].BoundingBox[2], componentRegions->data[k].BoundingBox[3])));
+		for (int k = 0; k < *componentRegions->size; k++) ComponentRegions.push_back(ComponentRegion(componentRegions->data[k]));
 
 		emxDestroyArray_struct0_T(componentRegions);
 
 		return ComponentRegions;
 	}
+	std::vector<ComponentRegion> C_Coder::AdaptiveThresholdConnectedComponents(const cv::Mat &Image, const double WindowSize, const double C, const double AreaThreshold, const ThresholdMode thresholdMode)
+	{
+		std::vector<ComponentRegion> ComponentRegions;
 
+		MatlabMatrix Image64d;
+		MatlabImageBinary binaryImage;
+
+		TypeConverters::CvMatToMatlabMatrix(Image, Image64d);
+		emxInitArray_boolean_T(&binaryImage, 2);
+
+		Adaptivethreshold(Image64d, WindowSize, C, static_cast<int>(thresholdMode), binaryImage);
+
+		emxArray_struct0_T *componentRegions;
+		emxInitArray_struct0_T(&componentRegions, 1);
+
+		if (Image.depth() <= 1)
+		{
+			MatlabImage8 image;
+			TypeConverters::CvMatToMatlabImage(Image, image);
+
+			ConnectedComponents8Bit(binaryImage, image, 0, componentRegions);
+
+			emxDestroyArray_uint8_T(image);
+		}
+		else
+		{
+			MatlabImage16 image;
+			TypeConverters::CvMatToMatlabImage(Image, image);
+
+			ConnectedComponents16Bit(binaryImage, image, 0, componentRegions);
+
+			emxDestroyArray_uint16_T(image);
+		}
+
+		emxDestroyArray_boolean_T(binaryImage);
+
+		for (int k = 0; k < *componentRegions->size; k++) ComponentRegions.push_back(ComponentRegion(componentRegions->data[k]));
+
+		emxDestroyArray_struct0_T(componentRegions);
+
+		return ComponentRegions;
+	}
 	cv::Mat C_Coder::UniformRandom(const size_t Rows, const size_t Columns, const uint32_t Seed, const RandomGenerator randomGenerator)
 	{
 		MatlabMatrix randomData;

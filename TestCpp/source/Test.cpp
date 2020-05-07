@@ -65,11 +65,7 @@ void TestAdaptiveThreshold()
 {
 	const cv::Mat &DotsImage = cv::imread("Dots.png", cv::IMREAD_ANYDEPTH | cv::IMREAD_ANYCOLOR);
 
-	const cv::Mat &IM = MathWorks::C_Coder::AdaptiveThreshold(DotsImage, 75.0, -4000, MathWorks::ThresholdMode::mean);
-
-	cv::imwrite("Threshold.png", IM);
-
-	std::vector<MathWorks::ComponentRegion> componentRegions = MathWorks::C_Coder::ConnectedComponents(IM, DotsImage, 0);
+	std::vector<MathWorks::ComponentRegion> componentRegions = MathWorks::C_Coder::AdaptiveThresholdConnectedComponents(DotsImage, 75.0, -4000.0);
 
 	for (int k = 0; k < componentRegions.size(); k++) 
 	{
