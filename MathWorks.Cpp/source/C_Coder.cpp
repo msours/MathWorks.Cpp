@@ -262,6 +262,8 @@ namespace MathWorks
 
 		emxInitArray_real_T(&SplineArrayY, 1);
 
+		SplineArray(InputArrayX, InputArrayY, SplineArrayX, SplineArrayY);
+
 		std::vector<double> SplineY;
 		for (int k = 0; k < SplineX.size(); k++) SplineY.push_back(SplineArrayY->data[k]);
 
