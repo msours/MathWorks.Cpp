@@ -19,7 +19,7 @@ namespace MathWorks
 			Destination = NULL;
 		}
 	}
-	void CellArray::Add(double Data, int InsertRow, int InsertCol)
+	void CellArray::Add(const double Data, int InsertRow, int InsertCol)
 	{
 		Source = mxCreateDoubleScalar(Data);
 		
@@ -43,10 +43,7 @@ namespace MathWorks
 	{
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxDOUBLE_CLASS, mxREAL);
 
@@ -55,9 +52,9 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);
 	}
-	void CellArray::Add(float Data, int InsertRow, int InsertCol)
+	void CellArray::Add(const float Data, int InsertRow, int InsertCol)
 	{
-		double value = static_cast<double>(Data);
+		const double value = static_cast<double>(Data);
 		Source = mxCreateDoubleScalar(value);
 
 		memcpy((void *)(mxGetPr(Source)), (void *)&value, sizeof(double));
@@ -65,9 +62,9 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);
 	}
-	void CellArray::Add(int Data, int InsertRow, int InsertCol)
+	void CellArray::Add(const int Data, int InsertRow, int InsertCol)
 	{
-		double value = static_cast<double>(Data);
+		const double value = static_cast<double>(Data);
 		Source = mxCreateDoubleScalar(value);
 
 		memcpy((void *)(mxGetPr(Source)), (void *)&value, sizeof(double));
@@ -75,7 +72,7 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);
 	}
-	void CellArray::Add(bool Data, int InsertRow, int InsertCol)
+	void CellArray::Add(const bool Data, int InsertRow, int InsertCol)
 	{
 		Source = mxCreateLogicalScalar(Data);
 
@@ -86,10 +83,7 @@ namespace MathWorks
 	{
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxSINGLE_CLASS, mxREAL);
 
@@ -102,10 +96,7 @@ namespace MathWorks
 	{
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxINT8_CLASS, mxREAL);
 
@@ -118,10 +109,7 @@ namespace MathWorks
 	{
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxINT16_CLASS, mxREAL);
 
@@ -134,10 +122,7 @@ namespace MathWorks
 	{
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxINT32_CLASS, mxREAL);
 
@@ -150,10 +135,7 @@ namespace MathWorks
 	{
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxINT64_CLASS, mxREAL);
 
@@ -166,10 +148,7 @@ namespace MathWorks
 	{
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT8_CLASS, mxREAL);
 
@@ -182,10 +161,7 @@ namespace MathWorks
 	{
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT16_CLASS, mxREAL);
 
@@ -198,10 +174,7 @@ namespace MathWorks
 	{
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT32_CLASS, mxREAL);
 
@@ -214,10 +187,7 @@ namespace MathWorks
 	{
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT64_CLASS, mxREAL);
 
