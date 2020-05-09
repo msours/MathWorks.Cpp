@@ -33,6 +33,9 @@ add_library(${project_name} STATIC
     # MathWorks.Cpp source
     source/C_Coder.cpp
     source/TypeConverters.cpp
+	source/CellArray.cpp
+	source/MatlabStruct.cpp
+	source/Matfile.cpp
 
     ${Library_HEADERS}
 )
