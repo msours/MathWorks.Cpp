@@ -4,7 +4,6 @@
 
 #include "MathWorks/mat.h"
 #include "MathWorks/matrix.h"
-#include <Windows.h>
 
 namespace MathWorks
 {
@@ -28,7 +27,7 @@ namespace MathWorks
 		void Add(const std::vector<double> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);
 		void Add(const float Data, int InsertRow, int InsertCol);
 		void Add(const std::vector<float> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);
-		void Add(const std::vector<INT8> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);
+		void Add(const std::vector<int8_t> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);
 		void Add(const std::vector<int16_t> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);
 		void Add(const std::vector<int32_t> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);
 		void Add(const std::vector<int64_t> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);

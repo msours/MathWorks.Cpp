@@ -150,7 +150,7 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
-	void MatlabStruct::Add(const std::vector<INT8> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	void MatlabStruct::Add(const std::vector<int8_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
 		const char *fieldName = FieldName.c_str();
 		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
@@ -161,7 +161,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxINT8_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(INT8)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(int8_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
@@ -177,7 +177,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxINT16_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(INT16)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(int16_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
@@ -193,7 +193,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxINT32_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(INT32)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(int32_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
@@ -209,7 +209,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxINT64_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(INT64)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(int64_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
@@ -225,7 +225,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT8_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(UINT8)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(uint8_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
@@ -241,7 +241,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT16_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(UINT16)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(uint16_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
@@ -257,7 +257,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT32_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(UINT32)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(uint32_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
@@ -273,7 +273,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT64_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(UINT64)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(uint64_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);

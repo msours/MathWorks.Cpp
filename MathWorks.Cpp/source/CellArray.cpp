@@ -92,7 +92,7 @@ namespace MathWorks
 		int Ind = (InsertCol - 1) * this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);
 	}
-	void CellArray::Add(const std::vector<INT8> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol)
+	void CellArray::Add(const std::vector<int8_t> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol)
 	{
 		int Length = Rows * Cols*Dim3;
 
@@ -100,7 +100,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxINT8_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(INT8)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(int8_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);
@@ -113,7 +113,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxINT16_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(INT16)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(int16_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);
@@ -126,7 +126,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxINT32_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(INT32)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(int32_t)*Length);
 
 		int Ind = (InsertCol - 1) * this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);
@@ -139,7 +139,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxINT64_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(INT64)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(int64_t)*Length);
 
 		int Ind = (InsertCol - 1) * this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);
@@ -152,7 +152,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT8_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(UINT8)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(uint8_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);
@@ -165,7 +165,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT16_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(UINT16)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(uint16_t)*Length);
 
 		int Ind = (InsertCol - 1) * this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);
@@ -178,7 +178,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT32_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(UINT32)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(uint32_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);
@@ -191,7 +191,7 @@ namespace MathWorks
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT64_CLASS, mxREAL);
 
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(UINT64)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(uint64_t)*Length);
 
 		int Ind = (InsertCol - 1) * this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);

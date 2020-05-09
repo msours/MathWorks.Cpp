@@ -2,17 +2,12 @@
 #include "Matfile.h"
 #include <vector>
 
-namespace mMatfile 
+namespace MathWorks
 {
-	Matfile::Matfile(String^ FilePath, String^ FileMode)
+	Matfile::Matfile(const std::string &FilePath, const std::string &FileMode)
 	{
-		filePath = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FilePath);
-		fileMode = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FileMode);
-	}
-	Matfile::~Matfile()
-	{
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)filePath));
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fileMode));
+		filePath = FilePath.c_str();
+		fileMode = FileMode.c_str();
 	}
 	bool Matfile::Open()
 	{
@@ -24,336 +19,186 @@ namespace mMatfile
 	{
 		return (matClose(Destination) == 0);
 	}
-	void Matfile::Add(String^ Name, MatlabStruct^ Data)
+	void Matfile::Add(const std::string &Name, MatlabStruct &Data)
 	{
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
-		matPutVariable(Destination, name, Data->Destination);
-
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
+		const char *name = Name.c_str();
+		matPutVariable(Destination, name, Data.Destination);
 	}
-	void Matfile::Add(String^ Name, CellArray^ Data)
+	void Matfile::Add(const std::string &Name, CellArray &Data)
 	{
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
-		matPutVariable(Destination, name, Data->Destination);
-
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
+		const char *name = Name.c_str();
+		matPutVariable(Destination, name, Data.Destination);
 	}
-	void Matfile::Add(String^ Name, array<double>^ Data, int Rows, int Cols, int Dim3)
+	void Matfile::Add(const std::string &Name, const std::vector<double> &Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;
-		const char* name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		mxArray *source = mxCreateNumericArray(3, Dim, mxDOUBLE_CLASS, mxREAL);
 
-		std::vector<double> data;
-
-		double V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(double)*Length);
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(double)*Length);
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
-
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, array<float>^ Data, int Rows, int Cols, int Dim3)
+	void Matfile::Add(const std::string &Name, const std::vector<float> &Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		mxArray *source = mxCreateNumericArray(3, Dim, mxSINGLE_CLASS, mxREAL);
 
-		std::vector<float> data;
-
-		float V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(float)*Length);
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(float)*Length);
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
+
 	}
-	void Matfile::Add(String^ Name, array<INT8>^ Data, int Rows, int Cols, int Dim3)
+	void Matfile::Add(const std::string &Name, const std::vector<int8_t> &Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		mxArray *source = mxCreateNumericArray(3, Dim, mxINT8_CLASS, mxREAL);
 
-		std::vector<INT8> data;
-		INT8 V;
-
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(INT8)*Length);
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(int8_t)*Length);
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, array<INT16>^ Data, int Rows, int Cols, int Dim3)
+	void Matfile::Add(const std::string &Name, const std::vector<int16_t> &Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		mxArray *source = mxCreateNumericArray(3, Dim, mxINT16_CLASS, mxREAL);
 
-		std::vector<INT16> data;
-		INT16 V;
-
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(INT16)*Length);
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(int16_t)*Length);
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, array<INT32>^ Data, int Rows, int Cols, int Dim3)
+	void Matfile::Add(const std::string &Name, const std::vector<int32_t> &Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		mxArray *source = mxCreateNumericArray(3, Dim, mxINT32_CLASS, mxREAL);
 
-		std::vector<INT32> data;
-		INT32 V;
-
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(INT32)*Length);
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(int32_t)*Length);
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, array<INT64>^ Data, int Rows, int Cols, int Dim3)
+	void Matfile::Add(const std::string &Name, const std::vector<int64_t> &Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		mxArray *source = mxCreateNumericArray(3, Dim, mxINT64_CLASS, mxREAL);
 
-		std::vector<INT64> data;
-		INT64 V;
-
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(INT64)*Length);
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(int64_t)*Length);
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, array<UINT8>^ Data, int Rows, int Cols, int Dim3)
+	void Matfile::Add(const std::string &Name, const std::vector<uint8_t> &Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		mxArray *source = mxCreateNumericArray(3, Dim, mxUINT8_CLASS, mxREAL);
 
-		std::vector<UINT8> data;
-		UINT8 V;
-
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(UINT8)*Length);
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(uint8_t)*Length);
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, array<UINT16>^ Data, int Rows, int Cols, int Dim3)
+	void Matfile::Add(const std::string &Name, const std::vector<uint16_t> &Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		mxArray *source = mxCreateNumericArray(3, Dim, mxUINT16_CLASS, mxREAL);
 
-		std::vector<UINT16> data;
-		UINT16 V;
-
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(UINT16)*Length);
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(uint16_t)*Length);
 		matPutVariable(Destination, name, source);
 
 		mxDestroyArray(source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
+
 	}
-	void Matfile::Add(String^ Name, array<UINT32>^ Data, int Rows, int Cols, int Dim3)
+	void Matfile::Add(const std::string &Name, const std::vector<uint32_t> &Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		mxArray *source = mxCreateNumericArray(3, Dim, mxUINT32_CLASS, mxREAL);
 
-		std::vector<UINT32> data;
-		UINT8 V;
-
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(UINT32)*Length);
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(uint32_t)*Length);
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, array<UINT64>^ Data, int Rows, int Cols, int Dim3)
+	void Matfile::Add(const std::string &Name, const std::vector<uint64_t> &Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		mxArray *source = mxCreateNumericArray(3, Dim, mxUINT64_CLASS, mxREAL);
 
-		std::vector<UINT64> data;
-		UINT64 V;
-
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(UINT64)*Length);
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(uint64_t)*Length);
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, array<float>^ Data, int Rows, int Cols)
+	void Matfile::Add(const std::string &Name, const std::vector<float> &Data, const int Rows,const int Cols)
 	{
 		int Length = Rows * Cols;
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
 		mxArray *source = mxCreateDoubleMatrix(Rows, Cols, mxREAL);
 
 		std::vector<double> data;
-
-		double V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = static_cast<double>(Data[k]);
-			data.push_back(V);
-		}
+		for (int k = 0; k < Length; k++) data.push_back((double)Data[k]);
 
 		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(double)*Length);
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, array<double>^ Data, int Rows, int Cols)
+	void Matfile::Add(const std::string &Name, const std::vector<double> &Data, const int Rows,const int Cols)
 	{
 		int Length = Rows * Cols;
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
 		mxArray *source = mxCreateDoubleMatrix(Rows, Cols, mxREAL);
 
-		std::vector<double> data;
-
-		double V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(double)*Length);
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(double)*Length);
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, double Data)
+	void Matfile::Add(const std::string &Name, const double Data)
 	{
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
 		mxArray *source = mxCreateDoubleScalar(Data);
 
@@ -361,11 +206,10 @@ namespace mMatfile
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, float Data)
+	void Matfile::Add(const std::string &Name, const float Data)
 	{
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
 		double value = static_cast<double>(Data);
 		mxArray *source = mxCreateDoubleScalar(value);
@@ -374,11 +218,11 @@ namespace mMatfile
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
+
 	}
-	void Matfile::Add(String^ Name, int Data)
+	void Matfile::Add(const std::string &Name, const int Data)
 	{
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
 		double value = static_cast<double>(Data);
 		mxArray *source = mxCreateDoubleScalar(value);
@@ -387,30 +231,27 @@ namespace mMatfile
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, bool Data)
+	void Matfile::Add(const std::string &Name, const bool Data)
 	{
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
 		mxArray *source = mxCreateLogicalScalar(Data);
 
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
-	void Matfile::Add(String^ Name, String^ Data)
+	void Matfile::Add(const std::string &Name, const std::string &Data)
 	{
-		const char *name = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Name);
+		const char *name = Name.c_str();
 
-		char *V = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Data);
+		const char *V = Data.c_str();
 
 		mxArray *source = mxCreateString(V);
 
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)name));
 	}
 }
