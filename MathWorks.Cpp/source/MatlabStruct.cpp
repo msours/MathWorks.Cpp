@@ -1,29 +1,20 @@
 
 #include "MatlabStruct.h"
-#include <vector>
 
-namespace mMatfile 
+namespace MathWorks
 {
-	MatlabStruct::MatlabStruct(int Rows, int Cols, int nFields, array<String^>^ FieldNames)
+	MatlabStruct::MatlabStruct(const int Rows, const int Cols, const int nFields, const std::vector<std::string> &FieldNames)
 	{
-		this->FieldNames = FieldNames;
 		this->Rows = Rows;
 		this->Cols = Cols;
 		this->nFields = nFields;
 
-		char **names = new char*[FieldNames->Length];
+		char **names = new char*[FieldNames.size()];
 
-		for (int k = 0; k < FieldNames->Length; k++)
-		{
-			names[k] = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldNames[k]);
-		}
+		for (int k = 0; k < FieldNames.size(); k++) names[k] = const_cast<char *>(FieldNames[k].c_str());
 
-		Destination = mxCreateStructMatrix(Rows, Cols, nFields, const_cast<const char**> (names));
+		Destination = mxCreateStructMatrix(Rows, Cols, nFields, const_cast<const char **>(names));
 
-		for (int k = 0; k < FieldNames->Length; k++)
-		{
-			System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)names[k]));
-		}
 		delete[] names;
 	}
 	MatlabStruct::~MatlabStruct()
@@ -34,114 +25,84 @@ namespace mMatfile
 			Destination = NULL;
 		}
 	}
-	void MatlabStruct::Add(CellArray^ Data, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(CellArray &Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
-		mxSetField(Destination, Ind, fieldName, Data->Destination);
+		mxSetField(Destination, Ind, fieldName, Data.Destination);
 
 		this->HighestStructure = true;
-		Data->HighestStructure = false;
-
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
+		Data.HighestStructure = false;
 	}
-	void MatlabStruct::Add(MatlabStruct^ Data, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(MatlabStruct &Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
-		mxSetField(Destination, Ind, fieldName, Data->Destination);
+		mxSetField(Destination, Ind, fieldName, Data.Destination);
 
 		this->HighestStructure = true;
-		Data->HighestStructure = false;
-
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
+		Data.HighestStructure = false;
 	}
-	void MatlabStruct::Add(String^ Data, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(const std::string &Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
-		char *V = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(Data);
+		const char *V = Data.c_str();
 		Source = mxCreateString(V);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)V));
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(double Data, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(double Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		Source = mxCreateDoubleScalar(Data);
 		memcpy((void *)(mxGetPr(Source)), (void *)&Data, sizeof(double));
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(array<double>^ Data, int Rows, int Cols, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(const std::vector<double> &Data, const int Rows, const int Cols, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Length = Rows * Cols;
 
 		Source = mxCreateDoubleMatrix(Rows, Cols, mxREAL);
 
-		std::vector<double> data;
-
-		double V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(Source)), (void *)data.data(), sizeof(double)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(double)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(array<double>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(const std::vector<double> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
-
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+		
 		Source = mxCreateNumericArray(3, Dim, mxDOUBLE_CLASS, mxREAL);
 
-		std::vector<double> data;
-
-		double V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(Source)), (void *)data.data(), sizeof(double)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(double)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
-	void MatlabStruct::Add(float Data, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(float Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		double value = static_cast<double>(Data);
 		Source = mxCreateDoubleScalar(value);
@@ -149,12 +110,11 @@ namespace mMatfile
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(int Data, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(int Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		double value = static_cast<double>(Data);
 		Source = mxCreateDoubleScalar(value);
@@ -162,279 +122,160 @@ namespace mMatfile
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(bool Data, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(bool Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		Source = mxCreateLogicalScalar(Data);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(array<float>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(const std::vector<float> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxSINGLE_CLASS, mxREAL);
 
-		std::vector<float> data;
-
-		float V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(Source)), (void *)data.data(), sizeof(float)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(float)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(array<INT8>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(const std::vector<int8_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxINT8_CLASS, mxREAL);
 
-		std::vector<INT8> data;
-
-		INT8 V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(Source)), (void *)data.data(), sizeof(INT8)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(int8_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(array<INT16>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(const std::vector<int16_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxINT16_CLASS, mxREAL);
 
-		std::vector<INT16> data;
-
-		INT16 V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(Source)), (void *)data.data(), sizeof(INT16)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(int16_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(array<INT32>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(const std::vector<int32_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxINT32_CLASS, mxREAL);
 
-		std::vector<INT32> data;
-
-		INT32 V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(Source)), (void *)data.data(), sizeof(INT32)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(int32_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(array<INT64>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(const std::vector<int64_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxINT64_CLASS, mxREAL);
 
-		std::vector<INT64> data;
-
-		INT64 V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(Source)), (void *)data.data(), sizeof(INT64)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(int64_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(array<UINT8>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(const std::vector<uint8_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT8_CLASS, mxREAL);
 
-		std::vector<UINT8> data;
-
-		UINT8 V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(Source)), (void *)data.data(), sizeof(UINT8)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(uint8_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(array<UINT16>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(const std::vector<uint16_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT16_CLASS, mxREAL);
 
-		std::vector<UINT16> data;
-
-		UINT16 V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(Source)), (void *)data.data(), sizeof(UINT16)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(uint16_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(array<UINT32>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(const std::vector<uint32_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT32_CLASS, mxREAL);
 
-		std::vector<UINT32> data;
-
-		UINT32 V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(Source)), (void *)data.data(), sizeof(UINT32)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(uint32_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
-	void MatlabStruct::Add(array<UINT64>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol)
+	void MatlabStruct::Add(const std::vector<uint64_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
-		const char *fieldName = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(FieldName);
-		if (mxGetFieldNumber(Destination, fieldName) == -1) { System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName)); return; }
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
 
 		int Length = Rows * Cols*Dim3;
 
-		size_t Dim[3];
-		Dim[0] = Rows;
-		Dim[1] = Cols;
-		Dim[2] = Dim3;
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
 		Source = mxCreateNumericArray(3, Dim, mxUINT64_CLASS, mxREAL);
 
-		std::vector<UINT64> data;
-
-		UINT64 V;
-		for (int k = 0; k < Length; k++)
-		{
-			V = Data[k];
-			data.push_back(V);
-		}
-
-		memcpy((void *)(mxGetPr(Source)), (void *)data.data(), sizeof(UINT64)*Length);
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(uint64_t)*Length);
 
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr((void*)fieldName));
 	}
 }
 

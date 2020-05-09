@@ -3,40 +3,52 @@
 #include "MatlabStruct.h"
 #include <iostream>
 
-using namespace System;
-
-namespace mMatfile 
+namespace MathWorks
 {
-	public ref class Matfile
+	enum MatfileMode
 	{
-	private:
-		const char *filePath;
-		const char *fileMode;
+		Read = 0,
+		Update = 1,
+		Write = 2,
+		CompressedWrite = 3,
+		WriteHDF5 = 4
+	};
 
-		MATFile *Destination = NULL;
+	class Matfile
+	{
 	public:
-		Matfile(String^ FilePath, String^ FileMode);
-		~Matfile();
+
+		Matfile(const std::string &FilePath, const MatfileMode FileMode = MatfileMode::CompressedWrite);
+
 		bool Open();
 		bool Close();
-		void Add(String^ Name, MatlabStruct^ Data);
-		void Add(String^ Name, CellArray^ Data);
-		void Add(String^ Name, array<double>^ Data, int Rows, int Cols, int Dim3);
-		void Add(String^ Name, array<float>^ Data, int Rows, int Cols, int Dim3);
-		void Add(String^ Name, array<float>^ Data, int Rows, int Cols);
-		void Add(String^ Name, array<double>^ Data, int Rows, int Cols);
-		void Add(String^ Name, String^ Data);
-		void Add(String^ Name, double Data);
-		void Add(String^ Name, float Data);
-		void Add(String^ Name, int Data);
-		void Add(String^ Name, array<INT8>^ Data, int Rows, int Cols, int Dim3);
-		void Add(String^ Name, array<INT16>^ Data, int Rows, int Cols, int Dim3);
-		void Add(String^ Name, array<INT32>^ Data, int Rows, int Cols, int Dim3);
-		void Add(String^ Name, array<INT64>^ Data, int Rows, int Cols, int Dim3);
-		void Add(String^ Name, array<UINT8>^ Data, int Rows, int Cols, int Dim3);
-		void Add(String^ Name, array<UINT16>^ Data, int Rows, int Cols, int Dim3);
-		void Add(String^ Name, array<UINT32>^ Data, int Rows, int Cols, int Dim3);
-		void Add(String^ Name, array<UINT64>^ Data, int Rows, int Cols, int Dim3);
-		void Add(String^ Name, bool Data);
+		void Add(const std::string &Name, MatlabStruct &Data);
+		void Add(const std::string &Name, CellArray &Data);
+		void Add(const std::string &Name, const std::vector<double> &Data, const int Rows, const int Cols, const int Dim3);
+		void Add(const std::string &Name, const std::vector<float> &Data, const int Rows, const int Cols, const int Dim3);
+		void Add(const std::string &Name, const std::vector<float> &Data, const int Rows, const int Cols);
+		void Add(const std::string &Name, const std::vector<double> &Data, const int Rows, const int Cols);
+		void Add(const std::string &Name, const std::string &Data);
+		void Add(const std::string &Name, const double Data);
+		void Add(const std::string &Name, const float Data);
+		void Add(const std::string &Name, const int Data);
+		void Add(const std::string &Name, const std::vector<int8_t> &Data, const int Rows, const int Cols, const int Dim3);
+		void Add(const std::string &Name, const std::vector<int16_t> &Data, const int Rows, const int Cols, const int Dim3);
+		void Add(const std::string &Name, const std::vector<int32_t> &Data, const int Rows, const int Cols, const int Dim3);
+		void Add(const std::string &Name, const std::vector<int64_t> &Data, const int Rows, const int Cols, const int Dim3);
+		void Add(const std::string &Name, const std::vector<uint8_t> &Data, const int Rows, const int Cols, const int Dim3);
+		void Add(const std::string &Name, const std::vector<uint16_t> &Data, const int Rows, const int Cols, const int Dim3);
+		void Add(const std::string &Name, const std::vector<uint32_t> &Data, const int Rows, const int Cols, const int Dim3);
+		void Add(const std::string &Name, const std::vector<uint64_t> &Data, const int Rows, const int Cols, const int Dim3);
+		void Add(const std::string &Name, const bool Data);
+
+	private:
+
+		std::string filePath;
+		MatfileMode fileMode;
+
+		const std::string MatfileModes[5] = { "r", "u" , "w6", "wz", "w7.3" };
+
+		MATFile *Destination = NULL;
 	};
 }

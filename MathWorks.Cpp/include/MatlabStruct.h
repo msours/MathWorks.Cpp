@@ -4,11 +4,9 @@
 
 #ifdef  CellArray_H
 
-using namespace System;
-
-namespace mMatfile
+namespace MathWorks
 {
-	public ref class MatlabStruct : IDisposable
+	class MatlabStruct
 	{
 	public:
 		mxArray *Destination;
@@ -19,28 +17,27 @@ namespace mMatfile
 		int Rows;
 		int Cols;
 		int nFields;
-		array<String^>^ FieldNames;
 
-		MatlabStruct(int Rows, int Cols, int nFields, array<String^>^ FieldNames);
+		MatlabStruct(const int Rows, const int Cols, const int nFields, const std::vector<std::string> &FieldNames);
 		~MatlabStruct();
-		void Add(CellArray^ Data, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(MatlabStruct^ Data, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(double Data, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(array<double>^ Data, int Rows, int Cols, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(array<double>^ Variable, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(float Data, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(array<float>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(array<INT8>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(array<INT16>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(array<INT32>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(array<INT64>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(array<UINT8>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(array<UINT16>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(array<UINT32>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(array<UINT64>^ Data, int Rows, int Cols, int Dim3, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(String^ Data, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(int Data, String^ FieldName, int InsertRow, int InsertCol);
-		void Add(bool Data, String^ FieldName, int InsertRow, int InsertCol);
+		void Add(CellArray &Data, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(MatlabStruct &Data, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(double Data, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const std::vector<double> &Data, const int Rows, const int Cols, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const std::vector<double> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const float Data, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const std::vector<float> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const std::vector<int8_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const std::vector<int16_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const std::vector<int32_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const std::vector<int64_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const std::vector<uint8_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const std::vector<uint16_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const std::vector<uint32_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const std::vector<uint64_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const std::string &Data, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const int Data, const std::string &FieldName, const int InsertRow, const int InsertCol);
+		void Add(const bool Data, const std::string &FieldName, const int InsertRow, const int InsertCol);
 	};
 }
 
