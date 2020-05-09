@@ -77,7 +77,7 @@ void TestAdaptiveThreshold()
 
 void TestMatfileIO() 
 {
-	MathWorks::Matfile matFile("TestData.mat");
+	MathWorks::Matfile matFile = MathWorks::Matfile("test.mat");
 
 	std::cout << matFile.Open() << "\n";
 

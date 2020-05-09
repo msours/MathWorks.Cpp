@@ -44,7 +44,7 @@ namespace MathWorks
 
 	private:
 
-		char *filePath;
+		std::string filePath;
 		MatfileMode fileMode;
 
 		const std::string MatfileModes[5] = { "r", "u" , "w6", "wz", "w7.3" };
