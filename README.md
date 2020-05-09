@@ -8,5 +8,5 @@ Dependencies: OpenCV version 3.4.6 (CMake can be modified to use a differnt vers
 1. Build or download OpenCV 3.4.6
 2. mkdir build
 3. cd build
-4. cmake .. -G "Visual Studio 15 2017 Win64" -D OpenCV_DIR=<Path To build dir> 
+4. cmake .. -G "Visual Studio 15 2017 Win64" -D OpenCV_DIR=\<Path To build dir> 
 5. cmake --build . --config <debug/release>
