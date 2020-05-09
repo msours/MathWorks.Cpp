@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <profileapi.h>
 
+#include "Matfile.h"
+
 void TestDemosaic()
 {
 	const cv::Mat &BayerImage = cv::imread("BayerPattern.png", cv::IMREAD_ANYDEPTH | cv::IMREAD_ANYCOLOR);
@@ -73,9 +75,20 @@ void TestAdaptiveThreshold()
 	}
 }
 
+void TestMatfileIO() 
+{
+	MathWorks::Matfile matFile("TestData.mat");
+
+	std::cout << matFile.Open() << "\n";
+
+	matFile.Add("TestDouble", 0.34534535);
+
+	std::cout << matFile.Close() << "\n";
+}
+
 int main()
 {
-	TestAdaptiveThreshold();
+	TestMatfileIO();
 
 	return 0;
 }

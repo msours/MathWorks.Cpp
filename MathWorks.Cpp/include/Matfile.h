@@ -5,11 +5,20 @@
 
 namespace MathWorks
 {
+	enum MatfileMode
+	{
+		Read = 0,
+		Update = 1,
+		Write = 2,
+		CompressedWrite = 3,
+		WriteHDF5 = 4
+	};
+
 	class Matfile
 	{
 	public:
 
-		Matfile(const std::string &FilePath, const std::string &FileMode);
+		Matfile(const std::string &FilePath, const MatfileMode FileMode = MatfileMode::CompressedWrite);
 
 		bool Open();
 		bool Close();
@@ -17,8 +26,8 @@ namespace MathWorks
 		void Add(const std::string &Name, CellArray &Data);
 		void Add(const std::string &Name, const std::vector<double> &Data, const int Rows, const int Cols, const int Dim3);
 		void Add(const std::string &Name, const std::vector<float> &Data, const int Rows, const int Cols, const int Dim3);
-		void Add(const std::string &Name, const std::vector<float> &Data, const int Rows,const int Cols);
-		void Add(const std::string &Name, const std::vector<double> &Data, const int Rows,const int Cols);
+		void Add(const std::string &Name, const std::vector<float> &Data, const int Rows, const int Cols);
+		void Add(const std::string &Name, const std::vector<double> &Data, const int Rows, const int Cols);
 		void Add(const std::string &Name, const std::string &Data);
 		void Add(const std::string &Name, const double Data);
 		void Add(const std::string &Name, const float Data);
@@ -35,8 +44,10 @@ namespace MathWorks
 
 	private:
 
-		const char *filePath;
-		const char *fileMode;
+		char *filePath;
+		MatfileMode fileMode;
+
+		const std::string MatfileModes[5] = { "r", "u" , "w6", "wz", "w7.3" };
 
 		MATFile *Destination = NULL;
 	};

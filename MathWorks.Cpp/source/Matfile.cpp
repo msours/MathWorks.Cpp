@@ -3,14 +3,16 @@
 
 namespace MathWorks
 {
-	Matfile::Matfile(const std::string &FilePath, const std::string &FileMode)
+	Matfile::Matfile(const std::string &FilePath, const const MatfileMode FileMode)
 	{
-		filePath = FilePath.c_str();
-		fileMode = FileMode.c_str();
+		filePath = const_cast<char*>(FilePath.c_str());
+		fileMode = FileMode;
 	}
 	bool Matfile::Open()
 	{
-		Destination = matOpen(filePath, fileMode);
+		const char *mode = this->MatfileModes[static_cast<int>(this->fileMode)].c_str();
+
+		Destination = matOpen(filePath, mode);
 
 		return (!Destination == NULL);
 	}
