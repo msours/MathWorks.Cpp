@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include "MathWorks/mat.h"
 #include "MathWorks/matrix.h"
 

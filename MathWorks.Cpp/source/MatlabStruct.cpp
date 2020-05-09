@@ -1,6 +1,5 @@
 
 #include "MatlabStruct.h"
-#include <vector>
 
 namespace MathWorks
 {
@@ -10,11 +9,11 @@ namespace MathWorks
 		this->Cols = Cols;
 		this->nFields = nFields;
 
-		const char **names = new char*[FieldNames.size()];
+		char **names = new char*[FieldNames.size()];
 
-		for (int k = 0; k < FieldNames.size(); k++) names[k] = FieldNames[k].c_str();
+		for (int k = 0; k < FieldNames.size(); k++) names[k] = const_cast<char *>(FieldNames[k].c_str());
 
-		Destination = mxCreateStructMatrix(Rows, Cols, nFields, names);
+		Destination = mxCreateStructMatrix(Rows, Cols, nFields, const_cast<const char **>(names));
 
 		delete[] names;
 	}

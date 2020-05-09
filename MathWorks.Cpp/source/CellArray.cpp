@@ -1,6 +1,5 @@
 
 #include "CellArray.h"
-#include <vector>
 
 namespace MathWorks
 {

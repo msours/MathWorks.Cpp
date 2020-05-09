@@ -1,6 +1,5 @@
 
 #include "Matfile.h"
-#include <vector>
 
 namespace MathWorks
 {
