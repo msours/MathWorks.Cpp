@@ -1,6 +1,6 @@
 # MathWorks.Cpp
 
-C++ API with OpenCV style interface for a handful of Matlab functions that I've found to be useful. No dependancy to Matlab runtime or Matlab license required.
+C++ API with OpenCV style interface for a handful of Matlab functions that I've found to be useful. No dependancy to Matlab runtime or Matlab license required. Also includes a C++ interface for Matlab's C API used to save data to a .mat file.
 
 Dependencies: OpenCV version 3.4.6 (CMake can be modified to use a differnt version, but no guarantee for compatibility)
 
