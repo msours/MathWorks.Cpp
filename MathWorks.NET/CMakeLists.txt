@@ -22,9 +22,8 @@ file(GLOB_RECURSE Library_HEADERS
 )
 
 add_library(${project_name} SHARED
-    
-    #ML.Processing source
-    source/MathWorks.NET.cpp
+    source/C_Coder.NET.cpp
+	source/Matfile.NET.cpp
 
     ${Library_HEADERS}
 )
