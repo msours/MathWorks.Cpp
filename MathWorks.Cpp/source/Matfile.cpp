@@ -3,18 +3,21 @@
 
 namespace MathWorks
 {
-	Matfile::Matfile(const std::string &FilePath, const MatfileMode FileMode)
+	Matfile::Matfile(MATFile *Destination) 
 	{
-		filePath = FilePath;
-		fileMode = FileMode;
+		this->Destination = Destination;
 	}
-	bool Matfile::Open()
+	Matfile Matfile::Open(const std::string &FilePath, const MatfileMode FileMode)
 	{
-		const char *mode = this->MatfileModes[static_cast<int>(this->fileMode)].c_str();
+		const std::string MatfileModes[5]{ "r", "u" , "w6", "wz", "w7.3" };
 
-		Destination = matOpen(filePath.c_str(), mode);
+		const char *mode = MatfileModes[static_cast<int>(FileMode)].c_str();
 
-		return (!Destination == NULL);
+		MATFile *Destination = matOpen(FilePath.c_str(), mode);
+
+		if (Destination == NULL) throw std::invalid_argument("Invalid file name or format");
+
+		return Matfile(Destination);
 	}
 	bool Matfile::Close()
 	{

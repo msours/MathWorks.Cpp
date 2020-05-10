@@ -77,9 +77,7 @@ void TestAdaptiveThreshold()
 
 void TestMatfileIO() 
 {
-	MathWorks::Matfile matFile = MathWorks::Matfile("test.mat");
-
-	std::cout << matFile.Open() << "\n";
+	MathWorks::Matfile &matFile = MathWorks::Matfile::Open("test.mat");
 
 	matFile.Add("TestDouble", 0.34534535);
 
@@ -88,7 +86,7 @@ void TestMatfileIO()
 
 int main()
 {
-	TestMatfileIO();
+	TestRandomNumberGenerator();
 
 	return 0;
 }

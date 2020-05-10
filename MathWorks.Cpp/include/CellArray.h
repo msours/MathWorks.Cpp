@@ -4,8 +4,8 @@
 
 #include <vector>
 
-#include "MathWorks/mat.h"
-#include "MathWorks/matrix.h"
+#include "mat.h"
+#include "matrix.h"
 
 namespace MathWorks
 {
