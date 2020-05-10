@@ -98,6 +98,7 @@ file(GLOB mw_depends_dll
 	${mw_bin}/libmwcpp*compat.dll
 	${mw_bin}/libmwfl.dll
 	${mw_bin}/libmwfoundation_usm.dll
+	${mw_bin}/libmwMATLAB_res.dll
 	${mw_bin}/libmwi*n.dll
 	#${mw_bin}/libmwimfilter.dll
 	#${mw_bin}/libmwimlincomb_tbb.dll
