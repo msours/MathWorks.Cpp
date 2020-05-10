@@ -12,6 +12,9 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "Installation 
 
 project(${project_name} DESCRIPTION "C++ Interface for some Matlab functionality that I've found to be useful.")
 
+include(FindMatlab)
+find_package(Matlab REQUIRED)
+
 set(mw_include "${Matlab_ROOT_DIR}/extern/include" CACHE INTERNAL "mw_include")
 
 include_directories(
@@ -26,9 +29,6 @@ set(mathworks_lib_dir ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64/MathWorksCpp.lib)
 add_library(MathWorksCpp SHARED IMPORTED)
 set_target_properties(MathWorksCpp PROPERTIES IMPORTED_LOCATION ${mathworks_dll_dir})
 set_target_properties(MathWorksCpp PROPERTIES IMPORTED_IMPLIB ${mathworks_lib_dir})
-
-include(FindMatlab)
-find_package(Matlab REQUIRED)
 
 set(libmat_lib_dir ${Matlab_ROOT_DIR}/extern/lib/win64/microsoft/libmat.lib)
 set(libmx_lib_dir ${Matlab_ROOT_DIR}/extern/lib/win64/microsoft/libmx.lib)
