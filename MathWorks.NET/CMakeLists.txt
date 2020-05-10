@@ -14,6 +14,7 @@ project(${project_name} DESCRIPTION ".NET Interface for some Matlab functionalit
 include_directories(
     ./include
     ../MathWorks.Cpp/include
+	${mw_include}
 )
 
 file(GLOB_RECURSE Library_HEADERS 
