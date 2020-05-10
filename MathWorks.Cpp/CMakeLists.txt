@@ -71,6 +71,53 @@ file(GLOB mathworks_headers ./include/MathWorks/*.h)
 file(GLOB depends_dll ./dll/x64/*.dll ${OpenCV_DIR}/x64/vc15/bin/*.dll)
 file(GLOB depends_lib ./lib/x64/*.lib ${libmat_lib_dir} ${libmx_lib_dir})
 
+set(mw_bin ${Matlab_ROOT_DIR}/bin/win64)
+
+file(GLOB mw_depends_dll
+
+	${mw_bin}/hdf5.dll
+	${mw_bin}/icudt*.dll
+	${mw_bin}/icuin*.dll
+	${mw_bin}/icuio*.dll
+	${mw_bin}/icuuc*.dll
+	${mw_bin}/libexpat.dll
+	${mw_bin}/libmat.dll
+	${mw_bin}/libmwbwlookup_tbb.dll
+	${mw_bin}/libmwbwpackctbb.dll
+	${mw_bin}/libmwbwunpackctbb.dll
+	${mw_bin}/libmwcpp*compat.dll
+	${mw_bin}/libmwfl.dll
+	${mw_bin}/libmwfoundation_usm.dll
+	${mw_bin}/libmwi*n.dll
+	${mw_bin}/libmwimfilter.dll
+	${mw_bin}/libmwimlincomb_tbb.dll
+	${mw_bin}/libmwimregionalmax.dll
+	${mw_bin}/libmwindexingapimethods.dll
+	${mw_bin}/libmwipp.dll
+	${mw_bin}/libmwippfilter.dll
+	${mw_bin}/libmwippreconstruct.dll
+	${mw_bin}/libmwmfl_permute.dll
+	${mw_bin}/libmwmorphop_binary_tbb.dll
+	${mw_bin}/libmwmorphop_packed.dll
+	${mw_bin}/libmwnhood.dll
+	${mw_bin}/libmwordfilt*.dll
+	${mw_bin}/libmwresource_core.dll
+	${mw_bin}/libmx.dll
+	${mw_bin}/libut.dll
+	${mw_bin}/mwboost_chrono*.dll
+	${mw_bin}/mwboost_date_time*.dll
+	${mw_bin}/mwboost_filesystem*.dll
+	${mw_bin}/mwboost_log*.dll
+	${mw_bin}/mwboost_serialization*.dll
+	${mw_bin}/mwboost_system*.dll
+	${mw_bin}/mwboost_thread*.dll
+	${mw_bin}/tbb.dll
+	${mw_bin}/tbbmalloc.dll
+	${mw_bin}/zlib1.dll
+)
+
+set(mw_depends "${mw_depends_dll}" CACHE INTERNAL "mw_depends")
+
 install (FILES ${headers}
     DESTINATION ${project_name}/include
 )
@@ -79,6 +126,10 @@ install (FILES ${mathworks_headers}
 )
 
 install (FILES ${depends_dll}
+    DESTINATION ${project_name}/bin
+)
+
+install (FILES ${mw_depends_dll}
     DESTINATION ${project_name}/bin
 )
 
