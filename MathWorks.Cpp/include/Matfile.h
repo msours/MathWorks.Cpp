@@ -18,10 +18,10 @@ namespace MathWorks
 	{
 	public:
 
-		Matfile(const std::string &FilePath, const MatfileMode FileMode = MatfileMode::CompressedWrite);
+		static Matfile Open(const std::string &FilePath, const MatfileMode FileMode = MatfileMode::CompressedWrite);
 
-		bool Open();
 		bool Close();
+
 		void Add(const std::string &Name, MatlabStruct &Data);
 		void Add(const std::string &Name, CellArray &Data);
 		void Add(const std::string &Name, const std::vector<double> &Data, const int Rows, const int Cols, const int Dim3);
@@ -44,11 +44,8 @@ namespace MathWorks
 
 	private:
 
-		std::string filePath;
-		MatfileMode fileMode;
-
-		const std::string MatfileModes[5] = { "r", "u" , "w6", "wz", "w7.3" };
-
+		Matfile(MATFile *Destination);
 		MATFile *Destination = NULL;
+
 	};
 }
