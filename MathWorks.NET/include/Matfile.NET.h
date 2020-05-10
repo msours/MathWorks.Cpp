@@ -3,7 +3,6 @@
 
 #include "MatlabStruct.NET.h"
 #include "Matfile.h"
-#include <Windows.h>
 
 namespace MathWorks
 {
