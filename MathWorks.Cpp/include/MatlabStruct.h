@@ -16,9 +16,10 @@ namespace MathWorks
 
 		int Rows;
 		int Cols;
-		int nFields;
 
-		MatlabStruct(const int Rows, const int Cols, const int nFields, const std::vector<std::string> &FieldNames);
+		std::vector<std::string> FieldNames;
+
+		MatlabStruct(const int Rows, const int Cols, const std::vector<std::string> &FieldNames);
 		~MatlabStruct();
 		void Add(CellArray &Data, const std::string &FieldName, const int InsertRow, const int InsertCol);
 		void Add(MatlabStruct &Data, const std::string &FieldName, const int InsertRow, const int InsertCol);

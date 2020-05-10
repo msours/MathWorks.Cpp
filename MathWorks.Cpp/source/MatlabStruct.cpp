@@ -3,17 +3,17 @@
 
 namespace MathWorks
 {
-	MatlabStruct::MatlabStruct(const int Rows, const int Cols, const int nFields, const std::vector<std::string> &FieldNames)
+	MatlabStruct::MatlabStruct(const int Rows, const int Cols, const std::vector<std::string> &FieldNames)
 	{
 		this->Rows = Rows;
 		this->Cols = Cols;
-		this->nFields = nFields;
+		this->FieldNames = FieldNames;
 
 		char **names = new char*[FieldNames.size()];
 
 		for (int k = 0; k < FieldNames.size(); k++) names[k] = const_cast<char *>(FieldNames[k].c_str());
 
-		Destination = mxCreateStructMatrix(Rows, Cols, nFields, const_cast<const char **>(names));
+		Destination = mxCreateStructMatrix(Rows, Cols, FieldNames.size(), const_cast<const char **>(names));
 
 		delete[] names;
 	}
