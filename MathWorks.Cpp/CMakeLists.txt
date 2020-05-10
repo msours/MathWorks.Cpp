@@ -92,25 +92,25 @@ file(GLOB mw_depends_dll
 	${mw_bin}/icuuc*.dll
 	${mw_bin}/libexpat.dll
 	${mw_bin}/libmat.dll
-	${mw_bin}/libmwbwlookup_tbb.dll
-	${mw_bin}/libmwbwpackctbb.dll
-	${mw_bin}/libmwbwunpackctbb.dll
+	#${mw_bin}/libmwbwlookup_tbb.dll
+	#${mw_bin}/libmwbwpackctbb.dll
+	#${mw_bin}/libmwbwunpackctbb.dll
 	${mw_bin}/libmwcpp*compat.dll
 	${mw_bin}/libmwfl.dll
 	${mw_bin}/libmwfoundation_usm.dll
 	${mw_bin}/libmwi*n.dll
-	${mw_bin}/libmwimfilter.dll
-	${mw_bin}/libmwimlincomb_tbb.dll
-	${mw_bin}/libmwimregionalmax.dll
+	#${mw_bin}/libmwimfilter.dll
+	#${mw_bin}/libmwimlincomb_tbb.dll
+	#${mw_bin}/libmwimregionalmax.dll
 	${mw_bin}/libmwindexingapimethods.dll
-	${mw_bin}/libmwipp.dll
-	${mw_bin}/libmwippfilter.dll
-	${mw_bin}/libmwippreconstruct.dll
+	#${mw_bin}/libmwipp.dll
+	#${mw_bin}/libmwippfilter.dll
+	#${mw_bin}/libmwippreconstruct.dll
 	${mw_bin}/libmwmfl_permute.dll
-	${mw_bin}/libmwmorphop_binary_tbb.dll
-	${mw_bin}/libmwmorphop_packed.dll
-	${mw_bin}/libmwnhood.dll
-	${mw_bin}/libmwordfilt*.dll
+	#${mw_bin}/libmwmorphop_binary_tbb.dll
+	#${mw_bin}/libmwmorphop_packed.dll
+	#${mw_bin}/libmwnhood.dll
+	#${mw_bin}/libmwordfilt*.dll
 	${mw_bin}/libmwresource_core.dll
 	${mw_bin}/libmx.dll
 	${mw_bin}/libut.dll
@@ -121,8 +121,8 @@ file(GLOB mw_depends_dll
 	${mw_bin}/mwboost_serialization*.dll
 	${mw_bin}/mwboost_system*.dll
 	${mw_bin}/mwboost_thread*.dll
-	${mw_bin}/tbb.dll
-	${mw_bin}/tbbmalloc.dll
+	#${mw_bin}/tbb.dll
+	#${mw_bin}/tbbmalloc.dll
 	${mw_bin}/zlib1.dll
 )
 
