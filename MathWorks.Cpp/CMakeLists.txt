@@ -12,8 +12,12 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "Installation 
 
 project(${project_name} DESCRIPTION "C++ Interface for some Matlab functionality that I've found to be useful.")
 
+set(mw_include "${Matlab_ROOT_DIR}/extern/include" CACHE INTERNAL "mw_include")
+
 include_directories(
     ./include
+	./MathWorks/include
+	${mw_include}
 )
 
 set(mathworks_dll_dir ${CMAKE_CURRENT_SOURCE_DIR}/dll/x64/MathWorksCpp.dll)
@@ -40,6 +44,11 @@ set_target_properties(libmat PROPERTIES IMPORTED_LOCATION ${libmat_lib_dir})
 add_library(libmx STATIC IMPORTED)
 set_target_properties(libmx PROPERTIES IMPORTED_LOCATION ${libmx_lib_dir})
 
+file(GLOB mw_HEADERS
+	${mw_include}/mat.h
+	${mw_include}/matrix.h
+)
+
 file(GLOB_RECURSE Library_HEADERS 
     ./include/*.h
     ./include/*.hpp
@@ -54,7 +63,8 @@ add_library(${project_name} STATIC
 	source/MatlabStruct.cpp
 	source/Matfile.cpp
 
-    ${Library_HEADERS}
+	${Library_HEADERS}
+	${mw_HEADERS}
 )
 
 FIND_PACKAGE( OpenCV 3.4.6 REQUIRED )
@@ -67,7 +77,7 @@ target_link_libraries(${PROJECT_NAME} libmx)
 # Install
 
 file(GLOB headers ./include/*.h)
-file(GLOB mathworks_headers ./include/MathWorks/*.h)
+file(GLOB mathworks_headers ./include/MathWorks/*.h mw_HEADERS)
 file(GLOB depends_dll ./dll/x64/*.dll ${OpenCV_DIR}/x64/vc15/bin/*.dll)
 file(GLOB depends_lib ./lib/x64/*.lib ${libmat_lib_dir} ${libmx_lib_dir})
 

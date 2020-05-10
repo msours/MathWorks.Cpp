@@ -15,6 +15,7 @@ project(${project_name} DESCRIPTION "Project for testing MathWorks functionality
 
 include_directories(
 	../MathWorks.Cpp/include
+	${mw_include}
 )
 
 add_executable(${project_name} 
