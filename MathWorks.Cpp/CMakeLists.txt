@@ -1,5 +1,5 @@
 
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.12)
 
 set(project_name MathWorks.Cpp)
 set(project_version 1.0.0)
@@ -19,13 +19,20 @@ include_directories(
 set(mathworks_dll_dir ${CMAKE_CURRENT_SOURCE_DIR}/dll/x64/MathWorksCpp.dll)
 set(mathworks_lib_dir ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64/MathWorksCpp.lib)
 
-set(libmat_lib_dir ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64/libmat.lib)
-
-set(libmx_lib_dir ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64/libmx.lib)
-
 add_library(MathWorksCpp SHARED IMPORTED)
 set_target_properties(MathWorksCpp PROPERTIES IMPORTED_LOCATION ${mathworks_dll_dir})
 set_target_properties(MathWorksCpp PROPERTIES IMPORTED_IMPLIB ${mathworks_lib_dir})
+
+include(FindMatlab)
+find_package(Matlab REQUIRED)
+
+set(libmat_lib_dir ${Matlab_ROOT_DIR}/extern/lib/win64/microsoft/libmat.lib)
+set(libmx_lib_dir ${Matlab_ROOT_DIR}/extern/lib/win64/microsoft/libmx.lib)
+
+if(EXISTS "${libmat_lib_dir}" AND EXISTS "${libmx_lib_dir}")
+elseif()
+	MESSAGE(FATAL_ERROR "Incompatible Matlab version ... ")
+endif()
 
 add_library(libmat STATIC IMPORTED)
 set_target_properties(libmat PROPERTIES IMPORTED_LOCATION ${libmat_lib_dir})
