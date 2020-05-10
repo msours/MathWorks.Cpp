@@ -86,7 +86,7 @@ void TestMatfileIO()
 
 int main()
 {
-	TestMatfileIO();
+	TestRandomNumberGenerator();
 
 	return 0;
 }
