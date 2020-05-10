@@ -114,13 +114,15 @@ file(GLOB mw_depends_dll
 	${mw_bin}/libmwresource_core.dll
 	${mw_bin}/libmx.dll
 	${mw_bin}/libut.dll
-	${mw_bin}/mwboost_chrono*.dll
-	${mw_bin}/mwboost_date_time*.dll
-	${mw_bin}/mwboost_filesystem*.dll
-	${mw_bin}/mwboost_log*.dll
-	${mw_bin}/mwboost_serialization*.dll
-	${mw_bin}/mwboost_system*.dll
-	${mw_bin}/mwboost_thread*.dll
+	${mw_bin}/*boost_chrono*.dll
+	${mw_bin}/*boost_date_time*.dll
+	${mw_bin}/*boost_filesystem*.dll
+	${mw_bin}/*boost_log*.dll
+	${mw_bin}/*boost_serialization*.dll
+	${mw_bin}/*boost_system*.dll
+	${mw_bin}/*boost_thread*.dll
+	${mw_bin}/*boost_regex*.dll
+	${mw_bin}/*boost_signals*.dll
 	#${mw_bin}/tbb.dll
 	#${mw_bin}/tbbmalloc.dll
 	${mw_bin}/zlib1.dll
