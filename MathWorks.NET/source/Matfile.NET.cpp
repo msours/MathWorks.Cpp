@@ -26,12 +26,16 @@ namespace MathWorks
 		{
 			delete this->Matfile_;
 		}
-		//void Matfile::Add(System::String^ Name, MatlabStruct^ Data)
-		//{
-		//}
-		//void Matfile::Add(System::String^ Name, CellArray^ Data)
-		//{
-		//}
+		void Matfile::Add(System::String^ Name, MatlabStruct^ Data)
+		{
+			const std::string &name = msclr::interop::marshal_as<std::string>(Name);
+			this->Matfile_->Add(name, Data->MatlabStruct_);
+		}
+		void Matfile::Add(System::String^ Name, CellArray^ Data)
+		{
+			const std::string &name = msclr::interop::marshal_as<std::string>(Name);
+			this->Matfile_->Add(name, Data->CellArray_);
+		}
 		void Matfile::Add(System::String^ Name, array<double>^ Data, int Rows, int Cols, int Dim3)
 		{
 			int Length = Rows * Cols * Dim3;

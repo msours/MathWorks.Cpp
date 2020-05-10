@@ -25,6 +25,8 @@ file(GLOB_RECURSE Library_HEADERS
 add_library(${project_name} SHARED
     source/C_Coder.NET.cpp
 	source/Matfile.NET.cpp
+	source/CellArray.NET.cpp
+	source/MatlabStruct.NET.cpp
 
     ${Library_HEADERS}
 )

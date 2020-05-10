@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "MatlabStruct.NET.h"
 #include "Matfile.h"
 #include <Windows.h>
 
@@ -24,8 +25,8 @@ namespace MathWorks
 			~Matfile();
 
 			bool Close();
-			//void Add(System::String^ Name, MatlabStruct^ Data);
-			//void Add(System::String^ Name, CellArray^ Data);
+			void Add(System::String^ Name, MatlabStruct^ Data);
+			void Add(System::String^ Name, CellArray^ Data);
 			void Add(System::String^ Name, array<double>^ Data, int Rows, int Cols, int Dim3);
 			void Add(System::String^ Name, array<float>^ Data, int Rows, int Cols, int Dim3);
 			void Add(System::String^ Name, array<float>^ Data, int Rows, int Cols);
