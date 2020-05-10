@@ -69,7 +69,7 @@ target_link_libraries(${PROJECT_NAME} libmx)
 file(GLOB headers ./include/*.h)
 file(GLOB mathworks_headers ./include/MathWorks/*.h)
 file(GLOB depends_dll ./dll/x64/*.dll ${OpenCV_DIR}/x64/vc15/bin/*.dll)
-file(GLOB depends_lib ./lib/x64/*.lib)
+file(GLOB depends_lib ./lib/x64/*.lib ${libmat_lib_dir} ${libmx_lib_dir})
 
 install (FILES ${headers}
     DESTINATION ${project_name}/include
@@ -85,12 +85,3 @@ install (FILES ${depends_dll}
 install (FILES ${depends_lib}
     DESTINATION ${project_name}/lib
 )
-
-install (FILES ${libmat_lib_dir}
-    DESTINATION ${project_name}/lib
-)
-
-install (FILES ${libmx_lib_dir}
-    DESTINATION ${project_name}/lib
-)
-
