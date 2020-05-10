@@ -67,6 +67,11 @@ add_library(${project_name} STATIC
 	${mw_HEADERS}
 )
 
+target_include_directories(${project_name}
+    PUBLIC
+        ${CMAKE_BINARY_DIR}/install/${project_name}/include
+)
+
 FIND_PACKAGE( OpenCV 3.4.6 REQUIRED )
 target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
 
@@ -148,4 +153,14 @@ install (FILES ${mw_depends_dll}
 
 install (FILES ${depends_lib}
     DESTINATION ${project_name}/lib
+)
+
+install(TARGETS ${project_name}
+    EXPORT ${PROJECT_NAME}-export
+    ARCHIVE DESTINATION ${PROJECT_NAME}/lib
+)
+
+install(EXPORT ${PROJECT_NAME}-export
+    FILE ${PROJECT_NAME}Config.cmake 
+    DESTINATION cmake
 )
