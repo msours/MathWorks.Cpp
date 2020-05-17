@@ -35,6 +35,16 @@ namespace MathWorks
 			void Add(System::String^ Name, System::String^ Data);
 
 			void Add(System::String^ Name, array<double>^ Data);
+			void Add(System::String^ Name, array<float>^ Data);
+			void Add(System::String^ Name, array<UINT8>^ Data);
+			void Add(System::String^ Name, array<UINT16>^ Data);
+			void Add(System::String^ Name, array<UINT32>^ Data);
+			void Add(System::String^ Name, array<UINT64>^ Data);
+			void Add(System::String^ Name, array<INT8>^ Data);
+			void Add(System::String^ Name, array<INT16>^ Data);
+			void Add(System::String^ Name, array<int>^ Data);
+			void Add(System::String^ Name, array<INT64>^ Data);
+
 			void Add(System::String^ Name, array<double, 2>^ Data);
 			void Add(System::String^ Name, array<double, 3>^ Data);
 

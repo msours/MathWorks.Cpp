@@ -72,6 +72,42 @@ namespace MathWorks
 		{
 			this->ReshapeAdd(Name, Data, 1, Data->Length, 1);
 		}
+		void Matfile::Add(System::String^ Name, array<float>^ Data)
+		{
+			this->ReshapeAdd(Name, Data, 1, Data->Length, 1);
+		}
+		void Matfile::Add(System::String^ Name, array<INT8>^ Data)
+		{
+			this->ReshapeAdd(Name, Data, 1, Data->Length, 1);
+		}
+		void Matfile::Add(System::String^ Name, array<INT16>^ Data)
+		{
+			this->ReshapeAdd(Name, Data, 1, Data->Length, 1);
+		}
+		void Matfile::Add(System::String^ Name, array<int>^ Data)
+		{
+			this->ReshapeAdd(Name, Data, 1, Data->Length, 1);
+		}
+		void Matfile::Add(System::String^ Name, array<INT64>^ Data)
+		{
+			this->ReshapeAdd(Name, Data, 1, Data->Length, 1);
+		}
+		void Matfile::Add(System::String^ Name, array<UINT8>^ Data)
+		{
+			this->ReshapeAdd(Name, Data, 1, Data->Length, 1);
+		}
+		void Matfile::Add(System::String^ Name, array<UINT16>^ Data)
+		{
+			this->ReshapeAdd(Name, Data, 1, Data->Length, 1);
+		}
+		void Matfile::Add(System::String^ Name, array<UINT32>^ Data)
+		{
+			this->ReshapeAdd(Name, Data, 1, Data->Length, 1);
+		}
+		void Matfile::Add(System::String^ Name, array<UINT64>^ Data)
+		{
+			this->ReshapeAdd(Name, Data, 1, Data->Length, 1);
+		}
 
 		void Matfile::Add(System::String^ Name, array<double, 2>^ Data)
 		{
