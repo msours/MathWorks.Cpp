@@ -12,9 +12,9 @@ namespace MathWorks
 		{
 			Read = 0,
 			Update = 1,
-			Write = 2,
-			CompressedWrite = 3,
-			WriteHDF5 = 4
+			Overwrite = 2,
+			CompressedOverwrite = 3,
+			OverwriteHDF5 = 4
 		};
 
 		public ref class Matfile : System::IDisposable
