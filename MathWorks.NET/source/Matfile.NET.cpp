@@ -89,7 +89,7 @@ namespace MathWorks
 				}
 			}
 
-			this->Matfile_->ReshapeAdd(name, data, Rows, Cols);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, 1);
 		}
 		void Matfile::Add(System::String^ Name, array<double, 3>^ Data)
 		{
