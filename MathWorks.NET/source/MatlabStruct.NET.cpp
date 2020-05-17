@@ -181,10 +181,98 @@ namespace MathWorks
 
 			this->MatlabStruct_->ReshapeAdd(data, Rows, Cols, 1, name, InsertRow, InsertCol);
 		}
+		void MatlabStruct::Add(array<double, 3>^ Data, System::String^ FieldName, int InsertRow, int InsertCol)
+		{
+			const std::string &name = msclr::interop::marshal_as<std::string>(FieldName);
+
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+			const int Dim3 = Data->GetLength(2);
+
+			std::vector<double> data;
+			for (int p = 0; p < Dim3; p++)
+			{
+				for (int k = 0; k < Cols; k++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						data.push_back((double)Data[j, k, p]);
+					}
+				}
+			}
+
+			this->MatlabStruct_->ReshapeAdd(data, Rows, Cols, Dim3, name, InsertRow, InsertCol);
+		}
+		void MatlabStruct::Add(array<float, 3>^ Data, System::String^ FieldName, int InsertRow, int InsertCol)
+		{
+			const std::string &name = msclr::interop::marshal_as<std::string>(FieldName);
+
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+			const int Dim3 = Data->GetLength(2);
+
+			std::vector<float> data;
+			for (int p = 0; p < Dim3; p++)
+			{
+				for (int k = 0; k < Cols; k++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						data.push_back((float)Data[j, k, p]);
+					}
+				}
+			}
+
+			this->MatlabStruct_->ReshapeAdd(data, Rows, Cols, Dim3, name, InsertRow, InsertCol);
+		}
+		void MatlabStruct::Add(array<UINT8, 3>^ Data, System::String^ FieldName, int InsertRow, int InsertCol)
+		{
+			const std::string &name = msclr::interop::marshal_as<std::string>(FieldName);
+
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+			const int Dim3 = Data->GetLength(2);
+
+			std::vector<UINT8> data;
+			for (int p = 0; p < Dim3; p++)
+			{
+				for (int k = 0; k < Cols; k++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						data.push_back((UINT8)Data[j, k, p]);
+					}
+				}
+			}
+
+			this->MatlabStruct_->ReshapeAdd(data, Rows, Cols, Dim3, name, InsertRow, InsertCol);
+		}
+		void MatlabStruct::Add(array<UINT16, 3>^ Data, System::String^ FieldName, int InsertRow, int InsertCol)
+		{
+			const std::string &name = msclr::interop::marshal_as<std::string>(FieldName);
+
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+			const int Dim3 = Data->GetLength(2);
+
+			std::vector<UINT16> data;
+			for (int p = 0; p < Dim3; p++)
+			{
+				for (int k = 0; k < Cols; k++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						data.push_back((UINT16)Data[j, k, p]);
+					}
+				}
+			}
+
+			this->MatlabStruct_->ReshapeAdd(data, Rows, Cols, Dim3, name, InsertRow, InsertCol);
+		}
 
 		void MatlabStruct::ReshapeAdd(array<double>^ Data, int Rows, int Cols, int Dim3, System::String^ FieldName, int InsertRow, int InsertCol)
 		{
-
+			const std::string &name = msclr::interop::marshal_as<std::string>(FieldName);
 
 			int Length = Rows * Cols * Dim3;
 
