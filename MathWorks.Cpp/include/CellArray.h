@@ -4,6 +4,9 @@
 
 #include <vector>
 
+#include <opencv2/opencv.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+
 #include "mat.h"
 #include "matrix.h"
 

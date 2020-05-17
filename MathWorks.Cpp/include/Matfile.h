@@ -42,6 +42,8 @@ namespace MathWorks
 		void Add(const std::string &Name, const std::vector<uint32_t> &Data);
 		void Add(const std::string &Name, const std::vector<uint64_t> &Data);
 
+		void AddImage(const std::string &Name, const cv::Mat &Image);
+
 		void ReshapeAdd(const std::string &Name, const std::vector<double> &Data, const int Rows, const int Cols, const int Dim3);
 		void ReshapeAdd(const std::string &Name, const std::vector<float> &Data, const int Rows, const int Cols, const int Dim3);
 		void ReshapeAdd(const std::string &Name, const std::vector<int8_t> &Data, const int Rows, const int Cols, const int Dim3);

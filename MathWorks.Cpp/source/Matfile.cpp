@@ -133,6 +133,160 @@ namespace MathWorks
 		this->ReshapeAdd(Name, Data, 1, Data.size(), 1);
 	}
 
+	void Matfile::AddImage(const std::string &Name, const cv::Mat &Image)
+	{
+		const int Channels = Image.channels();
+		const int Width = Image.cols;
+		const int Height = Image.rows;
+
+		const int N = Width * Height * Channels;
+
+		switch (Image.type())
+		{
+		case CV_8U:
+
+			uint8_t *data = new uint8_t[N];
+
+			if (Channels > 1)
+			{
+				for (int j = 0; j < Width; j++)
+				{
+					for (int k = 0; k < Height; k++)
+					{
+						for (int c = 0; c < Channels; c++)
+						{
+							data[k + Height * j + N * (2 - c)] = Image.data[(k * Width + j) * Channels + c];
+						}
+					}
+				}
+			}
+			else
+			{
+				for (int j = 0; j < Width; j++)
+				{
+					for (int k = 0; k < Height; k++)
+					{
+						data[k + Height * j] = Image.data[j + Width * k];
+					}
+				}
+			}
+
+			this->ReshapeAdd(Name, std::vector<uint8_t>(*data), Image.rows, Image.cols, Channels);
+
+			delete[] data;
+
+			return;
+
+		case CV_16U:
+
+			uint16_t *data = new uint16_t[N];
+
+			if (Channels > 1)
+			{
+				for (int j = 0; j < Width; j++)
+				{
+					for (int k = 0; k < Height; k++)
+					{
+						for (int c = 0; c < Channels; c++)
+						{
+							data[k + Height * j + N * (2 - c)] = ((uint16_t)Image.data[(j + Width * k) * 2 * Channels + (2 * c) + 1] << 8) | ((uint16_t)Image.data[(j + Width * k) * 2 * Channels + (2 * c)]);
+						}
+					}
+				}
+			}
+			else
+			{
+				for (int j = 0; j < Width; j++)
+				{
+					for (int k = 0; k < Height; k++)
+					{
+						data[k + Height * j] = ((uint16_t)Image.data[(j + Width * k) * 2 + 1] << 8) | ((uint16_t)Image.data[(j + Width * k) * 2]);
+					}
+				}
+			}
+
+			this->ReshapeAdd(Name, std::vector<uint16_t>(*data), Image.rows, Image.cols, Channels);
+
+			delete[] data;
+
+			return;
+
+		case CV_32F:
+
+			float *data = new float[N];
+			if (Channels > 1)
+			{
+				for (int j = 0; j < Width; j++)
+				{
+					for (int k = 0; k < Height; k++)
+					{
+						const cv::Vec3f &V = Image.at<cv::Vec3f>(k, j);
+
+						for (int c = 0; c < Channels; c++)
+						{
+							data[k + Height * j + N * (2 - c)] = V(c);
+						}
+					}
+				}
+			}
+			else 
+			{
+				for (int j = 0; j < Width; j++)
+				{
+					for (int k = 0; k < Height; k++)
+					{
+						data[k + Height * j] = Image.at<float>(k, j);
+					}
+				}
+			}
+
+			this->ReshapeAdd(Name, std::vector<float>(*data), Image.rows, Image.cols, Channels);
+
+			delete[] data;
+
+			return;
+
+		case CV_64F:
+
+			double *data = new double[N];
+			if (Channels > 1)
+			{
+				for (int j = 0; j < Width; j++)
+				{
+					for (int k = 0; k < Height; k++)
+					{
+						const cv::Vec3d &V = Image.at<cv::Vec3d>(k, j);
+
+						for (int c = 0; c < Channels; c++)
+						{
+							data[k + Height * j + N * (2 - c)] = V(c);
+						}
+					}
+				}
+			}
+			else
+			{
+				for (int j = 0; j < Width; j++)
+				{
+					for (int k = 0; k < Height; k++)
+					{
+						data[k + Height * j] = Image.at<float>(k, j);
+					}
+				}
+			}
+
+			this->ReshapeAdd(Name, std::vector<double>(*data), Image.rows, Image.cols, Channels);
+
+			delete[] data;
+
+			return;
+
+		default:
+
+			return;
+		}
+	}
+
 	void Matfile::ReshapeAdd(const std::string &Name, const std::vector<double> &Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;

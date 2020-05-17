@@ -123,7 +123,6 @@ namespace MathWorks
 		// Known issue with emxCreateND_uint16_T with at least one Matlab versions C Coder output, doesn't correctly allocate memory for 3 channel 16 bit images.
 		MatlabImageOut = emxCreateND_uint16_T(NumDimensions, Size);
 
-		uint16_t Value;
 		if (Channels > 1)
 		{
 			for (int j = 0; j < Width; j++)
@@ -132,8 +131,7 @@ namespace MathWorks
 				{
 					for (int c = 0; c < Channels; c++)
 					{
-						Value = ((uint16_t)CvImageIn.data[(j + Width * k) * 2 * Channels + (2 * c) + 1] << 8) | ((uint16_t)CvImageIn.data[(j + Width * k) * 2 * Channels + (2 * c)]);
-						MatlabImageOut->data[k + Height * j + N * (2 - c)] = Value;
+						MatlabImageOut->data[k + Height * j + N * (2 - c)] = ((uint16_t)CvImageIn.data[(j + Width * k) * 2 * Channels + (2 * c) + 1] << 8) | ((uint16_t)CvImageIn.data[(j + Width * k) * 2 * Channels + (2 * c)]);
 					}
 				}
 			}
@@ -144,8 +142,7 @@ namespace MathWorks
 			{
 				for (int k = 0; k < Height; k++)
 				{
-					Value = ((uint16_t)CvImageIn.data[(j + Width * k) * 2 + 1] << 8) | ((uint16_t)CvImageIn.data[(j + Width * k) * 2]);
-					MatlabImageOut->data[k + Height * j] = Value;
+					MatlabImageOut->data[k + Height * j] = ((uint16_t)CvImageIn.data[(j + Width * k) * 2 + 1] << 8) | ((uint16_t)CvImageIn.data[(j + Width * k) * 2]);
 				}
 			}
 		}
