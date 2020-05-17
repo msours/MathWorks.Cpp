@@ -35,7 +35,7 @@ namespace MathWorks
 
 			int Rows;
 			int Cols;
-			int nFields;
+
 			array<System::String^>^ FieldNames;
 
 			MathWorks::MatlabStruct *MatlabStruct_;
