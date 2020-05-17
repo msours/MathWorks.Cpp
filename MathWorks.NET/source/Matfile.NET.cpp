@@ -10,7 +10,7 @@ namespace MathWorks
 		{
 			const std::string &filePath = msclr::interop::marshal_as<std::string>(FilePath);
 
-			MathWorks::Matfile *Matfile_ = &MathWorks::Matfile::Open(filePath, static_cast<MathWorks::MatfileMode>(FileMode));
+			MathWorks::Matfile *Matfile_ = new MathWorks::Matfile(MathWorks::Matfile::Open(filePath, static_cast<MathWorks::MatfileMode>(FileMode)));
 
 			return gcnew Matfile(Matfile_);
 		}
