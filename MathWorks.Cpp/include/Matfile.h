@@ -10,7 +10,7 @@ namespace MathWorks
 		Read = 0,
 		Update = 1,
 		Overwrite = 2,
-		CompressedOverwrite = 3,
+		OverwriteCompress = 3,
 		OverwriteHDF5 = 4
 	};
 
@@ -18,7 +18,7 @@ namespace MathWorks
 	{
 	public:
 
-		static Matfile Open(const std::string &FilePath, const MatfileMode FileMode = MatfileMode::CompressedOverwrite);
+		static Matfile Open(const std::string &FilePath, const MatfileMode FileMode = MatfileMode::OverwriteCompress);
 
 		bool Close();
 

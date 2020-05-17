@@ -127,6 +127,60 @@ namespace MathWorks
 
 			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, 1);
 		}
+		void Matfile::Add(System::String^ Name, array<float, 2>^ Data)
+		{
+			const std::string &name = msclr::interop::marshal_as<std::string>(Name);
+
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+
+			std::vector<float> data;
+			for (int k = 0; k < Cols; k++)
+			{
+				for (int j = 0; j < Rows; j++)
+				{
+					data.push_back((float)Data[j, k]);
+				}
+			}
+
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, 1);
+		}
+		void Matfile::Add(System::String^ Name, array<UINT8, 2>^ Data)
+		{
+			const std::string &name = msclr::interop::marshal_as<std::string>(Name);
+
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+
+			std::vector<UINT8> data;
+			for (int k = 0; k < Cols; k++)
+			{
+				for (int j = 0; j < Rows; j++)
+				{
+					data.push_back((UINT8)Data[j, k]);
+				}
+			}
+
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, 1);
+		}
+		void Matfile::Add(System::String^ Name, array<UINT16, 2>^ Data)
+		{
+			const std::string &name = msclr::interop::marshal_as<std::string>(Name);
+
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+
+			std::vector<UINT16> data;
+			for (int k = 0; k < Cols; k++)
+			{
+				for (int j = 0; j < Rows; j++)
+				{
+					data.push_back((UINT16)Data[j, k]);
+				}
+			}
+
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, 1);
+		}
 		void Matfile::Add(System::String^ Name, array<double, 3>^ Data)
 		{
 			const std::string &name = msclr::interop::marshal_as<std::string>(Name);
@@ -143,6 +197,72 @@ namespace MathWorks
 					for (int j = 0; j < Rows; j++)
 					{
 						data.push_back((double)Data[j, k, p]);
+					}
+				}
+			}
+
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
+		}
+		void Matfile::Add(System::String^ Name, array<float, 3>^ Data)
+		{
+			const std::string &name = msclr::interop::marshal_as<std::string>(Name);
+
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+			const int Dim3 = Data->GetLength(2);
+
+			std::vector<float> data;
+			for (int p = 0; p < Dim3; p++)
+			{
+				for (int k = 0; k < Cols; k++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						data.push_back((float)Data[j, k, p]);
+					}
+				}
+			}
+
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
+		}
+		void Matfile::Add(System::String^ Name, array<UINT8, 3>^ Data)
+		{
+			const std::string &name = msclr::interop::marshal_as<std::string>(Name);
+
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+			const int Dim3 = Data->GetLength(2);
+
+			std::vector<UINT8> data;
+			for (int p = 0; p < Dim3; p++)
+			{
+				for (int k = 0; k < Cols; k++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						data.push_back((UINT8)Data[j, k, p]);
+					}
+				}
+			}
+
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
+		}
+		void Matfile::Add(System::String^ Name, array<UINT16, 3>^ Data)
+		{
+			const std::string &name = msclr::interop::marshal_as<std::string>(Name);
+
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+			const int Dim3 = Data->GetLength(2);
+
+			std::vector<UINT16> data;
+			for (int p = 0; p < Dim3; p++)
+			{
+				for (int k = 0; k < Cols; k++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						data.push_back((UINT16)Data[j, k, p]);
 					}
 				}
 			}

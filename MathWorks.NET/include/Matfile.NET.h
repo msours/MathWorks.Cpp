@@ -13,7 +13,7 @@ namespace MathWorks
 			Read = 0,
 			Update = 1,
 			Overwrite = 2,
-			CompressedOverwrite = 3,
+		    OverwriteCompress = 3,
 			OverwriteHDF5 = 4
 		};
 
@@ -46,7 +46,14 @@ namespace MathWorks
 			void Add(System::String^ Name, array<INT64>^ Data);
 
 			void Add(System::String^ Name, array<double, 2>^ Data);
+			void Add(System::String^ Name, array<float, 2>^ Data);
+			void Add(System::String^ Name, array<UINT8, 2>^ Data);
+			void Add(System::String^ Name, array<UINT16, 2>^ Data);
+
 			void Add(System::String^ Name, array<double, 3>^ Data);
+			void Add(System::String^ Name, array<float, 3>^ Data);
+			void Add(System::String^ Name, array<UINT8, 3>^ Data);
+			void Add(System::String^ Name, array<UINT16, 3>^ Data);
 
 			void ReshapeAdd(System::String^ Name, array<double>^ Data, int Rows, int Cols, int Dim3);
 			void ReshapeAdd(System::String^ Name, array<float>^ Data, int Rows, int Cols, int Dim3);
