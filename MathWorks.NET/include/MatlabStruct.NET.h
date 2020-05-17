@@ -11,7 +11,7 @@ namespace MathWorks
 		public ref class MatlabStruct : System::IDisposable
 		{
 		public:
-			MatlabStruct(int Rows, int Cols, int nFields, array<System::String^>^ FieldNames);
+			MatlabStruct(int Rows, int Cols, array<System::String^>^ FieldNames);
 			~MatlabStruct();
 
 			void Add(CellArray^ Data, System::String^ FieldName, int InsertRow, int InsertCol);

@@ -6,7 +6,7 @@ namespace MathWorks
 {
 	namespace NET
 	{
-		MatlabStruct::MatlabStruct(int Rows, int Cols, int nFields, array<System::String^>^ FieldNames)
+		MatlabStruct::MatlabStruct(int Rows, int Cols, array<System::String^>^ FieldNames)
 		{
 			this->FieldNames = FieldNames;
 			this->Rows = Rows;

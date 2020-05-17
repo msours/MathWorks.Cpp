@@ -18,7 +18,7 @@ namespace MathWorks
 	{
 	public:
 
-		static Matfile Open(const std::string &FilePath, const MatfileMode FileMode = MatfileMode::CompressedWrite);
+		static Matfile Open(const std::string &FilePath, const MatfileMode FileMode = MatfileMode::CompressedOverwrite);
 
 		bool Close();
 

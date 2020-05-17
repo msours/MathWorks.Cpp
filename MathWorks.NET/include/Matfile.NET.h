@@ -24,27 +24,35 @@ namespace MathWorks
 			~Matfile();
 
 			bool Close();
+
 			void Add(System::String^ Name, MatlabStruct^ Data);
 			void Add(System::String^ Name, CellArray^ Data);
-			void Add(System::String^ Name, array<double>^ Data, int Rows, int Cols, int Dim3);
-			void Add(System::String^ Name, array<float>^ Data, int Rows, int Cols, int Dim3);
-			void Add(System::String^ Name, array<float>^ Data, int Rows, int Cols);
-			void Add(System::String^ Name, array<double>^ Data, int Rows, int Cols);
-			void Add(System::String^ Name, System::String^ Data);
+
 			void Add(System::String^ Name, double Data);
 			void Add(System::String^ Name, float Data);
 			void Add(System::String^ Name, int Data);
-			void Add(System::String^ Name, array<INT8>^ Data, int Rows, int Cols, int Dim3);
-			void Add(System::String^ Name, array<INT16>^ Data, int Rows, int Cols, int Dim3);
-			void Add(System::String^ Name, array<INT32>^ Data, int Rows, int Cols, int Dim3);
-			void Add(System::String^ Name, array<INT64>^ Data, int Rows, int Cols, int Dim3);
-			void Add(System::String^ Name, array<UINT8>^ Data, int Rows, int Cols, int Dim3);
-			void Add(System::String^ Name, array<UINT16>^ Data, int Rows, int Cols, int Dim3);
-			void Add(System::String^ Name, array<UINT32>^ Data, int Rows, int Cols, int Dim3);
-			void Add(System::String^ Name, array<UINT64>^ Data, int Rows, int Cols, int Dim3);
 			void Add(System::String^ Name, bool Data);
+			void Add(System::String^ Name, System::String^ Data);
+
+			void Add(System::String^ Name, array<double>^ Data);
+			void Add(System::String^ Name, array<double, 2>^ Data);
+			void Add(System::String^ Name, array<double, 3>^ Data);
+
+			void ReshapeAdd(System::String^ Name, array<double>^ Data, int Rows, int Cols, int Dim3);
+			void ReshapeAdd(System::String^ Name, array<float>^ Data, int Rows, int Cols, int Dim3);
+			void ReshapeAdd(System::String^ Name, array<float>^ Data, int Rows, int Cols);
+			void ReshapeAdd(System::String^ Name, array<double>^ Data, int Rows, int Cols);
+			void ReshapeAdd(System::String^ Name, array<INT8>^ Data, int Rows, int Cols, int Dim3);
+			void ReshapeAdd(System::String^ Name, array<INT16>^ Data, int Rows, int Cols, int Dim3);
+			void ReshapeAdd(System::String^ Name, array<INT32>^ Data, int Rows, int Cols, int Dim3);
+			void ReshapeAdd(System::String^ Name, array<INT64>^ Data, int Rows, int Cols, int Dim3);
+			void ReshapeAdd(System::String^ Name, array<UINT8>^ Data, int Rows, int Cols, int Dim3);
+			void ReshapeAdd(System::String^ Name, array<UINT16>^ Data, int Rows, int Cols, int Dim3);
+			void ReshapeAdd(System::String^ Name, array<UINT32>^ Data, int Rows, int Cols, int Dim3);
+			void ReshapeAdd(System::String^ Name, array<UINT64>^ Data, int Rows, int Cols, int Dim3);
 
 		private:
+
 			Matfile(MathWorks::Matfile *Matfile);
 
 			MathWorks::Matfile *Matfile_;

@@ -9,20 +9,29 @@ namespace MathWorks.Tests
     {
         static void Main(string[] args)
         {
-            Matfile matFile = Matfile.Open("Test.mat", MatfileMode.WriteHDF5);
+            Matfile matFile = Matfile.Open("Test.mat", MatfileMode.OverwriteHDF5);
 
-            CellArray cellArray = new CellArray(3, 3);
+            double[,] F = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 
-            cellArray.Add(true, 1, 1);
-            cellArray.Add(new double[] { 0.3253, 2345, 3453.0345 }, 1, 3, 1, 2);
-
-            matFile.Add("F", cellArray);
-            matFile.Add("test", 53253453.45345);
+            double[,,] F0 = new double[3, 4, 3];
+            int t = 0;
+            for (int p = 0; p < 3; p++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        F0[k, j, p] = t++;
+                    }
+                }
+            }
+            matFile.Add("F", F);
+            matFile.Add("F0", F0);
 
             matFile.Close();
             matFile.Dispose();
 
-            string F = "";
+            string F_ = "";
         }
     }
 }
