@@ -69,36 +69,6 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
-	void MatlabStruct::Add(const std::vector<double> &Data, const int Rows, const int Cols, const std::string &FieldName, const int InsertRow, const int InsertCol)
-	{
-		const char *fieldName = FieldName.c_str();
-		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
-
-		int Length = Rows * Cols;
-
-		Source = mxCreateDoubleMatrix(Rows, Cols, mxREAL);
-
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(double)*Length);
-
-		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
-		mxSetField(Destination, Ind, fieldName, Source);
-	}
-	void MatlabStruct::Add(const std::vector<double> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
-	{
-		const char *fieldName = FieldName.c_str();
-		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
-
-		int Length = Rows * Cols*Dim3;
-
-		const size_t Dim[3] = { Rows, Cols, Dim3 };
-		
-		Source = mxCreateNumericArray(3, Dim, mxDOUBLE_CLASS, mxREAL);
-
-		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(double)*Length);
-
-		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
-		mxSetField(Destination, Ind, fieldName, Source);
-	}
 	void MatlabStruct::Add(float Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
 		const char *fieldName = FieldName.c_str();
@@ -133,7 +103,66 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
-	void MatlabStruct::Add(const std::vector<float> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
+
+	void MatlabStruct::Add(const std::vector<double> &Data, const std::string &FieldName, const int InsertRow, const int InsertCol) 
+	{
+		this->ReshapeAdd(Data, 1, Data.size(), 1, FieldName, InsertRow, InsertCol);
+	}
+	void MatlabStruct::Add(const std::vector<float> &Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	{
+		this->ReshapeAdd(Data, 1, Data.size(), 1, FieldName, InsertRow, InsertCol);
+	}
+	void MatlabStruct::Add(const std::vector<uint8_t> &Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	{
+		this->ReshapeAdd(Data, 1, Data.size(), 1, FieldName, InsertRow, InsertCol);
+	}
+	void MatlabStruct::Add(const std::vector<uint16_t> &Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	{
+		this->ReshapeAdd(Data, 1, Data.size(), 1, FieldName, InsertRow, InsertCol);
+	}
+	void MatlabStruct::Add(const std::vector<uint32_t> &Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	{
+		this->ReshapeAdd(Data, 1, Data.size(), 1, FieldName, InsertRow, InsertCol);
+	}
+	void MatlabStruct::Add(const std::vector<uint64_t> &Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	{
+		this->ReshapeAdd(Data, 1, Data.size(), 1, FieldName, InsertRow, InsertCol);
+	}
+	void MatlabStruct::Add(const std::vector<int8_t> &Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	{
+		this->ReshapeAdd(Data, 1, Data.size(), 1, FieldName, InsertRow, InsertCol);
+	}
+	void MatlabStruct::Add(const std::vector<int16_t> &Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	{
+		this->ReshapeAdd(Data, 1, Data.size(), 1, FieldName, InsertRow, InsertCol);
+	}
+	void MatlabStruct::Add(const std::vector<int> &Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	{
+		this->ReshapeAdd(Data, 1, Data.size(), 1, FieldName, InsertRow, InsertCol);
+	}
+	void MatlabStruct::Add(const std::vector<int64_t> &Data, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	{
+		this->ReshapeAdd(Data, 1, Data.size(), 1, FieldName, InsertRow, InsertCol);
+	}
+
+	void MatlabStruct::ReshapeAdd(const std::vector<double> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	{
+		const char *fieldName = FieldName.c_str();
+		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
+
+		int Length = Rows * Cols*Dim3;
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+		
+		Source = mxCreateNumericArray(3, Dim, mxDOUBLE_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(Source)), (void *)Data.data(), sizeof(double)*Length);
+
+		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
+		mxSetField(Destination, Ind, fieldName, Source);
+	}
+
+	void MatlabStruct::ReshapeAdd(const std::vector<float> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
 		const char *fieldName = FieldName.c_str();
 		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
@@ -149,7 +178,7 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
-	void MatlabStruct::Add(const std::vector<int8_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	void MatlabStruct::ReshapeAdd(const std::vector<int8_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
 		const char *fieldName = FieldName.c_str();
 		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
@@ -165,7 +194,7 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
-	void MatlabStruct::Add(const std::vector<int16_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	void MatlabStruct::ReshapeAdd(const std::vector<int16_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
 		const char *fieldName = FieldName.c_str();
 		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
@@ -181,7 +210,7 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
-	void MatlabStruct::Add(const std::vector<int32_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	void MatlabStruct::ReshapeAdd(const std::vector<int32_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
 		const char *fieldName = FieldName.c_str();
 		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
@@ -197,7 +226,7 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
-	void MatlabStruct::Add(const std::vector<int64_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	void MatlabStruct::ReshapeAdd(const std::vector<int64_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
 		const char *fieldName = FieldName.c_str();
 		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
@@ -213,7 +242,7 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
-	void MatlabStruct::Add(const std::vector<uint8_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	void MatlabStruct::ReshapeAdd(const std::vector<uint8_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
 		const char *fieldName = FieldName.c_str();
 		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
@@ -229,7 +258,7 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
-	void MatlabStruct::Add(const std::vector<uint16_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	void MatlabStruct::ReshapeAdd(const std::vector<uint16_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
 		const char *fieldName = FieldName.c_str();
 		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
@@ -245,7 +274,7 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
-	void MatlabStruct::Add(const std::vector<uint32_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	void MatlabStruct::ReshapeAdd(const std::vector<uint32_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
 		const char *fieldName = FieldName.c_str();
 		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
@@ -261,7 +290,7 @@ namespace MathWorks
 		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
-	void MatlabStruct::Add(const std::vector<uint64_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
+	void MatlabStruct::ReshapeAdd(const std::vector<uint64_t> &Data, const int Rows, const int Cols, const int Dim3, const std::string &FieldName, const int InsertRow, const int InsertCol)
 	{
 		const char *fieldName = FieldName.c_str();
 		if (mxGetFieldNumber(Destination, fieldName) == -1) return;
