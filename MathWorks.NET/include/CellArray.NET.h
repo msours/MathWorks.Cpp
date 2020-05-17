@@ -37,6 +37,16 @@ namespace MathWorks
 			void Add(array<UINT32>^ Data, int InsertRow, int InsertCol);
 			void Add(array<UINT64>^ Data, int InsertRow, int InsertCol);
 
+			void Add(array<double, 2>^ Data, int InsertRow, int InsertCol);
+			void Add(array<float, 2>^ Data, int InsertRow, int InsertCol);
+			void Add(array<UINT8, 2>^ Data, int InsertRow, int InsertCol);
+			void Add(array<UINT16, 2>^ Data, int InsertRow, int InsertCol);
+
+			void Add(array<double, 3>^ Data, int InsertRow, int InsertCol);
+			void Add(array<float, 3>^ Data, int InsertRow, int InsertCol);
+			void Add(array<UINT8, 3>^ Data, int InsertRow, int InsertCol);
+			void Add(array<UINT16, 3>^ Data, int InsertRow, int InsertCol);
+
 			void ReshapeAdd(array<double>^ Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);
 			void ReshapeAdd(array<float>^ Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);
 			void ReshapeAdd(array<INT8>^ Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);

@@ -93,6 +93,152 @@ namespace MathWorks
 			this->ReshapeAdd(Data, 1, Data->Length, 1, InsertRow, InsertCol);
 		}
 
+		void CellArray::Add(array<double, 2>^ Data, int InsertRow, int InsertCol) 
+		{
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+
+			std::vector<double> data;
+			for (int k = 0; k < Cols; k++)
+			{
+				for (int j = 0; j < Rows; j++)
+				{
+					data.push_back((double)Data[j, k]);
+				}
+			}
+
+			this->CellArray_->ReshapeAdd(data, Rows, Cols, 1, InsertRow, InsertCol);
+		}
+		void CellArray::Add(array<float, 2>^ Data, int InsertRow, int InsertCol)
+		{
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+
+			std::vector<float> data;
+			for (int k = 0; k < Cols; k++)
+			{
+				for (int j = 0; j < Rows; j++)
+				{
+					data.push_back((float)Data[j, k]);
+				}
+			}
+
+			this->CellArray_->ReshapeAdd(data, Rows, Cols, 1, InsertRow, InsertCol);
+		}
+		void CellArray::Add(array<UINT8, 2>^ Data, int InsertRow, int InsertCol)
+		{
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+
+			std::vector<UINT8> data;
+			for (int k = 0; k < Cols; k++)
+			{
+				for (int j = 0; j < Rows; j++)
+				{
+					data.push_back((UINT8)Data[j, k]);
+				}
+			}
+
+			this->CellArray_->ReshapeAdd(data, Rows, Cols, 1, InsertRow, InsertCol);
+		}
+		void CellArray::Add(array<UINT16, 2>^ Data, int InsertRow, int InsertCol)
+		{
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+
+			std::vector<UINT16> data;
+			for (int k = 0; k < Cols; k++)
+			{
+				for (int j = 0; j < Rows; j++)
+				{
+					data.push_back((UINT16)Data[j, k]);
+				}
+			}
+
+			this->CellArray_->ReshapeAdd(data, Rows, Cols, 1, InsertRow, InsertCol);
+		}
+
+		void CellArray::Add(array<double, 3>^ Data, int InsertRow, int InsertCol)
+		{
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+			const int Dim3 = Data->GetLength(2);
+
+			std::vector<double> data;
+			for (int p = 0; p < Dim3; p++)
+			{
+				for (int k = 0; k < Cols; k++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						data.push_back((double)Data[j, k, p]);
+					}
+				}
+			}
+
+			this->CellArray_->ReshapeAdd(data, Rows, Cols, Dim3, InsertRow, InsertCol);
+		}
+		void CellArray::Add(array<float, 3>^ Data, int InsertRow, int InsertCol)
+		{
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+			const int Dim3 = Data->GetLength(2);
+
+			std::vector<float> data;
+			for (int p = 0; p < Dim3; p++)
+			{
+				for (int k = 0; k < Cols; k++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						data.push_back((float)Data[j, k, p]);
+					}
+				}
+			}
+
+			this->CellArray_->ReshapeAdd(data, Rows, Cols, Dim3, InsertRow, InsertCol);
+		}
+		void CellArray::Add(array<UINT8, 3>^ Data, int InsertRow, int InsertCol)
+		{
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+			const int Dim3 = Data->GetLength(2);
+
+			std::vector<UINT8> data;
+			for (int p = 0; p < Dim3; p++)
+			{
+				for (int k = 0; k < Cols; k++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						data.push_back((UINT8)Data[j, k, p]);
+					}
+				}
+			}
+
+			this->CellArray_->ReshapeAdd(data, Rows, Cols, Dim3, InsertRow, InsertCol);
+		}
+		void CellArray::Add(array<UINT16, 3>^ Data, int InsertRow, int InsertCol)
+		{
+			const int Rows = Data->GetLength(0);
+			const int Cols = Data->GetLength(1);
+			const int Dim3 = Data->GetLength(2);
+
+			std::vector<UINT16> data;
+			for (int p = 0; p < Dim3; p++)
+			{
+				for (int k = 0; k < Cols; k++)
+				{
+					for (int j = 0; j < Rows; j++)
+					{
+						data.push_back((UINT16)Data[j, k, p]);
+					}
+				}
+			}
+
+			this->CellArray_->ReshapeAdd(data, Rows, Cols, Dim3, InsertRow, InsertCol);
+		}
+
 		void CellArray::ReshapeAdd(array<double>^ Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol)
 		{
 			int Length = Rows * Cols*Dim3;
