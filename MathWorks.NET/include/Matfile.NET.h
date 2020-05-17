@@ -40,8 +40,6 @@ namespace MathWorks
 
 			void ReshapeAdd(System::String^ Name, array<double>^ Data, int Rows, int Cols, int Dim3);
 			void ReshapeAdd(System::String^ Name, array<float>^ Data, int Rows, int Cols, int Dim3);
-			void ReshapeAdd(System::String^ Name, array<float>^ Data, int Rows, int Cols);
-			void ReshapeAdd(System::String^ Name, array<double>^ Data, int Rows, int Cols);
 			void ReshapeAdd(System::String^ Name, array<INT8>^ Data, int Rows, int Cols, int Dim3);
 			void ReshapeAdd(System::String^ Name, array<INT16>^ Data, int Rows, int Cols, int Dim3);
 			void ReshapeAdd(System::String^ Name, array<INT32>^ Data, int Rows, int Cols, int Dim3);

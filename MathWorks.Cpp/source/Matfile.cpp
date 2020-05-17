@@ -33,173 +33,6 @@ namespace MathWorks
 		const char *name = Name.c_str();
 		matPutVariable(Destination, name, Data.Destination);
 	}
-	void Matfile::Add(const std::string &Name, const std::vector<double> &Data, const int Rows, const int Cols, const int Dim3)
-	{
-		int Length = Rows * Cols*Dim3;
-		const char *name = Name.c_str();
-
-		const size_t Dim[3] = { Rows, Cols, Dim3 };
-
-		mxArray *source = mxCreateNumericArray(3, Dim, mxDOUBLE_CLASS, mxREAL);
-
-		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(double)*Length);
-		matPutVariable(Destination, name, source);
-		mxDestroyArray(source);
-	}
-	void Matfile::Add(const std::string &Name, const std::vector<float> &Data, const int Rows, const int Cols, const int Dim3)
-	{
-		int Length = Rows * Cols*Dim3;
-		const char *name = Name.c_str();
-
-		const size_t Dim[3] = { Rows, Cols, Dim3 };
-
-		mxArray *source = mxCreateNumericArray(3, Dim, mxSINGLE_CLASS, mxREAL);
-
-		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(float)*Length);
-		matPutVariable(Destination, name, source);
-		mxDestroyArray(source);
-
-	}
-	void Matfile::Add(const std::string &Name, const std::vector<int8_t> &Data, const int Rows, const int Cols, const int Dim3)
-	{
-		int Length = Rows * Cols*Dim3;
-		const char *name = Name.c_str();
-
-		const size_t Dim[3] = { Rows, Cols, Dim3 };
-
-		mxArray *source = mxCreateNumericArray(3, Dim, mxINT8_CLASS, mxREAL);
-
-		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(int8_t)*Length);
-		matPutVariable(Destination, name, source);
-		mxDestroyArray(source);
-
-	}
-	void Matfile::Add(const std::string &Name, const std::vector<int16_t> &Data, const int Rows, const int Cols, const int Dim3)
-	{
-		int Length = Rows * Cols*Dim3;
-		const char *name = Name.c_str();
-
-		const size_t Dim[3] = { Rows, Cols, Dim3 };
-
-		mxArray *source = mxCreateNumericArray(3, Dim, mxINT16_CLASS, mxREAL);
-
-		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(int16_t)*Length);
-		matPutVariable(Destination, name, source);
-		mxDestroyArray(source);
-
-	}
-	void Matfile::Add(const std::string &Name, const std::vector<int32_t> &Data, const int Rows, const int Cols, const int Dim3)
-	{
-		int Length = Rows * Cols*Dim3;
-		const char *name = Name.c_str();
-
-		const size_t Dim[3] = { Rows, Cols, Dim3 };
-
-		mxArray *source = mxCreateNumericArray(3, Dim, mxINT32_CLASS, mxREAL);
-
-		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(int32_t)*Length);
-		matPutVariable(Destination, name, source);
-		mxDestroyArray(source);
-
-	}
-	void Matfile::Add(const std::string &Name, const std::vector<int64_t> &Data, const int Rows, const int Cols, const int Dim3)
-	{
-		int Length = Rows * Cols*Dim3;
-		const char *name = Name.c_str();
-
-		const size_t Dim[3] = { Rows, Cols, Dim3 };
-
-		mxArray *source = mxCreateNumericArray(3, Dim, mxINT64_CLASS, mxREAL);
-
-		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(int64_t)*Length);
-		matPutVariable(Destination, name, source);
-		mxDestroyArray(source);
-
-	}
-	void Matfile::Add(const std::string &Name, const std::vector<uint8_t> &Data, const int Rows, const int Cols, const int Dim3)
-	{
-		int Length = Rows * Cols*Dim3;
-		const char *name = Name.c_str();
-
-		const size_t Dim[3] = { Rows, Cols, Dim3 };
-
-		mxArray *source = mxCreateNumericArray(3, Dim, mxUINT8_CLASS, mxREAL);
-
-		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(uint8_t)*Length);
-		matPutVariable(Destination, name, source);
-		mxDestroyArray(source);
-
-	}
-	void Matfile::Add(const std::string &Name, const std::vector<uint16_t> &Data, const int Rows, const int Cols, const int Dim3)
-	{
-		int Length = Rows * Cols*Dim3;
-		const char *name = Name.c_str();
-
-		const size_t Dim[3] = { Rows, Cols, Dim3 };
-
-		mxArray *source = mxCreateNumericArray(3, Dim, mxUINT16_CLASS, mxREAL);
-
-		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(uint16_t)*Length);
-		matPutVariable(Destination, name, source);
-
-		mxDestroyArray(source);
-
-	}
-	void Matfile::Add(const std::string &Name, const std::vector<uint32_t> &Data, const int Rows, const int Cols, const int Dim3)
-	{
-		int Length = Rows * Cols*Dim3;
-		const char *name = Name.c_str();
-
-		const size_t Dim[3] = { Rows, Cols, Dim3 };
-
-		mxArray *source = mxCreateNumericArray(3, Dim, mxUINT32_CLASS, mxREAL);
-
-		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(uint32_t)*Length);
-		matPutVariable(Destination, name, source);
-		mxDestroyArray(source);
-
-	}
-	void Matfile::Add(const std::string &Name, const std::vector<uint64_t> &Data, const int Rows, const int Cols, const int Dim3)
-	{
-		int Length = Rows * Cols*Dim3;
-		const char *name = Name.c_str();
-
-		const size_t Dim[3] = { Rows, Cols, Dim3 };
-
-		mxArray *source = mxCreateNumericArray(3, Dim, mxUINT64_CLASS, mxREAL);
-
-		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(uint64_t)*Length);
-		matPutVariable(Destination, name, source);
-		mxDestroyArray(source);
-
-	}
-	void Matfile::Add(const std::string &Name, const std::vector<float> &Data, const int Rows,const int Cols)
-	{
-		int Length = Rows * Cols;
-		const char *name = Name.c_str();
-
-		mxArray *source = mxCreateDoubleMatrix(Rows, Cols, mxREAL);
-
-		std::vector<double> data;
-		for (int k = 0; k < Length; k++) data.push_back((double)Data[k]);
-
-		memcpy((void *)(mxGetPr(source)), (void *)data.data(), sizeof(double)*Length);
-		matPutVariable(Destination, name, source);
-		mxDestroyArray(source);
-
-	}
-	void Matfile::Add(const std::string &Name, const std::vector<double> &Data, const int Rows,const int Cols)
-	{
-		int Length = Rows * Cols;
-		const char *name = Name.c_str();
-
-		mxArray *source = mxCreateDoubleMatrix(Rows, Cols, mxREAL);
-
-		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(double)*Length);
-		matPutVariable(Destination, name, source);
-		mxDestroyArray(source);
-
-	}
 	void Matfile::Add(const std::string &Name, const double Data)
 	{
 		const char *name = Name.c_str();
@@ -254,6 +87,188 @@ namespace MathWorks
 
 		mxArray *source = mxCreateString(V);
 
+		matPutVariable(Destination, name, source);
+		mxDestroyArray(source);
+
+	}
+
+	void Matfile::Add(const std::string &Name, const std::vector<double> &Data) 
+	{
+		this->ReshapeAdd(Name, Data, 1, Data.size(), 1);
+	}
+	void Matfile::Add(const std::string &Name, const std::vector<float> &Data)
+	{
+		this->ReshapeAdd(Name, Data, 1, Data.size(), 1);
+	}
+	void Matfile::Add(const std::string &Name, const std::vector<int8_t> &Data)
+	{
+		this->ReshapeAdd(Name, Data, 1, Data.size(), 1);
+	}
+	void Matfile::Add(const std::string &Name, const std::vector<int16_t> &Data)
+	{
+		this->ReshapeAdd(Name, Data, 1, Data.size(), 1);
+	}
+	void Matfile::Add(const std::string &Name, const std::vector<int> &Data)
+	{
+		this->ReshapeAdd(Name, Data, 1, Data.size(), 1);
+	}	
+	void Matfile::Add(const std::string &Name, const std::vector<int64_t> &Data)
+	{
+		this->ReshapeAdd(Name, Data, 1, Data.size(), 1);
+	}
+	void Matfile::Add(const std::string &Name, const std::vector<uint8_t> &Data)
+	{
+		this->ReshapeAdd(Name, Data, 1, Data.size(), 1);
+	}
+	void Matfile::Add(const std::string &Name, const std::vector<uint16_t> &Data)
+	{
+		this->ReshapeAdd(Name, Data, 1, Data.size(), 1);
+	}
+	void Matfile::Add(const std::string &Name, const std::vector<uint32_t> &Data)
+	{
+		this->ReshapeAdd(Name, Data, 1, Data.size(), 1);
+	}
+	void Matfile::Add(const std::string &Name, const std::vector<uint64_t> &Data)
+	{
+		this->ReshapeAdd(Name, Data, 1, Data.size(), 1);
+	}
+
+	void Matfile::ReshapeAdd(const std::string &Name, const std::vector<double> &Data, const int Rows, const int Cols, const int Dim3)
+	{
+		int Length = Rows * Cols*Dim3;
+		const char *name = Name.c_str();
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		mxArray *source = mxCreateNumericArray(3, Dim, mxDOUBLE_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(double)*Length);
+		matPutVariable(Destination, name, source);
+		mxDestroyArray(source);
+	}
+	void Matfile::ReshapeAdd(const std::string &Name, const std::vector<float> &Data, const int Rows, const int Cols, const int Dim3)
+	{
+		int Length = Rows * Cols*Dim3;
+		const char *name = Name.c_str();
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		mxArray *source = mxCreateNumericArray(3, Dim, mxSINGLE_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(float)*Length);
+		matPutVariable(Destination, name, source);
+		mxDestroyArray(source);
+
+	}
+	void Matfile::ReshapeAdd(const std::string &Name, const std::vector<int8_t> &Data, const int Rows, const int Cols, const int Dim3)
+	{
+		int Length = Rows * Cols*Dim3;
+		const char *name = Name.c_str();
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		mxArray *source = mxCreateNumericArray(3, Dim, mxINT8_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(int8_t)*Length);
+		matPutVariable(Destination, name, source);
+		mxDestroyArray(source);
+
+	}
+	void Matfile::ReshapeAdd(const std::string &Name, const std::vector<int16_t> &Data, const int Rows, const int Cols, const int Dim3)
+	{
+		int Length = Rows * Cols*Dim3;
+		const char *name = Name.c_str();
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		mxArray *source = mxCreateNumericArray(3, Dim, mxINT16_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(int16_t)*Length);
+		matPutVariable(Destination, name, source);
+		mxDestroyArray(source);
+
+	}
+	void Matfile::ReshapeAdd(const std::string &Name, const std::vector<int32_t> &Data, const int Rows, const int Cols, const int Dim3)
+	{
+		int Length = Rows * Cols*Dim3;
+		const char *name = Name.c_str();
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		mxArray *source = mxCreateNumericArray(3, Dim, mxINT32_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(int32_t)*Length);
+		matPutVariable(Destination, name, source);
+		mxDestroyArray(source);
+
+	}
+	void Matfile::ReshapeAdd(const std::string &Name, const std::vector<int64_t> &Data, const int Rows, const int Cols, const int Dim3)
+	{
+		int Length = Rows * Cols*Dim3;
+		const char *name = Name.c_str();
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		mxArray *source = mxCreateNumericArray(3, Dim, mxINT64_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(int64_t)*Length);
+		matPutVariable(Destination, name, source);
+		mxDestroyArray(source);
+
+	}
+	void Matfile::ReshapeAdd(const std::string &Name, const std::vector<uint8_t> &Data, const int Rows, const int Cols, const int Dim3)
+	{
+		int Length = Rows * Cols*Dim3;
+		const char *name = Name.c_str();
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		mxArray *source = mxCreateNumericArray(3, Dim, mxUINT8_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(uint8_t)*Length);
+		matPutVariable(Destination, name, source);
+		mxDestroyArray(source);
+
+	}
+	void Matfile::ReshapeAdd(const std::string &Name, const std::vector<uint16_t> &Data, const int Rows, const int Cols, const int Dim3)
+	{
+		int Length = Rows * Cols*Dim3;
+		const char *name = Name.c_str();
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		mxArray *source = mxCreateNumericArray(3, Dim, mxUINT16_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(uint16_t)*Length);
+		matPutVariable(Destination, name, source);
+
+		mxDestroyArray(source);
+
+	}
+	void Matfile::ReshapeAdd(const std::string &Name, const std::vector<uint32_t> &Data, const int Rows, const int Cols, const int Dim3)
+	{
+		int Length = Rows * Cols*Dim3;
+		const char *name = Name.c_str();
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		mxArray *source = mxCreateNumericArray(3, Dim, mxUINT32_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(uint32_t)*Length);
+		matPutVariable(Destination, name, source);
+		mxDestroyArray(source);
+
+	}
+	void Matfile::ReshapeAdd(const std::string &Name, const std::vector<uint64_t> &Data, const int Rows, const int Cols, const int Dim3)
+	{
+		int Length = Rows * Cols*Dim3;
+		const char *name = Name.c_str();
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		mxArray *source = mxCreateNumericArray(3, Dim, mxUINT64_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(source)), (void *)Data.data(), sizeof(uint64_t)*Length);
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 

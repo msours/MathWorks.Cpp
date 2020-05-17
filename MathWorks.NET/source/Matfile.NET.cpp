@@ -70,7 +70,7 @@ namespace MathWorks
 
 		void Matfile::Add(System::String^ Name, array<double>^ Data)
 		{
-			this->ReshapeAdd(Name, Data, 1, Data->Length);
+			this->ReshapeAdd(Name, Data, 1, Data->Length, 1);
 		}
 
 		void Matfile::Add(System::String^ Name, array<double, 2>^ Data)
@@ -89,7 +89,7 @@ namespace MathWorks
 				}
 			}
 
-			this->Matfile_->Add(name, data, Rows, Cols);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols);
 		}
 		void Matfile::Add(System::String^ Name, array<double, 3>^ Data)
 		{
@@ -111,7 +111,7 @@ namespace MathWorks
 				}
 			}
 
-			this->Matfile_->Add(name, data, Rows, Cols, Dim3);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
 		}
 
 		void Matfile::ReshapeAdd(System::String^ Name, array<double>^ Data, int Rows, int Cols, int Dim3)
@@ -122,7 +122,7 @@ namespace MathWorks
 			std::vector<double> data;
 			for (int k = 0; k < Length; k++) data.push_back((double)Data[k]);
 
-			this->Matfile_->Add(name, data, Rows, Cols, Dim3);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
 		}
 		void Matfile::ReshapeAdd(System::String^ Name, array<float>^ Data, int Rows, int Cols, int Dim3)
 		{
@@ -132,7 +132,7 @@ namespace MathWorks
 			std::vector<float> data;
 			for (int k = 0; k < Length; k++) data.push_back((float)Data[k]);
 
-			this->Matfile_->Add(name, data, Rows, Cols, Dim3);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
 		}
 		void Matfile::ReshapeAdd(System::String^ Name, array<INT8>^ Data, int Rows, int Cols, int Dim3)
 		{
@@ -142,7 +142,7 @@ namespace MathWorks
 			std::vector<INT8> data;
 			for (int k = 0; k < Length; k++)  data.push_back((INT8)Data[k]);
 
-			this->Matfile_->Add(name, data, Rows, Cols, Dim3);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
 		}
 		void Matfile::ReshapeAdd(System::String^ Name, array<INT16>^ Data, int Rows, int Cols, int Dim3)
 		{
@@ -153,7 +153,7 @@ namespace MathWorks
 
 			for (int k = 0; k < Length; k++)data.push_back((INT16)Data[k]);
 
-			this->Matfile_->Add(name, data, Rows, Cols, Dim3);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
 		}
 		void Matfile::ReshapeAdd(System::String^ Name, array<INT32>^ Data, int Rows, int Cols, int Dim3)
 		{
@@ -164,7 +164,7 @@ namespace MathWorks
 
 			for (int k = 0; k < Length; k++)data.push_back((INT32)Data[k]);
 
-			this->Matfile_->Add(name, data, Rows, Cols, Dim3);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
 		}
 		void Matfile::ReshapeAdd(System::String^ Name, array<INT64>^ Data, int Rows, int Cols, int Dim3)
 		{
@@ -175,7 +175,7 @@ namespace MathWorks
 
 			for (int k = 0; k < Length; k++)data.push_back((INT64)Data[k]);
 
-			this->Matfile_->Add(name, data, Rows, Cols, Dim3);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
 		}
 		void Matfile::ReshapeAdd(System::String^ Name, array<UINT8>^ Data, int Rows, int Cols, int Dim3)
 		{
@@ -185,7 +185,7 @@ namespace MathWorks
 			std::vector<UINT8> data;
 			for (int k = 0; k < Length; k++)  data.push_back((UINT8)Data[k]);
 
-			this->Matfile_->Add(name, data, Rows, Cols, Dim3);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
 		}
 		void Matfile::ReshapeAdd(System::String^ Name, array<UINT16>^ Data, int Rows, int Cols, int Dim3)
 		{
@@ -196,7 +196,7 @@ namespace MathWorks
 
 			for (int k = 0; k < Length; k++)data.push_back((UINT16)Data[k]);
 
-			this->Matfile_->Add(name, data, Rows, Cols, Dim3);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
 		}
 		void Matfile::ReshapeAdd(System::String^ Name, array<UINT32>^ Data, int Rows, int Cols, int Dim3)
 		{
@@ -207,7 +207,7 @@ namespace MathWorks
 
 			for (int k = 0; k < Length; k++)data.push_back((UINT32)Data[k]);
 
-			this->Matfile_->Add(name, data, Rows, Cols, Dim3);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
 		}
 		void Matfile::ReshapeAdd(System::String^ Name, array<UINT64>^ Data, int Rows, int Cols, int Dim3)
 		{
@@ -218,27 +218,7 @@ namespace MathWorks
 
 			for (int k = 0; k < Length; k++)data.push_back((UINT64)Data[k]);
 
-			this->Matfile_->Add(name, data, Rows, Cols, Dim3);
-		}
-		void Matfile::ReshapeAdd(System::String^ Name, array<float>^ Data, int Rows, int Cols)
-		{
-			int Length = Rows * Cols;
-			const std::string &name = msclr::interop::marshal_as<std::string>(Name);
-
-			std::vector<double> data;
-			for (int k = 0; k < Length; k++) data.push_back((float)Data[k]);
-
-			this->Matfile_->Add(name, data, Rows, Cols);
-		}
-		void Matfile::ReshapeAdd(System::String^ Name, array<double>^ Data, int Rows, int Cols)
-		{
-			int Length = Rows * Cols;
-			const std::string &name = msclr::interop::marshal_as<std::string>(Name);
-
-			std::vector<double> data;
-			for (int k = 0; k < Length; k++) data.push_back((double)Data[k]);
-
-			this->Matfile_->Add(name, data, Rows, Cols);
+			this->Matfile_->ReshapeAdd(name, data, Rows, Cols, Dim3);
 		}
 	}
 }

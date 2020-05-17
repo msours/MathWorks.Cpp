@@ -25,9 +25,11 @@ namespace MathWorks
 		CellArray(int Rows, int Cols);
 		~CellArray();
 		void Add(const double Data, int InsertRow, int InsertCol);
+		void Add(const float Data, int InsertRow, int InsertCol);
+
 		void Add(const std::vector<double> &Data, int Rows, int Cols, int InsertRow, int InsertCol);
 		void Add(const std::vector<double> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);
-		void Add(const float Data, int InsertRow, int InsertCol);
+
 		void Add(const std::vector<float> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);
 		void Add(const std::vector<int8_t> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);
 		void Add(const std::vector<int16_t> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol);
