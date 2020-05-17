@@ -141,11 +141,11 @@ namespace MathWorks
 		}
 		void CellArray::Add(CellArray^ Data, int InsertRow, int InsertCol)
 		{
-			this->CellArray_->Add(Data->CellArray_, InsertRow, InsertCol);
+			this->CellArray_->Add(*Data->CellArray_, InsertRow, InsertCol);
 		}
 		void CellArray::Add(MatlabStruct^ Data, int InsertRow, int InsertCol)
 		{
-			this->CellArray_->Add(Data->MatlabStruct_, InsertRow, InsertCol);
+			this->CellArray_->Add(*Data->MatlabStruct_, InsertRow, InsertCol);
 		}
 	}
 }

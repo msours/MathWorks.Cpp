@@ -29,12 +29,12 @@ namespace MathWorks
 		void MatlabStruct::Add(CellArray^ Data, System::String^ FieldName, int InsertRow, int InsertCol)
 		{
 			const std::string &name = msclr::interop::marshal_as<std::string>(FieldName);
-			this->MatlabStruct_->Add(Data->CellArray_, name, InsertRow, InsertCol);
+			this->MatlabStruct_->Add(*Data->CellArray_, name, InsertRow, InsertCol);
 		}
 		void MatlabStruct::Add(MatlabStruct^ Data, System::String^ FieldName, int InsertRow, int InsertCol)
 		{
 			const std::string &name = msclr::interop::marshal_as<std::string>(FieldName);
-			this->MatlabStruct_->Add(Data->MatlabStruct_, name, InsertRow, InsertCol);
+			this->MatlabStruct_->Add(*Data->MatlabStruct_, name, InsertRow, InsertCol);
 		}
 		void MatlabStruct::Add(System::String^ Data, System::String^ FieldName, int InsertRow, int InsertCol)
 		{
