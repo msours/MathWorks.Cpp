@@ -57,6 +57,11 @@ namespace MathWorks
 
 	private:
 
+		void ReshapeAdd(const std::string &Name, double *Data, const int Rows, const int Cols, const int Dim3);
+		void ReshapeAdd(const std::string &Name, float *Data, const int Rows, const int Cols, const int Dim3);
+		void ReshapeAdd(const std::string &Name, uint8_t *Data, const int Rows, const int Cols, const int Dim3);
+		void ReshapeAdd(const std::string &Name, uint16_t *Data, const int Rows, const int Cols, const int Dim3);
+
 		Matfile(MATFile *Destination);
 		MATFile *Destination = NULL;
 
