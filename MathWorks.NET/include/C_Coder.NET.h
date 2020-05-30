@@ -14,8 +14,8 @@ namespace MathWorks
 		public ref class C_Coder abstract sealed 
 		{
 		public:
-			static bool DetectCheckerboardPoints(ImageData^ imageData, double CornerThreshold, array<Point2d^>^ %CornerDetections, Size2i^ %BoardSize);
-
+			static bool DetectCheckerboardPoints(ImageData^ Image, double CornerThreshold, array<Point2d^>^ %CornerDetections, Size2i^ %BoardSize);
+			static ImageData^ Demosaic(ImageData^ BayerPatternImage, const SensorAlignment sensorAlignment);
 		};
 
 		public enum class SensorAlignment

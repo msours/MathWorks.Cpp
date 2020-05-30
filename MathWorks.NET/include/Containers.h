@@ -47,16 +47,20 @@ namespace MathWorks
 		public:
 
 			ImageData(array<byte>^ Data, size_t Width, size_t Height, int BitDepth, int Channels);
+			ImageData(const cv::Mat &Image);
+			bool Save(System::String^ FilePath);
+
 			cv::Mat ToCvMat();
-
-		private:
-
-			static void AssertData16Bit(byte *&data, size_t Width, size_t Height, int BitDepth, int Channels);
 
 			array<byte>^ Data;
 			size_t Width, Height;
 			int BitDepth;
 			int Channels;
+
+		private:
+
+			static void AssertData16Bit(byte *&data, size_t Width, size_t Height, int BitDepth, int Channels);
+
 		};
 	}
 }

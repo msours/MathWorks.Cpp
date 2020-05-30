@@ -1,10 +1,22 @@
 
 #include "Containers.h"
+#include <msclr\marshal_cppstd.h>
 
 namespace MathWorks
 {
 	namespace NET
 	{
+		ImageData::ImageData(const cv::Mat &Image)
+		{
+			const int Multiplier = Image.depth() <= 1 ? 1 : 2;
+			this->BitDepth = Multiplier * 8;
+			this->Channels = Image.channels();
+			this->Width = Image.cols;
+			this->Height = Image.rows;
+			this->Data = gcnew array<byte>(this->Width  *this->Height * Multiplier * Image.channels());
+
+			System::Runtime::InteropServices::Marshal::Copy(System::IntPtr((void *)Image.data), this->Data, 0, this->Data->Length);
+		}
 		ImageData::ImageData(array<byte>^ Data, size_t Width, size_t Height, int BitDepth, int Channels)
 		{
 			this->Data = Data;
@@ -28,6 +40,11 @@ namespace MathWorks
 			}
 
 			return Image;
+		}
+		bool ImageData::Save(System::String^ FilePath) 
+		{
+			const std::string &filePath = msclr::interop::marshal_as<std::string>(FilePath);
+			return cv::imwrite(filePath, this->ToCvMat());
 		}
 
 		void ImageData::AssertData16Bit(byte *&data, size_t Width, size_t Height, int BitDepth, int Channels)
