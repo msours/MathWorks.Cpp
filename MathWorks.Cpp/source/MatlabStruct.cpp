@@ -370,5 +370,61 @@ namespace MathWorks
 		int Ind = (InsertCol - 1) * this->Rows + InsertRow - 1;
 		mxSetField(Destination, Ind, fieldName, Source);
 	}
+	void MatlabStruct::AddImage(const cv::Mat &Image, const std::string &FieldName, int InsertRow, int InsertCol) 
+	{
+		const int DataType = Image.type() & CV_MAT_DEPTH_MASK;
+		const int Channels = Image.channels();
+
+		switch (DataType)
+		{
+		case cv::DataType<uint8_t>::type:
+		{
+			uint8_t *data;
+			TypeConverters::CvMatTo1DArray(Image, data);
+
+			this->ReshapeAdd(data, Image.rows, Image.cols, Channels, FieldName, InsertRow, InsertCol);
+
+			delete[] data;
+
+			return;
+		}
+		case cv::DataType<uint16_t>::type:
+		{
+			uint16_t *data;
+			TypeConverters::CvMatTo1DArray(Image, data);
+
+			this->ReshapeAdd(data, Image.rows, Image.cols, Channels, FieldName, InsertRow, InsertCol);
+
+			delete[] data;
+
+			return;
+		}
+		case cv::DataType<float>::type:
+		{
+			float *data;
+			TypeConverters::CvMatTo1DArray(Image, data);
+
+			this->ReshapeAdd(data, Image.rows, Image.cols, Channels, FieldName, InsertRow, InsertCol);
+
+			delete[] data;
+
+			return;
+		}
+		case cv::DataType<double>::type:
+		{
+			double *data;
+			TypeConverters::CvMatTo1DArray(Image, data);
+
+			this->ReshapeAdd(data, Image.rows, Image.cols, Channels, FieldName, InsertRow, InsertCol);
+
+			delete[] data;
+
+			return;
+		}
+		default:
+
+			return;
+		}
+	}
 }
 
