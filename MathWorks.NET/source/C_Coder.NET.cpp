@@ -107,5 +107,59 @@ namespace MathWorks
 
 			return ComponentRegions;
 		}
+		array<double, 2>^ C_Coder::UniformRandom(size_t Rows, size_t Columns, uint32_t Seed, RandomGenerator randomGenerator) 
+		{
+			const cv::Mat &randomData = MathWorks::C_Coder::UniformRandom(Rows, Columns, Seed, static_cast<MathWorks::RandomGenerator>(randomGenerator));
+
+			array<double, 2>^ RandomData = gcnew array<double, 2>(Rows, Columns);
+			for (int k = 0; k < randomData.rows; k++) for (int j = 0; j < randomData.cols; j++) RandomData[k, j] = randomData.at<double>(k, j);
+
+			return RandomData;
+		}
+		array<double, 2>^ C_Coder::UniformRandom(size_t Rows, size_t Columns, RandomGenerator randomGenerator) 
+		{
+			const cv::Mat &randomData = MathWorks::C_Coder::UniformRandom(Rows, Columns, static_cast<MathWorks::RandomGenerator>(randomGenerator));
+
+			array<double, 2>^ RandomData = gcnew array<double, 2>(Rows, Columns);
+			for (int k = 0; k < randomData.rows; k++) for (int j = 0; j < randomData.cols; j++) RandomData[k, j] = randomData.at<double>(k, j);
+
+			return RandomData;
+		}
+		array<double, 2>^ C_Coder::NormalRandom(size_t Rows, size_t Columns, uint32_t Seed, RandomGenerator randomGenerator)
+		{
+			const cv::Mat &randomData = MathWorks::C_Coder::NormalRandom(Rows, Columns, Seed, static_cast<MathWorks::RandomGenerator>(randomGenerator));
+
+			array<double, 2>^ RandomData = gcnew array<double, 2>(Rows, Columns);
+			for (int k = 0; k < randomData.rows; k++) for (int j = 0; j < randomData.cols; j++) RandomData[k, j] = randomData.at<double>(k, j);
+
+			return RandomData;
+		}
+		array<double, 2>^ C_Coder::NormalRandom(size_t Rows, size_t Columns, RandomGenerator randomGenerator)
+		{
+			const cv::Mat &randomData = MathWorks::C_Coder::NormalRandom(Rows, Columns, static_cast<MathWorks::RandomGenerator>(randomGenerator));
+
+			array<double, 2>^ RandomData = gcnew array<double, 2>(Rows, Columns);
+			for (int k = 0; k < randomData.rows; k++) for (int j = 0; j < randomData.cols; j++) RandomData[k, j] = randomData.at<double>(k, j);
+
+			return RandomData;
+		}
+		array<int>^ C_Coder::RandomPermute(const size_t RangeN, const size_t SampleN, const  uint32_t Seed, const RandomGenerator randomGenerator) 
+		{
+			const std::vector<int> &randomPermutation = MathWorks::C_Coder::RandomPermute(RangeN, SampleN, Seed, static_cast<MathWorks::RandomGenerator>(randomGenerator));
+			array<int>^ RandomPermutation = gcnew array<int>(randomPermutation.size());
+
+			System::Runtime::InteropServices::Marshal::Copy(System::IntPtr((void *)randomPermutation.data()), RandomPermutation, 0, RandomPermutation->Length);
+
+			return RandomPermutation;
+		}
+		array<int>^ C_Coder::RandomPermute(const size_t RangeN, const size_t SampleN, const RandomGenerator randomGenerator) 
+		{
+			const std::vector<int> &randomPermutation = MathWorks::C_Coder::RandomPermute(RangeN, SampleN, static_cast<MathWorks::RandomGenerator>(randomGenerator));
+			array<int>^ RandomPermutation = gcnew array<int>(randomPermutation.size());
+
+			System::Runtime::InteropServices::Marshal::Copy(System::IntPtr((void *)randomPermutation.data()), RandomPermutation, 0, RandomPermutation->Length);
+
+			return RandomPermutation;
+		}
 	}
 }
