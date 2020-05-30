@@ -148,7 +148,7 @@ namespace MathWorks
 
 		CornerDetections = CornerDetections0;
 		BoardSize = cv::Size2i(CheckerboardColumns, CheckerboardRows);
-
+		
 		return true;
 	}
 
