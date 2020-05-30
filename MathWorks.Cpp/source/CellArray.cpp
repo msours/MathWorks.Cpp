@@ -226,7 +226,7 @@ namespace MathWorks
 	}
 	void CellArray::ReshapeAdd(const std::vector<uint32_t> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol)
 	{
-		int Length = Rows * Cols*Dim3;
+		int Length = Rows * Cols * Dim3;
 
 		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
@@ -239,7 +239,7 @@ namespace MathWorks
 	}
 	void CellArray::ReshapeAdd(const std::vector<uint64_t> &Data, int Rows, int Cols, int Dim3, int InsertRow, int InsertCol)
 	{
-		int Length = Rows * Cols*Dim3;
+		int Length = Rows * Cols * Dim3;
 
 		const size_t Dim[3] = { Rows, Cols, Dim3 };
 
@@ -249,5 +249,113 @@ namespace MathWorks
 
 		int Ind = (InsertCol - 1) * this->Rows + InsertRow - 1;
 		mxSetCell(Destination, Ind, Source);
+	}
+	void CellArray::ReshapeAdd(const double *Data, const int Rows, const int Cols, const int Dim3, int InsertRow, int InsertCol) 
+	{
+		int Length = Rows * Cols*Dim3;
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		Source = mxCreateNumericArray(3, Dim, mxDOUBLE_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(Source)), (void *)Data, sizeof(double)*Length);
+
+		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
+		mxSetCell(Destination, Ind, Source);
+	}
+	void CellArray::ReshapeAdd(const float *Data, const int Rows, const int Cols, const int Dim3, int InsertRow, int InsertCol) 
+	{
+		int Length = Rows * Cols*Dim3;
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		Source = mxCreateNumericArray(3, Dim, mxSINGLE_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(Source)), (void *)Data, sizeof(float)*Length);
+
+		int Ind = (InsertCol - 1) * this->Rows + InsertRow - 1;
+		mxSetCell(Destination, Ind, Source);
+	}
+	void CellArray::ReshapeAdd(const uint8_t *Data, const int Rows, const int Cols, const int Dim3, int InsertRow, int InsertCol) 
+	{
+		int Length = Rows * Cols*Dim3;
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		Source = mxCreateNumericArray(3, Dim, mxUINT8_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(Source)), (void *)Data, sizeof(uint8_t)*Length);
+
+		int Ind = (InsertCol - 1)*this->Rows + InsertRow - 1;
+		mxSetCell(Destination, Ind, Source);
+	}
+	void CellArray::ReshapeAdd(const uint16_t *Data, const int Rows, const int Cols, const int Dim3, int InsertRow, int InsertCol) 
+	{
+		int Length = Rows * Cols*Dim3;
+
+		const size_t Dim[3] = { Rows, Cols, Dim3 };
+
+		Source = mxCreateNumericArray(3, Dim, mxUINT16_CLASS, mxREAL);
+
+		memcpy((void *)(mxGetPr(Source)), (void *)Data, sizeof(uint16_t)*Length);
+
+		int Ind = (InsertCol - 1) * this->Rows + InsertRow - 1;
+		mxSetCell(Destination, Ind, Source);
+	}
+	void CellArray::AddImage(const cv::Mat &Image, int InsertRow, int InsertCol)
+	{
+		const int DataType = Image.type() & CV_MAT_DEPTH_MASK;
+		const int Channels = Image.channels();
+
+		switch (DataType)
+		{
+		case cv::DataType<uint8_t>::type:
+		{
+			uint8_t *data;
+			TypeConverters::CvMatTo1DArray(Image, data);
+
+			this->ReshapeAdd(data, Image.rows, Image.cols, Channels, InsertRow, InsertCol);
+
+			delete[] data;
+
+			return;
+		}
+		case cv::DataType<uint16_t>::type:
+		{
+			uint16_t *data;
+			TypeConverters::CvMatTo1DArray(Image, data);
+
+			this->ReshapeAdd(data, Image.rows, Image.cols, Channels, InsertRow, InsertCol);
+
+			delete[] data;
+
+			return;
+		}
+		case cv::DataType<float>::type:
+		{
+			float *data;
+			TypeConverters::CvMatTo1DArray(Image, data);
+
+			this->ReshapeAdd(data, Image.rows, Image.cols, Channels, InsertRow, InsertCol);
+
+			delete[] data;
+
+			return;
+		}
+		case cv::DataType<double>::type:
+		{
+			double *data;
+			TypeConverters::CvMatTo1DArray(Image, data);
+
+			this->ReshapeAdd(data, Image.rows, Image.cols, Channels, InsertRow, InsertCol);
+
+			delete[] data;
+
+			return;
+		}
+		default:
+
+			return;
+		}
 	}
 }

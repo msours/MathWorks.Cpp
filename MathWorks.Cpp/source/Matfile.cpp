@@ -329,7 +329,7 @@ namespace MathWorks
 		mxDestroyArray(source);
 
 	}
-	void Matfile::ReshapeAdd(const std::string &Name, double *Data, const int Rows, const int Cols, const int Dim3) 
+	void Matfile::ReshapeAdd(const std::string &Name, const double *Data, const int Rows, const int Cols, const int Dim3) 
 	{
 		int Length = Rows * Cols*Dim3;
 		const char *name = Name.c_str();
@@ -342,7 +342,7 @@ namespace MathWorks
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 	}
-	void Matfile::ReshapeAdd(const std::string &Name, float *Data, const int Rows, const int Cols, const int Dim3)
+	void Matfile::ReshapeAdd(const std::string &Name, const float *Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;
 		const char *name = Name.c_str();
@@ -355,7 +355,7 @@ namespace MathWorks
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 	}
-	void Matfile::ReshapeAdd(const std::string &Name, uint8_t *Data, const int Rows, const int Cols, const int Dim3)
+	void Matfile::ReshapeAdd(const std::string &Name, const uint8_t *Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols * Dim3;
 		const char *name = Name.c_str();
@@ -368,7 +368,7 @@ namespace MathWorks
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 	}
-	void Matfile::ReshapeAdd(const std::string &Name, uint16_t *Data, const int Rows, const int Cols, const int Dim3)
+	void Matfile::ReshapeAdd(const std::string &Name, const uint16_t *Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols * Dim3;
 		const char *name = Name.c_str();
