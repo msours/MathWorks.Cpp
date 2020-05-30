@@ -77,13 +77,19 @@ void TestAdaptiveThreshold()
 
 void TestMatfileIO() 
 {
-	const cv::Mat &Image = cv::imread("F.png", cv::IMREAD_ANYDEPTH | cv::IMREAD_ANYDEPTH);
-	cv::Mat Image0;
-	cv::merge(std::vector<cv::Mat>({ Image, Image / 2, Image / 2 }), Image0);
+	const cv::Mat &Image = cv::imread("test.png", cv::IMREAD_ANYCOLOR | cv::IMREAD_ANYDEPTH);
 
 	MathWorks::Matfile &matFile = MathWorks::Matfile::Open("test.mat", MathWorks::MatfileMode::OverwriteCompress);
 
-	matFile.AddImage("TestImage", Image0);
+	MathWorks::MatlabStruct matlabStruct(1, 1, std::vector<std::string>({ "Field1" }));
+	matlabStruct.AddImage(Image, "Field1", 1, 1);
+
+	MathWorks::CellArray cellArray(1, 1);
+	cellArray.AddImage(Image, 1, 1);
+
+	matFile.AddImage("TestImage", Image);
+	matFile.Add("TestStruct", matlabStruct);
+	matFile.Add("TestCell", cellArray);
 
 	std::cout << matFile.Close() << "\n";
 }

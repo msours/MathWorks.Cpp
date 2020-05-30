@@ -42,7 +42,6 @@ namespace MathWorks
 		memcpy((void *)(mxGetPr(source)), (void *)&Data, sizeof(double));
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
-
 	}
 	void Matfile::Add(const std::string &Name, const float Data)
 	{
@@ -137,40 +136,13 @@ namespace MathWorks
 	{
 		const int DataType = Image.type() & CV_MAT_DEPTH_MASK;
 		const int Channels = Image.channels();
-		const int Width = Image.cols;
-		const int Height = Image.rows;
-
-		const int N = Width * Height;
 
 		switch (DataType)
 		{
 		case cv::DataType<uint8_t>::type:
 		{
-			uint8_t *data = new uint8_t[N];
-
-			if (Channels > 1)
-			{
-				for (int j = 0; j < Width; j++)
-				{
-					for (int k = 0; k < Height; k++)
-					{
-						for (int c = 0; c < Channels; c++)
-						{
-							data[k + Height * j + N * (2 - c)] = Image.data[(k * Width + j) * Channels + c];
-						}
-					}
-				}
-			}
-			else
-			{
-				for (int j = 0; j < Width; j++)
-				{
-					for (int k = 0; k < Height; k++)
-					{
-						data[k + Height * j] = Image.data[j + Width * k];
-					}
-				}
-			}
+			uint8_t *data;
+			TypeConverters::CvMatTo1DArray(Image, data);
 
 			this->ReshapeAdd(Name, data, Image.rows, Image.cols, Channels);
 
@@ -180,31 +152,8 @@ namespace MathWorks
 		}
 		case cv::DataType<uint16_t>::type:
 		{
-			uint16_t *data = new uint16_t[N * Channels];
-
-			if (Channels > 1)
-			{
-				for (int j = 0; j < Width; j++)
-				{
-					for (int k = 0; k < Height; k++)
-					{
-						for (int c = 0; c < Channels; c++)
-						{
-							data[k + Height * j + N * (2 - c)] = ((uint16_t)Image.data[(j + Width * k) * 2 * Channels + (2 * c) + 1] << 8) | ((uint16_t)Image.data[(j + Width * k) * 2 * Channels + (2 * c)]);
-						}
-					}
-				}
-			}
-			else
-			{
-				for (int j = 0; j < Width; j++)
-				{
-					for (int k = 0; k < Height; k++)
-					{
-						data[k + Height * j] = ((uint16_t)Image.data[(j + Width * k) * 2 + 1] << 8) | ((uint16_t)Image.data[(j + Width * k) * 2]);
-					}
-				}
-			}
+			uint16_t *data;
+			TypeConverters::CvMatTo1DArray(Image, data);
 
 			this->ReshapeAdd(Name, data, Image.rows, Image.cols, Channels);
 
@@ -214,32 +163,8 @@ namespace MathWorks
 		}
 		case cv::DataType<float>::type:
 		{
-			float *data = new float[N * Channels];
-			if (Channels > 1)
-			{
-				for (int j = 0; j < Width; j++)
-				{
-					for (int k = 0; k < Height; k++)
-					{
-						const cv::Vec3f &V = Image.at<cv::Vec3f>(k, j);
-
-						for (int c = 0; c < Channels; c++)
-						{
-							data[k + Height * j + N * (2 - c)] = V(c);
-						}
-					}
-				}
-			}
-			else
-			{
-				for (int j = 0; j < Width; j++)
-				{
-					for (int k = 0; k < Height; k++)
-					{
-						data[k + Height * j] = Image.at<float>(k, j);
-					}
-				}
-			}
+			float *data;
+			TypeConverters::CvMatTo1DArray(Image, data);
 
 			this->ReshapeAdd(Name, data, Image.rows, Image.cols, Channels);
 
@@ -249,33 +174,8 @@ namespace MathWorks
 		}
 		case cv::DataType<double>::type:
 		{
-			double *data = new double[N * Channels];
-
-			if (Channels > 1)
-			{
-				for (int j = 0; j < Width; j++)
-				{
-					for (int k = 0; k < Height; k++)
-					{
-						const cv::Vec3d &V = Image.at<cv::Vec3d>(k, j);
-
-						for (int c = 0; c < Channels; c++)
-						{
-							data[k + Height * j + N * (2 - c)] = V(c);
-						}
-					}
-				}
-			}
-			else
-			{
-				for (int j = 0; j < Width; j++)
-				{
-					for (int k = 0; k < Height; k++)
-					{
-						data[k + Height * j] = Image.at<double>(k, j);
-					}
-				}
-			}
+			double *data;
+			TypeConverters::CvMatTo1DArray(Image, data);
 
 			this->ReshapeAdd(Name, data, Image.rows, Image.cols, Channels);
 
@@ -429,7 +329,7 @@ namespace MathWorks
 		mxDestroyArray(source);
 
 	}
-	void Matfile::ReshapeAdd(const std::string &Name, double *Data, const int Rows, const int Cols, const int Dim3) 
+	void Matfile::ReshapeAdd(const std::string &Name, const double *Data, const int Rows, const int Cols, const int Dim3) 
 	{
 		int Length = Rows * Cols*Dim3;
 		const char *name = Name.c_str();
@@ -442,7 +342,7 @@ namespace MathWorks
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 	}
-	void Matfile::ReshapeAdd(const std::string &Name, float *Data, const int Rows, const int Cols, const int Dim3)
+	void Matfile::ReshapeAdd(const std::string &Name, const float *Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols*Dim3;
 		const char *name = Name.c_str();
@@ -455,7 +355,7 @@ namespace MathWorks
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 	}
-	void Matfile::ReshapeAdd(const std::string &Name, uint8_t *Data, const int Rows, const int Cols, const int Dim3)
+	void Matfile::ReshapeAdd(const std::string &Name, const uint8_t *Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols * Dim3;
 		const char *name = Name.c_str();
@@ -468,7 +368,7 @@ namespace MathWorks
 		matPutVariable(Destination, name, source);
 		mxDestroyArray(source);
 	}
-	void Matfile::ReshapeAdd(const std::string &Name, uint16_t *Data, const int Rows, const int Cols, const int Dim3)
+	void Matfile::ReshapeAdd(const std::string &Name, const uint16_t *Data, const int Rows, const int Cols, const int Dim3)
 	{
 		int Length = Rows * Cols * Dim3;
 		const char *name = Name.c_str();

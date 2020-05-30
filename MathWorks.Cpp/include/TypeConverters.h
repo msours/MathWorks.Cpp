@@ -27,6 +27,10 @@ namespace MathWorks
 		static void CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage16 &MatlabImageOut);
 		static void CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImage8 &MatlabImageOut);
 		static void CvMatToMatlabImage(const cv::Mat &CvImageIn, MatlabImageBinary &MatlabImageOut);
+		static void CvMatTo1DArray(const cv::Mat &CvImageIn, uint8_t *&Array1DOut);
+		static void CvMatTo1DArray(const cv::Mat &CvImageIn, uint16_t *&Array1DOut);
+		static void CvMatTo1DArray(const cv::Mat &CvImageIn, double *&Array1DOut);
+		static void CvMatTo1DArray(const cv::Mat &CvImageIn, float *&Array1DOut);
 
 		static void CvMatToMatlabMatrix(const cv::Mat &CvMatIn, MatlabMatrix &MatlabMatrixOut);
 
