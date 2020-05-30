@@ -22,12 +22,19 @@ namespace MathWorks
 
 			return true;
 		}
-		ImageData^ Demosaic(ImageData^ BayerPatternImage, const SensorAlignment sensorAlignment)
+		ImageData^ C_Coder::Demosaic(ImageData^ BayerPatternImage, const SensorAlignment sensorAlignment)
 		{
 			const cv::Mat &bayerPatternImage = BayerPatternImage->ToCvMat();
 			const cv::Mat &ColorImage = MathWorks::C_Coder::Demosaic(bayerPatternImage, static_cast<MathWorks::SensorAlignment>(sensorAlignment));
 
 			return gcnew ImageData(ColorImage);
+		}
+		ImageData^ C_Coder::Imresize(ImageData^ Image, size_t NewHeight, size_t NewWidth, ResizeMode resizeMode) 
+		{
+			const cv::Mat &image = Image->ToCvMat();
+			const cv::Mat resizedImage = MathWorks::C_Coder::Imresize(image, NewHeight, NewWidth, static_cast<MathWorks::ResizeMode>(resizeMode));
+
+			return gcnew ImageData(resizedImage);
 		}
 	}
 }

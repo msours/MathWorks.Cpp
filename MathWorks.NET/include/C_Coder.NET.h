@@ -16,6 +16,7 @@ namespace MathWorks
 		public:
 			static bool DetectCheckerboardPoints(ImageData^ Image, double CornerThreshold, array<Point2d^>^ %CornerDetections, Size2i^ %BoardSize);
 			static ImageData^ Demosaic(ImageData^ BayerPatternImage, const SensorAlignment sensorAlignment);
+			static ImageData^ Imresize(ImageData^ Image, size_t NewHeight, size_t NewWidth, ResizeMode resizeMode);
 		};
 
 		public enum class SensorAlignment
