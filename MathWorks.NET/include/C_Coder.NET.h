@@ -13,7 +13,7 @@ namespace MathWorks
 
 		public ref class C_Coder abstract sealed 
 		{
-			bool DetectCheckerboardPoints(ImageData^ imageData, double CornerThreshold, array<Point2d^>^ %CornerDetections, Size2i^ %BoardSize);
+			static bool DetectCheckerboardPoints(ImageData^ imageData, double CornerThreshold, array<Point2d^>^ %CornerDetections, Size2i^ %BoardSize);
 
 		};
 
