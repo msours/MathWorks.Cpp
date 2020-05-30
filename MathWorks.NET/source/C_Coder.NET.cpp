@@ -77,5 +77,12 @@ namespace MathWorks
 
 			return SplineY;
 		}
+		ImageData^ C_Coder::AdaptiveThreshold(ImageData^ Image, const double WindowSize, const double C, const ThresholdMode thresholdMode) 
+		{
+			const cv::Mat &image = Image->ToCvMat();
+			const cv::Mat &thresholdedImage = MathWorks::C_Coder::AdaptiveThreshold(image, WindowSize, C, static_cast<MathWorks::ThresholdMode>(thresholdMode));
+
+			return gcnew ImageData(thresholdedImage);
+		}
 	}
 }
