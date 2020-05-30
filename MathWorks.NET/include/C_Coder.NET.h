@@ -19,6 +19,7 @@ namespace MathWorks
 			static ImageData^ Imresize(ImageData^ Image, size_t NewHeight, size_t NewWidth, ResizeMode resizeMode);
 			static array<double>^ CubicSpline(array<double>^ X, array<double>^ Y, array<double>^ SplineX);
 			static double CubicSpline(array<double>^ X, array<double>^ Y, double SplineX);
+			static array<double>^ Splineapp(array<double>^ X, array<double>^ Y, array<double>^ Weight, array<double>^ SplineX);
 		};
 
 		public enum class SensorAlignment

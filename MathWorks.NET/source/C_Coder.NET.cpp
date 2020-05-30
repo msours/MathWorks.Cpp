@@ -61,5 +61,21 @@ namespace MathWorks
 
 			return MathWorks::C_Coder::CubicSpline(X_, Y_, SplineX);
 		}
+		array<double>^ C_Coder::Splineapp(array<double>^ X, array<double>^ Y, array<double>^ Weight, array<double>^ SplineX) 
+		{
+			std::vector<double> X_, Y_, Weight_, SplineX_;
+			for (int k = 0; k < X->Length; k++) X_.push_back((double)X[k]);
+			for (int k = 0; k < Y->Length; k++) Y_.push_back((double)Y[k]);
+			for (int k = 0; k < Weight->Length; k++) Weight_.push_back((double)Weight[k]);
+			for (int k = 0; k < SplineX->Length; k++) SplineX_.push_back((double)SplineX[k]);
+
+			const std::vector<double> &SplineY_ = MathWorks::C_Coder::Splineapp(X_, Y_, Weight_, SplineX_);
+
+			array<double>^ SplineY = gcnew array<double>(SplineY_.size());
+
+			System::Runtime::InteropServices::Marshal::Copy(System::IntPtr((void *)SplineY_.data()), SplineY, 0, SplineY->Length);
+
+			return SplineY;
+		}
 	}
 }
