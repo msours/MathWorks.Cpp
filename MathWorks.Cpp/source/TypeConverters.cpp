@@ -123,7 +123,6 @@ namespace MathWorks
 		// Known issue with emxCreateND_uint16_T with at least one Matlab versions C Coder output, doesn't correctly allocate memory for 3 channel 16 bit images.
 		MatlabImageOut = emxCreateND_uint16_T(NumDimensions, Size);
 
-		uint16_t Value;
 		if (Channels > 1)
 		{
 			for (int j = 0; j < Width; j++)
@@ -132,8 +131,7 @@ namespace MathWorks
 				{
 					for (int c = 0; c < Channels; c++)
 					{
-						Value = ((uint16_t)CvImageIn.data[(j + Width * k) * 2 * Channels + (2 * c) + 1] << 8) | ((uint16_t)CvImageIn.data[(j + Width * k) * 2 * Channels + (2 * c)]);
-						MatlabImageOut->data[k + Height * j + N * (2 - c)] = Value;
+						MatlabImageOut->data[k + Height * j + N * (2 - c)] = ((uint16_t)CvImageIn.data[(j + Width * k) * 2 * Channels + (2 * c) + 1] << 8) | ((uint16_t)CvImageIn.data[(j + Width * k) * 2 * Channels + (2 * c)]);
 					}
 				}
 			}
@@ -144,8 +142,7 @@ namespace MathWorks
 			{
 				for (int k = 0; k < Height; k++)
 				{
-					Value = ((uint16_t)CvImageIn.data[(j + Width * k) * 2 + 1] << 8) | ((uint16_t)CvImageIn.data[(j + Width * k) * 2]);
-					MatlabImageOut->data[k + Height * j] = Value;
+					MatlabImageOut->data[k + Height * j] = ((uint16_t)CvImageIn.data[(j + Width * k) * 2 + 1] << 8) | ((uint16_t)CvImageIn.data[(j + Width * k) * 2]);
 				}
 			}
 		}
@@ -203,6 +200,146 @@ namespace MathWorks
 			for (int k = 0; k < Height; k++)
 			{
 				MatlabImageOut->data[k + Height * j] = CvImageIn.data[j + Width * k];
+			}
+		}
+	}
+	void TypeConverters::CvMatTo1DArray(const cv::Mat &CvImageIn, uint8_t *&Array1DOut)
+	{
+		const int Channels = CvImageIn.channels();
+		const int Width = CvImageIn.cols;
+		const int Height = CvImageIn.rows;
+
+		const int N = Width * Height;
+
+		Array1DOut = new uint8_t[N * Channels];
+
+		if (Channels > 1)
+		{
+			for (int j = 0; j < Width; j++)
+			{
+				for (int k = 0; k < Height; k++)
+				{
+					for (int c = 0; c < Channels; c++)
+					{
+						Array1DOut[k + Height * j + N * (2 - c)] = CvImageIn.data[(k * Width + j) * Channels + c];
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int j = 0; j < Width; j++)
+			{
+				for (int k = 0; k < Height; k++)
+				{
+					Array1DOut[k + Height * j] = CvImageIn.data[j + Width * k];
+				}
+			}
+		}
+	}
+	void TypeConverters::CvMatTo1DArray(const cv::Mat &CvImageIn, uint16_t *&Array1DOut)
+	{
+		const int Channels = CvImageIn.channels();
+		const int Width = CvImageIn.cols;
+		const int Height = CvImageIn.rows;
+
+		const int N = Width * Height;
+
+		Array1DOut = new uint16_t[N * Channels];
+
+		if (Channels > 1)
+		{
+			for (int j = 0; j < Width; j++)
+			{
+				for (int k = 0; k < Height; k++)
+				{
+					for (int c = 0; c < Channels; c++)
+					{
+						Array1DOut[k + Height * j + N * (2 - c)] = ((uint16_t)CvImageIn.data[(j + Width * k) * 2 * Channels + (2 * c) + 1] << 8) | ((uint16_t)CvImageIn.data[(j + Width * k) * 2 * Channels + (2 * c)]);
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int j = 0; j < Width; j++)
+			{
+				for (int k = 0; k < Height; k++)
+				{
+					Array1DOut[k + Height * j] = ((uint16_t)CvImageIn.data[(j + Width * k) * 2 + 1] << 8) | ((uint16_t)CvImageIn.data[(j + Width * k) * 2]);
+				}
+			}
+		}
+	}
+	void TypeConverters::CvMatTo1DArray(const cv::Mat &CvImageIn, double *&Array1DOut) 
+	{
+		const int Channels = CvImageIn.channels();
+		const int Width = CvImageIn.cols;
+		const int Height = CvImageIn.rows;
+
+		const int N = Width * Height;
+
+		Array1DOut = new double[N * Channels];
+
+		if (Channels > 1)
+		{
+			for (int j = 0; j < Width; j++)
+			{
+				for (int k = 0; k < Height; k++)
+				{
+					const cv::Vec3d &V = CvImageIn.at<cv::Vec3d>(k, j);
+
+					for (int c = 0; c < Channels; c++)
+					{
+						Array1DOut[k + Height * j + N * (2 - c)] = V(c);
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int j = 0; j < Width; j++)
+			{
+				for (int k = 0; k < Height; k++)
+				{
+					Array1DOut[k + Height * j] = CvImageIn.at<double>(k, j);
+				}
+			}
+		}
+	}
+	void TypeConverters::CvMatTo1DArray(const cv::Mat &CvImageIn, float *&Array1DOut)
+	{
+		const int Channels = CvImageIn.channels();
+		const int Width = CvImageIn.cols;
+		const int Height = CvImageIn.rows;
+
+		const int N = Width * Height;
+
+		Array1DOut = new float[N * Channels];
+
+		if (Channels > 1)
+		{
+			for (int j = 0; j < Width; j++)
+			{
+				for (int k = 0; k < Height; k++)
+				{
+					const cv::Vec3d &V = CvImageIn.at<cv::Vec3d>(k, j);
+
+					for (int c = 0; c < Channels; c++)
+					{
+						Array1DOut[k + Height * j + N * (2 - c)] = V(c);
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int j = 0; j < Width; j++)
+			{
+				for (int k = 0; k < Height; k++)
+				{
+					Array1DOut[k + Height * j] = CvImageIn.at<float>(k, j);
+				}
 			}
 		}
 	}

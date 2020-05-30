@@ -10,3 +10,4 @@ project(${parent_project_name} DESCRIPTION "Some Matlab functionality I've found
 add_subdirectory(MathWorks.CPP)
 add_subdirectory(MathWorks.NET)
 add_subdirectory(TestCpp)
+add_subdirectory(Tests.NET)

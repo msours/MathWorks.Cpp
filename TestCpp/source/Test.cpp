@@ -77,16 +77,26 @@ void TestAdaptiveThreshold()
 
 void TestMatfileIO() 
 {
-	MathWorks::Matfile &matFile = MathWorks::Matfile::Open("test.mat");
+	const cv::Mat &Image = cv::imread("test.png", cv::IMREAD_ANYCOLOR | cv::IMREAD_ANYDEPTH);
 
-	matFile.Add("TestDouble", 0.34534535);
+	MathWorks::Matfile &matFile = MathWorks::Matfile::Open("test.mat", MathWorks::MatfileMode::OverwriteCompress);
+
+	MathWorks::MatlabStruct matlabStruct(1, 1, std::vector<std::string>({ "Field1" }));
+	matlabStruct.AddImage(Image, "Field1", 1, 1);
+
+	MathWorks::CellArray cellArray(1, 1);
+	cellArray.AddImage(Image, 1, 1);
+
+	matFile.AddImage("TestImage", Image);
+	matFile.Add("TestStruct", matlabStruct);
+	matFile.Add("TestCell", cellArray);
 
 	std::cout << matFile.Close() << "\n";
 }
 
 int main()
 {
-	TestRandomNumberGenerator();
+	TestMatfileIO();
 
 	return 0;
 }
