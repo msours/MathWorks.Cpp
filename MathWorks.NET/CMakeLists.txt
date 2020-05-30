@@ -27,6 +27,7 @@ add_library(${project_name} SHARED
 	source/Matfile.NET.cpp
 	source/CellArray.NET.cpp
 	source/MatlabStruct.NET.cpp
+    source/Containers.cpp
 
     ${Library_HEADERS}
 )

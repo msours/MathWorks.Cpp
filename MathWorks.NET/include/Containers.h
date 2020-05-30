@@ -6,68 +6,57 @@
 
 typedef unsigned char byte;
 
-namespace Containers
+namespace MathWorks
 {
-	public ref class ImageData
+	namespace NET
 	{
-	public:
-
-		ImageData(array<byte>^ Data, size_t Width, size_t Height, int BitDepth, int Channels)
+		public ref struct Point2d
 		{
-			this->Data = Data;
-			this->Width = Width;
-			this->Height = Height;
-			this->BitDepth = BitDepth;
-			this->Channels = Channels;
-		}
-		cv::Mat ToCvMat()
-		{
-			byte* data = new byte[Data->Length];
-			System::Runtime::InteropServices::Marshal::Copy(Data, 0, System::IntPtr(data), Data->Length);
-
-			cv::Mat Image;
-
-			if (BitDepth <= 8) Image = cv::Mat(Height, Width, CV_MAKETYPE(CV_8U, Channels), data);
-			else
+			Point2d() {};
+			Point2d(double X, double Y)
 			{
-				data = ImageData::AssertData16Bit(data, Width, Height, BitDepth, Channels);
-				Image = cv::Mat(Height, Width, CV_MAKETYPE(CV_16U, Channels), data);
+				this->X = X;
+				this->Y = Y;
 			}
-
-			return Image;
-		}
-
-	private:
-
-		static byte* AssertData16Bit(byte* data, size_t Width, size_t Height, int BitDepth, int Channels)
-		{
-			if (BitDepth == 16) return data;
-
-			byte lsb, msb;
-			uint16_t Value;
-
-			double Scale = 65535.0 / (pow(2, BitDepth) - 1.0);
-
-			int j = 0;
-			for (size_t k = 0; k < Width * Height * Channels; k++)
+			Point2d(const cv::Point2d &point2d)
 			{
-				Value = ((uint16_t)data[j + 1] << 8) | ((uint16_t)data[j]);
-				Value = (uint16_t)((double)Value * Scale);
-
-				lsb = (byte)(Value & 0xFF);
-				msb = (byte)((Value >> 8) & 0xFF);
-
-				data[j] = lsb;
-				data[j + 1] = msb;
-
-				j += 2;
+				this->X = point2d.x;
+				this->Y = point2d.y;
 			}
-			return data;
-		}
+			double X = std::numeric_limits<double>::quiet_NaN(), Y = std::numeric_limits<double>::quiet_NaN();
+		};
 
-		array<byte>^ Data;
-		size_t Width, Height;
-		int BitDepth;
-		int Channels;
-	};
+		public ref struct Size2i 
+		{
+			Size2i() {}
+			Size2i(int Width, int Height)
+			{
+				this->Width = Width;
+				this->Height = Height;
+			}
+			Size2i(const cv::Size2i &size2i) 
+			{
+				this->Width = size2i.width;
+				this->Height = size2i.height;
+			}
+			int Width = std::numeric_limits<int>::quiet_NaN(), Height = std::numeric_limits<int>::quiet_NaN();
+		};
+
+		public ref class ImageData
+		{
+		public:
+
+			ImageData(array<byte>^ Data, size_t Width, size_t Height, int BitDepth, int Channels);
+			cv::Mat ToCvMat();
+
+		private:
+
+			static void AssertData16Bit(byte *&data, size_t Width, size_t Height, int BitDepth, int Channels);
+
+			array<byte>^ Data;
+			size_t Width, Height;
+			int BitDepth;
+			int Channels;
+		};
+	}
 }
