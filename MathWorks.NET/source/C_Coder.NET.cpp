@@ -84,5 +84,17 @@ namespace MathWorks
 
 			return gcnew ImageData(thresholdedImage);
 		}
+		array<ComponentRegion^>^ C_Coder::ConnectedComponents(ImageData^ BinaryImage, ImageData^ Image, const int StrelSize, const double AreaThreshold) 
+		{
+			const cv::Mat &binaryImage = BinaryImage->ToCvMat();
+			const cv::Mat &image = Image->ToCvMat();
+
+			std::vector<MathWorks::ComponentRegion> componentRegions = MathWorks::C_Coder::ConnectedComponents(binaryImage, image, StrelSize, AreaThreshold);
+
+			array<ComponentRegion^>^ ComponentRegions = gcnew array<ComponentRegion^>(componentRegions.size());
+			for (int k = 0; k < componentRegions.size(); k++) ComponentRegions[k] = gcnew ComponentRegion(componentRegions[k].WeightedCentroid, componentRegions[k].BoundingRectangle, componentRegions[k].Area, componentRegions[k].RectangleArea);
+
+			return ComponentRegions;
+		}
 	}
 }

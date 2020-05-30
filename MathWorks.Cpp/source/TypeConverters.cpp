@@ -199,7 +199,7 @@ namespace MathWorks
 		{
 			for (int k = 0; k < Height; k++)
 			{
-				MatlabImageOut->data[k + Height * j] = CvImageIn.data[j + Width * k];
+				MatlabImageOut->data[k + Height * j] = CvImageIn.data[j + Width * k] > 0;
 			}
 		}
 	}

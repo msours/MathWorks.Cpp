@@ -41,6 +41,33 @@ namespace MathWorks
 			}
 			int Width = std::numeric_limits<int>::quiet_NaN(), Height = std::numeric_limits<int>::quiet_NaN();
 		};
+		public ref struct Rect2d 
+		{
+			Rect2d() {}
+			Rect2d(const cv::Rect2d &rect2d) 
+			{
+				this->TopLeft = gcnew Point2d(rect2d.x, rect2d.y);
+				this->Width = rect2d.width;
+				this->Height = rect2d.height;
+			}
+			Point2d^ TopLeft = gcnew Point2d();
+			int Width = std::numeric_limits<int>::quiet_NaN(), Height = std::numeric_limits<int>::quiet_NaN();
+		};
+		public ref class ComponentRegion
+		{
+			ComponentRegion() {}
+			ComponentRegion(const cv::Point2d &WeightedCentroid, const cv::Rect2d &BoundingRectangle, const double Area, const double RectangleArea) 
+			{
+				this->WeightedCentroid = gcnew Point2d(WeightedCentroid);
+				this->BoundingRectangle = gcnew Rect2d(BoundingRectangle);
+				this->Area = Area;
+				this->RectangleArea = RectangleArea;
+			}
+			Point2d^ WeightedCentroid;
+			Rect2d^ BoundingRectangle;
+			double Area;
+			double RectangleArea;
+		};
 
 		public ref class ImageData
 		{
