@@ -26,9 +26,12 @@ namespace MathWorks
 
 			static array<double>^ Splineapp(array<double>^ X, array<double>^ Y, array<double>^ Weight, array<double>^ SplineX);
 
-			static ImageData^ AdaptiveThreshold(ImageData^ Image, const double WindowSize, const double C, const ThresholdMode thresholdMode);
+			static ImageData^ AdaptiveThreshold(ImageData^ Image, double WindowSize, double C, const ThresholdMode thresholdMode);
 
-			static array<ComponentRegion^>^ ConnectedComponents(ImageData^ BinaryImage, ImageData^ Image, const int StrelSize, const double AreaThreshold);
+			static array<ComponentRegion^>^ ConnectedComponents(ImageData^ BinaryImage, ImageData^ Image,int StrelSize,  double AreaThreshold);
+
+			static array<ComponentRegion^>^ AdaptiveThresholdConnectedComponents(ImageData^ Image, double WindowSize, double C, double AreaThreshold, const ThresholdMode thresholdMode);
+
 		};
 
 		public enum class SensorAlignment

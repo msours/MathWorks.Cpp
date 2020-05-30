@@ -22,7 +22,7 @@ namespace MathWorks
 
 			return true;
 		}
-		ImageData^ C_Coder::Demosaic(ImageData^ BayerPatternImage, const SensorAlignment sensorAlignment)
+		ImageData^ C_Coder::Demosaic(ImageData^ BayerPatternImage, SensorAlignment sensorAlignment)
 		{
 			const cv::Mat &bayerPatternImage = BayerPatternImage->ToCvMat();
 			const cv::Mat &ColorImage = MathWorks::C_Coder::Demosaic(bayerPatternImage, static_cast<MathWorks::SensorAlignment>(sensorAlignment));
@@ -77,19 +77,30 @@ namespace MathWorks
 
 			return SplineY;
 		}
-		ImageData^ C_Coder::AdaptiveThreshold(ImageData^ Image, const double WindowSize, const double C, const ThresholdMode thresholdMode) 
+		ImageData^ C_Coder::AdaptiveThreshold(ImageData^ Image, double WindowSize, double C, ThresholdMode thresholdMode) 
 		{
 			const cv::Mat &image = Image->ToCvMat();
 			const cv::Mat &thresholdedImage = MathWorks::C_Coder::AdaptiveThreshold(image, WindowSize, C, static_cast<MathWorks::ThresholdMode>(thresholdMode));
 
 			return gcnew ImageData(thresholdedImage);
 		}
-		array<ComponentRegion^>^ C_Coder::ConnectedComponents(ImageData^ BinaryImage, ImageData^ Image, const int StrelSize, const double AreaThreshold) 
+		array<ComponentRegion^>^ C_Coder::ConnectedComponents(ImageData^ BinaryImage, ImageData^ Image, int StrelSize, double AreaThreshold) 
 		{
 			const cv::Mat &binaryImage = BinaryImage->ToCvMat();
 			const cv::Mat &image = Image->ToCvMat();
 
 			std::vector<MathWorks::ComponentRegion> componentRegions = MathWorks::C_Coder::ConnectedComponents(binaryImage, image, StrelSize, AreaThreshold);
+
+			array<ComponentRegion^>^ ComponentRegions = gcnew array<ComponentRegion^>(componentRegions.size());
+			for (int k = 0; k < componentRegions.size(); k++) ComponentRegions[k] = gcnew ComponentRegion(componentRegions[k].WeightedCentroid, componentRegions[k].BoundingRectangle, componentRegions[k].Area, componentRegions[k].RectangleArea);
+
+			return ComponentRegions;
+		}
+		array<ComponentRegion^>^ C_Coder::AdaptiveThresholdConnectedComponents(ImageData^ Image, double WindowSize, double C, double AreaThreshold, ThresholdMode thresholdMode)
+		{
+			const cv::Mat &image = Image->ToCvMat();
+
+			std::vector<MathWorks::ComponentRegion> componentRegions = MathWorks::C_Coder::AdaptiveThresholdConnectedComponents(image, WindowSize, C, AreaThreshold, static_cast<MathWorks::ThresholdMode>(thresholdMode));
 
 			array<ComponentRegion^>^ ComponentRegions = gcnew array<ComponentRegion^>(componentRegions.size());
 			for (int k = 0; k < componentRegions.size(); k++) ComponentRegions[k] = gcnew ComponentRegion(componentRegions[k].WeightedCentroid, componentRegions[k].BoundingRectangle, componentRegions[k].Area, componentRegions[k].RectangleArea);

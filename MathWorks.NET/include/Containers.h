@@ -53,7 +53,7 @@ namespace MathWorks
 			Point2d^ TopLeft = gcnew Point2d();
 			int Width = std::numeric_limits<int>::quiet_NaN(), Height = std::numeric_limits<int>::quiet_NaN();
 		};
-		public ref class ComponentRegion
+		public ref struct ComponentRegion
 		{
 			ComponentRegion() {}
 			ComponentRegion(const cv::Point2d &WeightedCentroid, const cv::Rect2d &BoundingRectangle, const double Area, const double RectangleArea) 
