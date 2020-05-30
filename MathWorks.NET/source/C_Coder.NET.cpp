@@ -29,12 +29,37 @@ namespace MathWorks
 
 			return gcnew ImageData(ColorImage);
 		}
-		ImageData^ C_Coder::Imresize(ImageData^ Image, size_t NewHeight, size_t NewWidth, ResizeMode resizeMode) 
+		ImageData^ C_Coder::Imresize(ImageData^ Image, size_t NewHeight, size_t NewWidth, ResizeMode resizeMode)
 		{
 			const cv::Mat &image = Image->ToCvMat();
 			const cv::Mat resizedImage = MathWorks::C_Coder::Imresize(image, NewHeight, NewWidth, static_cast<MathWorks::ResizeMode>(resizeMode));
 
 			return gcnew ImageData(resizedImage);
+		}
+		array<double>^ C_Coder::CubicSpline(array<double>^ X, array<double>^ Y, array<double>^ SplineX)
+		{
+			std::vector<double> X_, Y_, SplineX_;
+
+			for (int k = 0; k < X->Length; k++) X_.push_back((double)X[k]);
+			for (int k = 0; k < Y->Length; k++) Y_.push_back((double)Y[k]);
+			for (int k = 0; k < SplineX->Length; k++) SplineX_.push_back((double)SplineX[k]);
+
+			const std::vector<double> &SplineY_ = MathWorks::C_Coder::CubicSpline(X_, Y_, SplineX_);
+
+			array<double>^ SplineY = gcnew array<double>(SplineY_.size());
+
+			System::Runtime::InteropServices::Marshal::Copy(System::IntPtr((void *)SplineY_.data()), SplineY, 0, SplineY->Length);
+
+			return SplineY;
+		}
+		double C_Coder::CubicSpline(array<double>^ X, array<double>^ Y, double SplineX)
+		{
+			std::vector<double> X_, Y_;
+
+			for (int k = 0; k < X->Length; k++) X_.push_back((double)X[k]);
+			for (int k = 0; k < Y->Length; k++) Y_.push_back((double)Y[k]);
+
+			return MathWorks::C_Coder::CubicSpline(X_, Y_, SplineX);
 		}
 	}
 }
