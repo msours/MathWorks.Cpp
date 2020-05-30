@@ -9,6 +9,7 @@
 
 #include "mat.h"
 #include "matrix.h"
+#include "TypeConverters.h"
 
 namespace MathWorks
 {
